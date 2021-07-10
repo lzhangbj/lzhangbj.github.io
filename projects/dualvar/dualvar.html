@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description"
+          content="How Incomplete is Contrastive Learning for Self-supervised Video Recognition? An Inter-intra Variant Dual Representation Method">
+    <meta name="author" content="Lin ZHANG, Qi She, Zhengyang Shen, Changhu Wang">
+
+    <title>How Incomplete is Contrastive Learning for Self-supervised Video Recognition? An Inter-intra Variant Dual Representation Method</title>
+    <!-- Bootstrap core CSS -->
+    <!--link href="bootstrap.min.css" rel="stylesheet"-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- Custom styles for this template -->
+    <link href="offcanvas.css" rel="stylesheet">
+    <!--    <link rel="icon" href="img/favicon.gif" type="image/gif">-->
+</head>
+
+<body>
+<div class="jumbotron jumbotron-fluid">
+    <div class="container"></div>
+    <h2>How Incomplete is Contrastive Learning for Self-supervised Video Recognition?<br>An Inter-intra Variant Dual Representation Method</h2>
+    <h3></h3>
+<!--            <p class="abstract">An interpretable, data-efficient, and scalable neural scene representation.</p>-->
+    <hr>
+    <p class="authors">
+        <a href="lzhangbj.github.io"> Lin ZHANG</a>,
+        <a href="https://scholar.google.com/citations?user=iHoGTt4AAAAJ&hl=zh-CN">Qi She</a>,
+        <a href="https://scholar.google.com/citations?user=e5KqA88AAAAJ&hl=zh-CN">Zhengyang Shen</a>,
+        <a href="https://scholar.google.com/citations?user=DsVZkjAAAAAJ&hl=zh-CN">Changhu Wang</a>
+    </p>
+    <div class="btn-group" role="group" aria-label="Top menu">
+        <a class="btn btn-primary" href="https://arxiv.org/abs/2107.01194">Paper</a>
+        <a class="btn btn-primary" href="https://github.com/lzhangbj/DualVar">Code</a>
+    </div>
+</div>
+
+<div class="container">
+    <div class="section">
+        <h2>Abstract</h2>
+        <hr>
+        <p class="abstract">
+            Contrastive learning applied to self-supervised representation learning has seen a resurgence in deep models.
+            In this paper, we find that existing contrastive learning based solutions for self-supervised video recognition
+            focus on inter-variance encoding but ignore the intra-variance existing in clips within the same video. We thus
+            propose to learn dual representations for each clip which (1) encode intra-variance through a
+            shuffle-rank pretext task; (2) encode inter-variance through a temporal coherent contrastive loss.
+            Experiment results show that our method plays an essential role in balancing inter and intra variances and brings
+            consistent performance gains on multiple backbones and contrastive learning frameworks. Integrated with SimCLR and
+            pretrained on Kinetics-400, our method achieves 82.0% and 51.2% downstream classification
+            accuracy on UCF101 and HMDB51 test sets respectively and 46.1% video retrieval accuracy on UCF101,
+            outperforming both pretext-task based and contrastive learning based counterparts.
+        </p>
+        <div class="row justify-content-center">
+            <img src="imgs/overview.png" style="width:100%">
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Limitation of Contrastive Learning</h2>
+        <hr>
+        <p>
+            Video semantics rely on not only image-level appearances, but also the temporal variance, i.e. different clips
+            sampled from different time spans of a video exhibit different semantics meanings. For instance, \emph{running}
+            and \emph{jumping} are two different mini-actions though they are both sampled from a video classified as
+            \emph{HighJump}. However, contrastive learning overemphasizes the learning of inter-variance but ignores intra-variance.
+
+        </p>
+        <div class="row justify-content-center">
+            <img src="imgs/inter-intra.png" style="width:90%">
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Methodology</h2>
+        <hr>
+        <p>
+            Our method learns dual representations for each clip. which encode not only intra-variance between sub-clips
+            but also inter-variance between different videos. We realize that intra-variance can be subtle depending on
+            different videos and a large-margin-induced classification loss will thus spoil inter-variance encoding.To learn
+            the subtle intra-variance, we adopt a ranking loss to induce a small margin between sub-clip features. We then
+            apply temporal coherent contrastive loss on the same set of sub-clip features to jointly learn inter-variance.
+        </p>
+        <div class="row justify-content-center">
+            <div class="col-sm-6">
+                <img src="imgs/improve-table.png" style="width:100%">
+            </div>
+            <div class="col-sm-6">
+                <img src="imgs/inter-intra-table.png" style="width:100%">
+            </div>
+
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Performance Comparison</h2>
+        <hr>
+        <div class="row justify-content-center">
+            <img src="imgs/perform-compare.png" style="width:80%">
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Feature Distribution</h2>
+        <hr>
+        <p>
+            Feature distribution of baseline SimCLR is very sparse, with large margin between different classes. With our
+            shuffle-rank (SR) pretext task, intra-variance becomes larger, resulting in a denser distribution. Further equipping
+            the model with temporal coherent (TC) contrastive loss makes the clustering borders clearer.
+        </p>
+        <div class="row justify-content-center">
+            <div class="col-sm-3">
+                <h5>SimCLR</h5>
+                <img src="imgs/baseline_feat.png" style="width:100%">
+            </div>
+            <div class="col-sm-3">
+                <h5>+SR</h5>
+                <img src="imgs/seg-only_feat.png" style="width:100%">
+            </div>
+            <div class="col-sm-3">
+                <h5>+TC</h5>
+                <img src="imgs/avg-series_feat.png" style="width:100%">
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Video Retrieval Visualization</h2>
+        <hr>
+        <div class="row justify-content-center">
+            <div class="col-sm-6">
+                <img src="imgs/retrieval.png" style="width:100%">
+            </div>
+        </div>
+    </div>
+
+
+    <!-- <div class="section">
+        <h2>Paper</h2>
+        <hr>
+       <div>
+           <div class="list-group">
+               <a href="https://arxiv.org/abs/2107.01194"
+                  class="list-group-item">
+                   <img src="img/paper_thumbnail.png" style="width:100%; margin-right:-20px; margin-top:-10px;">
+               </a>
+           </div>
+       </div>
+    </div> -->
+
+    <div class="section">
+        <h2>Bibtex</h2>
+        <hr>
+       <div class="bibtexsection">
+           @inproceedings{linz2021dualvar,
+               author = {Lin, Zhang
+                         and Qi, She
+                         and Zhengyang, Shen
+                         and Changhu, Wang},
+               title = {How Incomplete is Contrastive Learning? An Inter-intra Variant Dual 
+                        Representation Method for Self-supervised Video Recognition},
+               booktitle = {arxiv},
+               year={2021}
+           }
+       </div>
+    </div>
+
+    <hr>
+
+    <footer>
+        <p>Website template borrowed from <a href="https://vsitzmann.github.io/siren/">siren</a></p>
+    </footer>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+        crossorigin="anonymous"></script>
+
+</body>
+</html>
