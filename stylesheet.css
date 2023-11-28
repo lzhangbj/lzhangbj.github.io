@@ -86,7 +86,7 @@ a {
 
 strong {
   font-family: 'Lato', Verdana, Helvetica, sans-serif;
-  font-size: 16px;
+  /*font-size: 16px;*/
 }
 
 heading {
@@ -97,8 +97,18 @@ heading {
 
 papertitle {
   font-family: 'Lato', Verdana, Helvetica, sans-serif;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 700
+}
+
+table {
+    width: 100%;
+    table-layout: fixed;
+  }
+
+paperauthor {
+  font-family: 'Lato', Verdana, Helvetica, sans-serif;
+  font-size: 14px;
 }
 
 name {
