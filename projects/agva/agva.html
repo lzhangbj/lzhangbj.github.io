@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<!-- saved from url=(0040)https://humansensinglab.github.io/REMAG/ -->
+<html class="fontawesome-i2svg-active fontawesome-i2svg-complete"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="description" content="">
+  <meta name="keywords" content="synthetic data, aerial imagery, human action recognition, human activity recognition, action recognition, activity recognition, dataset">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Audio-Guided Visual Animation</title>
+
+  <style type="text/css">:host,:root{--fa-font-solid:normal 900 1em/1 "Font Awesome 6 Solid";--fa-font-regular:normal 400 1em/1 "Font Awesome 6 Regular";--fa-font-light:normal 300 1em/1 "Font Awesome 6 Light";--fa-font-thin:normal 100 1em/1 "Font Awesome 6 Thin";--fa-font-duotone:normal 900 1em/1 "Font Awesome 6 Duotone";--fa-font-sharp-solid:normal 900 1em/1 "Font Awesome 6 Sharp";--fa-font-sharp-regular:normal 400 1em/1 "Font Awesome 6 Sharp";--fa-font-sharp-light:normal 300 1em/1 "Font Awesome 6 Sharp";--fa-font-brands:normal 400 1em/1 "Font Awesome 6 Brands"}svg:not(:host).svg-inline--fa,svg:not(:root).svg-inline--fa{overflow:visible;box-sizing:content-box}.svg-inline--fa{display:var(--fa-display,inline-block);height:1em;overflow:visible;vertical-align:-.125em}.svg-inline--fa.fa-2xs{vertical-align:.1em}.svg-inline--fa.fa-xs{vertical-align:0}.svg-inline--fa.fa-sm{vertical-align:-.0714285705em}.svg-inline--fa.fa-lg{vertical-align:-.2em}.svg-inline--fa.fa-xl{vertical-align:-.25em}.svg-inline--fa.fa-2xl{vertical-align:-.3125em}.svg-inline--fa.fa-pull-left{margin-right:var(--fa-pull-margin,.3em);width:auto}.svg-inline--fa.fa-pull-right{margin-left:var(--fa-pull-margin,.3em);width:auto}.svg-inline--fa.fa-li{width:var(--fa-li-width,2em);top:.25em}.svg-inline--fa.fa-fw{width:var(--fa-fw-width,1.25em)}.fa-layers svg.svg-inline--fa{bottom:0;left:0;margin:auto;position:absolute;right:0;top:0}.fa-layers-counter,.fa-layers-text{display:inline-block;position:absolute;text-align:center}.fa-layers{display:inline-block;height:1em;position:relative;text-align:center;vertical-align:-.125em;width:1em}.fa-layers svg.svg-inline--fa{-webkit-transform-origin:center center;transform-origin:center center}.fa-layers-text{left:50%;top:50%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%);-webkit-transform-origin:center center;transform-origin:center center}.fa-layers-counter{background-color:var(--fa-counter-background-color,#ff253a);border-radius:var(--fa-counter-border-radius,1em);box-sizing:border-box;color:var(--fa-inverse,#fff);line-height:var(--fa-counter-line-height,1);max-width:var(--fa-counter-max-width,5em);min-width:var(--fa-counter-min-width,1.5em);overflow:hidden;padding:var(--fa-counter-padding,.25em .5em);right:var(--fa-right,0);text-overflow:ellipsis;top:var(--fa-top,0);-webkit-transform:scale(var(--fa-counter-scale,.25));transform:scale(var(--fa-counter-scale,.25));-webkit-transform-origin:top right;transform-origin:top right}.fa-layers-bottom-right{bottom:var(--fa-bottom,0);right:var(--fa-right,0);top:auto;-webkit-transform:scale(var(--fa-layers-scale,.25));transform:scale(var(--fa-layers-scale,.25));-webkit-transform-origin:bottom right;transform-origin:bottom right}.fa-layers-bottom-left{bottom:var(--fa-bottom,0);left:var(--fa-left,0);right:auto;top:auto;-webkit-transform:scale(var(--fa-layers-scale,.25));transform:scale(var(--fa-layers-scale,.25));-webkit-transform-origin:bottom left;transform-origin:bottom left}.fa-layers-top-right{top:var(--fa-top,0);right:var(--fa-right,0);-webkit-transform:scale(var(--fa-layers-scale,.25));transform:scale(var(--fa-layers-scale,.25));-webkit-transform-origin:top right;transform-origin:top right}.fa-layers-top-left{left:var(--fa-left,0);right:auto;top:var(--fa-top,0);-webkit-transform:scale(var(--fa-layers-scale,.25));transform:scale(var(--fa-layers-scale,.25));-webkit-transform-origin:top left;transform-origin:top left}.fa-1x{font-size:1em}.fa-2x{font-size:2em}.fa-3x{font-size:3em}.fa-4x{font-size:4em}.fa-5x{font-size:5em}.fa-6x{font-size:6em}.fa-7x{font-size:7em}.fa-8x{font-size:8em}.fa-9x{font-size:9em}.fa-10x{font-size:10em}.fa-2xs{font-size:.625em;line-height:.1em;vertical-align:.225em}.fa-xs{font-size:.75em;line-height:.0833333337em;vertical-align:.125em}.fa-sm{font-size:.875em;line-height:.0714285718em;vertical-align:.0535714295em}.fa-lg{font-size:1.25em;line-height:.05em;vertical-align:-.075em}.fa-xl{font-size:1.5em;line-height:.0416666682em;vertical-align:-.125em}.fa-2xl{font-size:2em;line-height:.03125em;vertical-align:-.1875em}.fa-fw{text-align:center;width:1.25em}.fa-ul{list-style-type:none;margin-left:var(--fa-li-margin,2.5em);padding-left:0}.fa-ul>li{position:relative}.fa-li{left:calc(var(--fa-li-width,2em) * -1);position:absolute;text-align:center;width:var(--fa-li-width,2em);line-height:inherit}.fa-border{border-color:var(--fa-border-color,#eee);border-radius:var(--fa-border-radius,.1em);border-style:var(--fa-border-style,solid);border-width:var(--fa-border-width,.08em);padding:var(--fa-border-padding,.2em .25em .15em)}.fa-pull-left{float:left;margin-right:var(--fa-pull-margin,.3em)}.fa-pull-right{float:right;margin-left:var(--fa-pull-margin,.3em)}.fa-beat{-webkit-animation-name:fa-beat;animation-name:fa-beat;-webkit-animation-delay:var(--fa-animation-delay,0s);animation-delay:var(--fa-animation-delay,0s);-webkit-animation-direction:var(--fa-animation-direction,normal);animation-direction:var(--fa-animation-direction,normal);-webkit-animation-duration:var(--fa-animation-duration,1s);animation-duration:var(--fa-animation-duration,1s);-webkit-animation-iteration-count:var(--fa-animation-iteration-count,infinite);animation-iteration-count:var(--fa-animation-iteration-count,infinite);-webkit-animation-timing-function:var(--fa-animation-timing,ease-in-out);animation-timing-function:var(--fa-animation-timing,ease-in-out)}.fa-bounce{-webkit-animation-name:fa-bounce;animation-name:fa-bounce;-webkit-animation-delay:var(--fa-animation-delay,0s);animation-delay:var(--fa-animation-delay,0s);-webkit-animation-direction:var(--fa-animation-direction,normal);animation-direction:var(--fa-animation-direction,normal);-webkit-animation-duration:var(--fa-animation-duration,1s);animation-duration:var(--fa-animation-duration,1s);-webkit-animation-iteration-count:var(--fa-animation-iteration-count,infinite);animation-iteration-count:var(--fa-animation-iteration-count,infinite);-webkit-animation-timing-function:var(--fa-animation-timing,cubic-bezier(.28,.84,.42,1));animation-timing-function:var(--fa-animation-timing,cubic-bezier(.28,.84,.42,1))}.fa-fade{-webkit-animation-name:fa-fade;animation-name:fa-fade;-webkit-animation-delay:var(--fa-animation-delay,0s);animation-delay:var(--fa-animation-delay,0s);-webkit-animation-direction:var(--fa-animation-direction,normal);animation-direction:var(--fa-animation-direction,normal);-webkit-animation-duration:var(--fa-animation-duration,1s);animation-duration:var(--fa-animation-duration,1s);-webkit-animation-iteration-count:var(--fa-animation-iteration-count,infinite);animation-iteration-count:var(--fa-animation-iteration-count,infinite);-webkit-animation-timing-function:var(--fa-animation-timing,cubic-bezier(.4,0,.6,1));animation-timing-function:var(--fa-animation-timing,cubic-bezier(.4,0,.6,1))}.fa-beat-fade{-webkit-animation-name:fa-beat-fade;animation-name:fa-beat-fade;-webkit-animation-delay:var(--fa-animation-delay,0s);animation-delay:var(--fa-animation-delay,0s);-webkit-animation-direction:var(--fa-animation-direction,normal);animation-direction:var(--fa-animation-direction,normal);-webkit-animation-duration:var(--fa-animation-duration,1s);animation-duration:var(--fa-animation-duration,1s);-webkit-animation-iteration-count:var(--fa-animation-iteration-count,infinite);animation-iteration-count:var(--fa-animation-iteration-count,infinite);-webkit-animation-timing-function:var(--fa-animation-timing,cubic-bezier(.4,0,.6,1));animation-timing-function:var(--fa-animation-timing,cubic-bezier(.4,0,.6,1))}.fa-flip{-webkit-animation-name:fa-flip;animation-name:fa-flip;-webkit-animation-delay:var(--fa-animation-delay,0s);animation-delay:var(--fa-animation-delay,0s);-webkit-animation-direction:var(--fa-animation-direction,normal);animation-direction:var(--fa-animation-direction,normal);-webkit-animation-duration:var(--fa-animation-duration,1s);animation-duration:var(--fa-animation-duration,1s);-webkit-animation-iteration-count:var(--fa-animation-iteration-count,infinite);animation-iteration-count:var(--fa-animation-iteration-count,infinite);-webkit-animation-timing-function:var(--fa-animation-timing,ease-in-out);animation-timing-function:var(--fa-animation-timing,ease-in-out)}.fa-shake{-webkit-animation-name:fa-shake;animation-name:fa-shake;-webkit-animation-delay:var(--fa-animation-delay,0s);animation-delay:var(--fa-animation-delay,0s);-webkit-animation-direction:var(--fa-animation-direction,normal);animation-direction:var(--fa-animation-direction,normal);-webkit-animation-duration:var(--fa-animation-duration,1s);animation-duration:var(--fa-animation-duration,1s);-webkit-animation-iteration-count:var(--fa-animation-iteration-count,infinite);animation-iteration-count:var(--fa-animation-iteration-count,infinite);-webkit-animation-timing-function:var(--fa-animation-timing,linear);animation-timing-function:var(--fa-animation-timing,linear)}.fa-spin{-webkit-animation-name:fa-spin;animation-name:fa-spin;-webkit-animation-delay:var(--fa-animation-delay,0s);animation-delay:var(--fa-animation-delay,0s);-webkit-animation-direction:var(--fa-animation-direction,normal);animation-direction:var(--fa-animation-direction,normal);-webkit-animation-duration:var(--fa-animation-duration,2s);animation-duration:var(--fa-animation-duration,2s);-webkit-animation-iteration-count:var(--fa-animation-iteration-count,infinite);animation-iteration-count:var(--fa-animation-iteration-count,infinite);-webkit-animation-timing-function:var(--fa-animation-timing,linear);animation-timing-function:var(--fa-animation-timing,linear)}.fa-spin-reverse{--fa-animation-direction:reverse}.fa-pulse,.fa-spin-pulse{-webkit-animation-name:fa-spin;animation-name:fa-spin;-webkit-animation-direction:var(--fa-animation-direction,normal);animation-direction:var(--fa-animation-direction,normal);-webkit-animation-duration:var(--fa-animation-duration,1s);animation-duration:var(--fa-animation-duration,1s);-webkit-animation-iteration-count:var(--fa-animation-iteration-count,infinite);animation-iteration-count:var(--fa-animation-iteration-count,infinite);-webkit-animation-timing-function:var(--fa-animation-timing,steps(8));animation-timing-function:var(--fa-animation-timing,steps(8))}@media (prefers-reduced-motion:reduce){.fa-beat,.fa-beat-fade,.fa-bounce,.fa-fade,.fa-flip,.fa-pulse,.fa-shake,.fa-spin,.fa-spin-pulse{-webkit-animation-delay:-1ms;animation-delay:-1ms;-webkit-animation-duration:1ms;animation-duration:1ms;-webkit-animation-iteration-count:1;animation-iteration-count:1;-webkit-transition-delay:0s;transition-delay:0s;-webkit-transition-duration:0s;transition-duration:0s}}@-webkit-keyframes fa-beat{0%,90%{-webkit-transform:scale(1);transform:scale(1)}45%{-webkit-transform:scale(var(--fa-beat-scale,1.25));transform:scale(var(--fa-beat-scale,1.25))}}@keyframes fa-beat{0%,90%{-webkit-transform:scale(1);transform:scale(1)}45%{-webkit-transform:scale(var(--fa-beat-scale,1.25));transform:scale(var(--fa-beat-scale,1.25))}}@-webkit-keyframes fa-bounce{0%{-webkit-transform:scale(1,1) translateY(0);transform:scale(1,1) translateY(0)}10%{-webkit-transform:scale(var(--fa-bounce-start-scale-x,1.1),var(--fa-bounce-start-scale-y,.9)) translateY(0);transform:scale(var(--fa-bounce-start-scale-x,1.1),var(--fa-bounce-start-scale-y,.9)) translateY(0)}30%{-webkit-transform:scale(var(--fa-bounce-jump-scale-x,.9),var(--fa-bounce-jump-scale-y,1.1)) translateY(var(--fa-bounce-height,-.5em));transform:scale(var(--fa-bounce-jump-scale-x,.9),var(--fa-bounce-jump-scale-y,1.1)) translateY(var(--fa-bounce-height,-.5em))}50%{-webkit-transform:scale(var(--fa-bounce-land-scale-x,1.05),var(--fa-bounce-land-scale-y,.95)) translateY(0);transform:scale(var(--fa-bounce-land-scale-x,1.05),var(--fa-bounce-land-scale-y,.95)) translateY(0)}57%{-webkit-transform:scale(1,1) translateY(var(--fa-bounce-rebound,-.125em));transform:scale(1,1) translateY(var(--fa-bounce-rebound,-.125em))}64%{-webkit-transform:scale(1,1) translateY(0);transform:scale(1,1) translateY(0)}100%{-webkit-transform:scale(1,1) translateY(0);transform:scale(1,1) translateY(0)}}@keyframes fa-bounce{0%{-webkit-transform:scale(1,1) translateY(0);transform:scale(1,1) translateY(0)}10%{-webkit-transform:scale(var(--fa-bounce-start-scale-x,1.1),var(--fa-bounce-start-scale-y,.9)) translateY(0);transform:scale(var(--fa-bounce-start-scale-x,1.1),var(--fa-bounce-start-scale-y,.9)) translateY(0)}30%{-webkit-transform:scale(var(--fa-bounce-jump-scale-x,.9),var(--fa-bounce-jump-scale-y,1.1)) translateY(var(--fa-bounce-height,-.5em));transform:scale(var(--fa-bounce-jump-scale-x,.9),var(--fa-bounce-jump-scale-y,1.1)) translateY(var(--fa-bounce-height,-.5em))}50%{-webkit-transform:scale(var(--fa-bounce-land-scale-x,1.05),var(--fa-bounce-land-scale-y,.95)) translateY(0);transform:scale(var(--fa-bounce-land-scale-x,1.05),var(--fa-bounce-land-scale-y,.95)) translateY(0)}57%{-webkit-transform:scale(1,1) translateY(var(--fa-bounce-rebound,-.125em));transform:scale(1,1) translateY(var(--fa-bounce-rebound,-.125em))}64%{-webkit-transform:scale(1,1) translateY(0);transform:scale(1,1) translateY(0)}100%{-webkit-transform:scale(1,1) translateY(0);transform:scale(1,1) translateY(0)}}@-webkit-keyframes fa-fade{50%{opacity:var(--fa-fade-opacity,.4)}}@keyframes fa-fade{50%{opacity:var(--fa-fade-opacity,.4)}}@-webkit-keyframes fa-beat-fade{0%,100%{opacity:var(--fa-beat-fade-opacity,.4);-webkit-transform:scale(1);transform:scale(1)}50%{opacity:1;-webkit-transform:scale(var(--fa-beat-fade-scale,1.125));transform:scale(var(--fa-beat-fade-scale,1.125))}}@keyframes fa-beat-fade{0%,100%{opacity:var(--fa-beat-fade-opacity,.4);-webkit-transform:scale(1);transform:scale(1)}50%{opacity:1;-webkit-transform:scale(var(--fa-beat-fade-scale,1.125));transform:scale(var(--fa-beat-fade-scale,1.125))}}@-webkit-keyframes fa-flip{50%{-webkit-transform:rotate3d(var(--fa-flip-x,0),var(--fa-flip-y,1),var(--fa-flip-z,0),var(--fa-flip-angle,-180deg));transform:rotate3d(var(--fa-flip-x,0),var(--fa-flip-y,1),var(--fa-flip-z,0),var(--fa-flip-angle,-180deg))}}@keyframes fa-flip{50%{-webkit-transform:rotate3d(var(--fa-flip-x,0),var(--fa-flip-y,1),var(--fa-flip-z,0),var(--fa-flip-angle,-180deg));transform:rotate3d(var(--fa-flip-x,0),var(--fa-flip-y,1),var(--fa-flip-z,0),var(--fa-flip-angle,-180deg))}}@-webkit-keyframes fa-shake{0%{-webkit-transform:rotate(-15deg);transform:rotate(-15deg)}4%{-webkit-transform:rotate(15deg);transform:rotate(15deg)}24%,8%{-webkit-transform:rotate(-18deg);transform:rotate(-18deg)}12%,28%{-webkit-transform:rotate(18deg);transform:rotate(18deg)}16%{-webkit-transform:rotate(-22deg);transform:rotate(-22deg)}20%{-webkit-transform:rotate(22deg);transform:rotate(22deg)}32%{-webkit-transform:rotate(-12deg);transform:rotate(-12deg)}36%{-webkit-transform:rotate(12deg);transform:rotate(12deg)}100%,40%{-webkit-transform:rotate(0);transform:rotate(0)}}@keyframes fa-shake{0%{-webkit-transform:rotate(-15deg);transform:rotate(-15deg)}4%{-webkit-transform:rotate(15deg);transform:rotate(15deg)}24%,8%{-webkit-transform:rotate(-18deg);transform:rotate(-18deg)}12%,28%{-webkit-transform:rotate(18deg);transform:rotate(18deg)}16%{-webkit-transform:rotate(-22deg);transform:rotate(-22deg)}20%{-webkit-transform:rotate(22deg);transform:rotate(22deg)}32%{-webkit-transform:rotate(-12deg);transform:rotate(-12deg)}36%{-webkit-transform:rotate(12deg);transform:rotate(12deg)}100%,40%{-webkit-transform:rotate(0);transform:rotate(0)}}@-webkit-keyframes fa-spin{0%{-webkit-transform:rotate(0);transform:rotate(0)}100%{-webkit-transform:rotate(360deg);transform:rotate(360deg)}}@keyframes fa-spin{0%{-webkit-transform:rotate(0);transform:rotate(0)}100%{-webkit-transform:rotate(360deg);transform:rotate(360deg)}}.fa-rotate-90{-webkit-transform:rotate(90deg);transform:rotate(90deg)}.fa-rotate-180{-webkit-transform:rotate(180deg);transform:rotate(180deg)}.fa-rotate-270{-webkit-transform:rotate(270deg);transform:rotate(270deg)}.fa-flip-horizontal{-webkit-transform:scale(-1,1);transform:scale(-1,1)}.fa-flip-vertical{-webkit-transform:scale(1,-1);transform:scale(1,-1)}.fa-flip-both,.fa-flip-horizontal.fa-flip-vertical{-webkit-transform:scale(-1,-1);transform:scale(-1,-1)}.fa-rotate-by{-webkit-transform:rotate(var(--fa-rotate-angle,none));transform:rotate(var(--fa-rotate-angle,none))}.fa-stack{display:inline-block;vertical-align:middle;height:2em;position:relative;width:2.5em}.fa-stack-1x,.fa-stack-2x{bottom:0;left:0;margin:auto;position:absolute;right:0;top:0;z-index:var(--fa-stack-z-index,auto)}.svg-inline--fa.fa-stack-1x{height:1em;width:1.25em}.svg-inline--fa.fa-stack-2x{height:2em;width:2.5em}.fa-inverse{color:var(--fa-inverse,#fff)}.fa-sr-only,.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border-width:0}.fa-sr-only-focusable:not(:focus),.sr-only-focusable:not(:focus){position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border-width:0}.svg-inline--fa .fa-primary{fill:var(--fa-primary-color,currentColor);opacity:var(--fa-primary-opacity,1)}.svg-inline--fa .fa-secondary{fill:var(--fa-secondary-color,currentColor);opacity:var(--fa-secondary-opacity,.4)}.svg-inline--fa.fa-swap-opacity .fa-primary{opacity:var(--fa-secondary-opacity,.4)}.svg-inline--fa.fa-swap-opacity .fa-secondary{opacity:var(--fa-primary-opacity,1)}.svg-inline--fa mask .fa-primary,.svg-inline--fa mask .fa-secondary{fill:#000}.fa-duotone.fa-inverse,.fad.fa-inverse{color:var(--fa-inverse,#fff)}</style><link href="./webpage_files/css" rel="stylesheet">
+
+  <link rel="stylesheet" href="./webpage_files/bulma.min.css">
+  <link rel="stylesheet" href="./webpage_files/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./webpage_files/bulma-slider.min.css">
+  <link rel="stylesheet" href="./webpage_files/fontawesome.all.min.css">
+  <link rel="stylesheet" href="./webpage_files/academicons.min.css">
+  <link rel="stylesheet" href="./webpage_files/index.css">
+  <link rel="stylesheet" href="./webpage_files/navigation.css">
+
+  <script src="./webpage_files/jquery.min.js"></script>
+  <script defer="" src="./webpage_files/fontawesome.all.min.js"></script>
+  <script src="./webpage_files/bulma-carousel.min.js"></script>
+  <script src="./webpage_files/bulma-slider.min.js"></script>
+
+  <link rel="shortcut icon" href="https://humansensinglab.github.io/REMAG/assets/block.png">
+
+
+</head>
+<body>
+
+<div class="topnav">
+  <a class="active" href="#overview">Overview</a>
+  <a href="#AVSync15">AVSync15</a>
+  <a href="#A2VD">A2VD</a>
+  <a href="#Generated_videos">Generated test videos</a>
+  <a href="#More_Applications">More applications</a>
+</div>
+
+<section class="hero" id="overview">
+  <div class="hero-body">
+	<div class="container">
+	  <div class="columns is-centered">
+		<div class="column has-text-centered">
+            <div style="height:10%;"></div>
+			<h1 class="title is-1 publication-title">Audio-Guided Visual Animation</h1>
+		  <div class="is-size-5 publication-authors">
+			<span class="author-block">
+			  <a href="https://lzhangbj.github.io/" target="_blank">Lin Zhang</a><sup>1</sup>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			  <a href="https://scholar.google.com/citations?user=6aYncPAAAAAJ" target="_blank">Shentong Mo</a><sup>2</sup>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			  <a href="https://www.linkedin.com/in/yijing-zhang-76b201220/" target="_blank">Yijing Zhang</a><sup>1</sup>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			  <a href="https://pedro-morgado.github.io/" target="_blank">Pedro Morgado</a><sup>1</sup><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			  <br>
+			  <sup>1</sup>University of Wisconsin - Madison&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			  <sup>2</sup>Carnegie Mellon University&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			  <br>
+<!--              <h2><strong>WACV 2024</strong></h2>-->
+		  </span></div>
+		  
+		  <div class="column has-text-centered">
+			<div class="publication-links">
+
+			  <!-- arXiv Link. -->
+			  <span class="link-block">
+				<a href="https://arxiv.org/abs/2401.05465" class="external-link button is-normal is-rounded is-dark" target="_blank">
+				  <span class="icon">
+					  <svg class="svg-inline--fa fa-newspaper" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="newspaper" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M96 96c0-35.3 28.7-64 64-64H448c35.3 0 64 28.7 64 64V416c0 35.3-28.7 64-64 64H80c-44.2 0-80-35.8-80-80V128c0-17.7 14.3-32 32-32s32 14.3 32 32V400c0 8.8 7.2 16 16 16s16-7.2 16-16V96zm64 24v80c0 13.3 10.7 24 24 24H296c13.3 0 24-10.7 24-24V120c0-13.3-10.7-24-24-24H184c-13.3 0-24 10.7-24 24zm208-8c0 8.8 7.2 16 16 16h48c8.8 0 16-7.2 16-16s-7.2-16-16-16H384c-8.8 0-16 7.2-16 16zm0 96c0 8.8 7.2 16 16 16h48c8.8 0 16-7.2 16-16s-7.2-16-16-16H384c-8.8 0-16 7.2-16 16zM160 304c0 8.8 7.2 16 16 16H432c8.8 0 16-7.2 16-16s-7.2-16-16-16H176c-8.8 0-16 7.2-16 16zm0 96c0 8.8 7.2 16 16 16H432c8.8 0 16-7.2 16-16s-7.2-16-16-16H176c-8.8 0-16 7.2-16 16z"></path></svg><!-- <i class="fa-solid fa-newspaper"></i> Font Awesome fontawesome.com -->
+				  </span>
+				  <span>Paper</span>
+				</a>
+			  </span>
+
+			  <!-- Code Link. -->
+			  <span class="link-block">
+				<a href="./agva.html" class="external-link button is-normal is-rounded is-dark">
+				  <span class="icon">
+					  <svg class="svg-inline--fa fa-github fa-w-16" aria-hidden="true" focusable="false" data-prefix="fab" data-icon="github" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" data-fa-i2svg=""><path fill="currentColor" d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"></path></svg><!-- <i class="fab fa-github"></i> Font Awesome fontawesome.com -->
+				  </span>
+				  <span>Code (coming soon)</span>
+				  </a>
+			  </span>
+
+
+			  <!-- Dataset Google Drive Link. -->
+			  <span class="link-block">
+				<a href="https://drive.google.com/drive/folders/1onvx5y6QOceDrHZy8-ajFJ4RUuGWwT5V?usp=sharing" class="external-link button is-normal is-rounded is-dark">
+				  <span class="icon">
+					  <svg class="svg-inline--fa fa-database" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="database" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M448 80v48c0 44.2-100.3 80-224 80S0 172.2 0 128V80C0 35.8 100.3 0 224 0S448 35.8 448 80zM393.2 214.7c20.8-7.4 39.9-16.9 54.8-28.6V288c0 44.2-100.3 80-224 80S0 332.2 0 288V186.1c14.9 11.8 34 21.2 54.8 28.6C99.7 230.7 159.5 240 224 240s124.3-9.3 169.2-25.3zM0 346.1c14.9 11.8 34 21.2 54.8 28.6C99.7 390.7 159.5 400 224 400s124.3-9.3 169.2-25.3c20.8-7.4 39.9-16.9 54.8-28.6V432c0 44.2-100.3 80-224 80S0 476.2 0 432V346.1z"></path></svg>
+				  </span>
+				  <span>Dataset</span>
+				  </a>
+			  </span>
+
+			</div>
+		  </div>
+		</div>
+	  </div>
+	</div>
+  </div>
+</section>
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+	<div class="hero-body">
+	  <img style="width: 100%;" src="./webpage_files/images/teaser.png">
+	  <h2 class="subtitle has-text-centered">
+		Given an audio and an image (green box), we produce animations beyond image stylization with complex but natural
+		dynamics, synchronized with input audio at each frame. Results are produced by our A2VD model trained on the proposed AVSync15 dataset.
+	  </h2>
+	</div>
+  </div>
+</section>
+<section class="section" id="abstract">
+  <div class="container">
+	<!-- Abstract -->
+	<div class="columns is-centered has-text-centered">
+	  <div class="column is-two-thirds">
+		<h2 class="title is-2">Abstract</h2>
+		<div class="content has-text-justified">
+		  <p>
+			Contemporary visual generation methods often fall short in effectively control along temporal dimension. In response, we introduce Audio-Guided Visual Animation (AGVA),
+			  a task aimed at generating image animations that are temporally synchronized with audio cues. To address the absence of datasets tailored for this task,
+			  we present AVSync15, the first benchmark with highly synchronized audio-visual dynamics. Curated from the extensive but noisy VGGSound dataset,
+			  AVSync15 consists of 15 diverse audio-visual categories ranging from animal sounds, human actions, musical instruments, to triggered events. In addition,
+			  we introduce A2VD, a diffusion model capable of producing semantically aligned and temporally synchronized image animations from audio. We provide thorough
+			  evaluations to validate AVSync15 as a reliable dataset for synchronous video dynamics generation task and the superior performance of A2VD. Moreover, we explore
+			  various potentials of the trained A2VD in a range of audio-guided visual generation applications, bringing in new vision for controllable visual generation.
+		  </p>
+		</div>
+	  </div>
+	</div>
+	<!--/ Abstract -->
+
+	
+	
+  </div>
+</section>
+<hr class="solid">
+
+<section class="section" id="AVSync15">
+  <div class="container content">
+	<h2 class="title">AVSync15</h2>
+	<div class="content">
+<!--        <center><img style="width: 100%;" src="./webpage_files/Perf-Office31-OfficeHome.png"></center>-->
+		  <p class="subtitle has-text-justified">
+			  AVSync15 is a high-quality synchronized audio-video dataset curated from VGGSound. We carefully curate the dataset with both automatic and manual steps.
+			  It has the following attributes:
+		  </p>
+		  <ul>
+			  <li><strong>High semantic and temporal audio-visual correlation:</strong>
+				  Audio and visual contents are not only semantically aligned, but also synchronized at each timestamp. Visual motions are mostly triggered by audio, vice versa.
+			  </li>
+			  <li><strong>Clean and stable audio-visual contents:</strong>
+				  Visual motions are resulted from object dynamics as opposed to camera viewpoint changes and scene transitions. Frames are consistent to prevent sharp changes, while being dynamic
+				  to contain rich object motion. Audios are clean enough to describe the visual motion and exclude overwhelming out-of-scene sounds.
+			  </li>
+			  <li><strong>Rich in audio-video synchronization clues:</strong>
+				  We remove the classes/videos where synchronization clue is minimal, i.e., shifting audio along time axis cannot be perceived when pairing it with the unshifted video. This removes
+				  ambient classes like raining, fire crackling, running fan, and videos with too complex audio-visual contents.
+			  </li>
+			  <li><strong>Diverse in categories:</strong>
+				  It contains videos with duration > 2 seconds in 15 dynamic-motion classes. Each class is partitioned into 90 training videos and 10 testing videos.
+			  </li>
+		  </ul>
+	</div>
+	<div class="container">
+		<div class="columns is-centered has-text-centered">
+            <div class="column">
+        <!--      <h2 class="title is-3">Visual Effects</h2>-->
+                <div class="content">
+                  <p>
+                    Baby babbling crying
+                  </p>
+                  <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%" width="75%">
+                    <source src="./webpage_files/avsync15_gallery/baby_crying.mp4" type="video/mp4">
+                  </video>
+                </div>
+            </div>
+            <div class="column">
+                <div class="content">
+                  <p>
+                    Cap gun shooting
+                  </p>
+                  <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                    <source src="./webpage_files/avsync15_gallery/cap_gun_shooting.mp4" type="video/mp4">
+                  </video>
+                </div>
+            </div>
+            <div class="column" >
+                <div class="content">
+                  <p>
+                    Chicken crowing
+                  </p>
+                  <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%" width="75%">
+                    <source src="./webpage_files/avsync15_gallery/chicken_crowing.mp4" type="video/mp4">
+                  </video>
+                </div>
+            </div>
+            <div class="column" >
+                <div class="content">
+                  <p>
+                    Dog barking
+                  </p>
+                  <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                    <source src="./webpage_files/avsync15_gallery/dog_barking.mp4" type="video/mp4">
+                  </video>
+                </div>
+            </div>
+            <div class="column" >
+                <div class="content">
+                  <p>
+                    Frog croaking
+                  </p>
+                  <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                    <source src="./webpage_files/avsync15_gallery/frog_croaking.mp4" type="video/mp4">
+                  </video>
+                </div>
+            </div>
+	    </div>
+		<div class="columns is-centered has-text-centered">
+            <div class="column">
+        <!--      <h2 class="title is-3">Visual Effects</h2>-->
+                <div class="content">
+                  <p>
+                    Hammering
+                  </p>
+                  <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="20%">
+                    <source src="./webpage_files/avsync15_gallery/hammering.mp4" type="video/mp4">
+                  </video>
+                </div>
+            </div>
+            <div class="column">
+                <div class="content">
+                  <p>
+                    Lions roaring
+                  </p>
+                  <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                    <source src="./webpage_files/avsync15_gallery/lions_roaring.mp4" type="video/mp4">
+                  </video>
+                </div>
+            </div>
+            <div class="column" >
+                <div class="content">
+                  <p>
+                    Machine gun shooting
+                  </p>
+                  <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                    <source src="./webpage_files/avsync15_gallery/machine_gun_shooting.mp4" type="video/mp4">
+                  </video>
+                </div>
+            </div>
+            <div class="column" >
+                <div class="content">
+                  <p>
+                    Playing cello
+                  </p>
+                  <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                    <source src="./webpage_files/avsync15_gallery/playing_cello.mp4" type="video/mp4">
+                  </video>
+                </div>
+            </div>
+            <div class="column" >
+                <div class="content">
+                  <p>
+                    Playing trombone
+                  </p>
+                  <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                    <source src="./webpage_files/avsync15_gallery/playing_trombone.mp4" type="video/mp4">
+                  </video>
+                </div>
+            </div>
+	    </div>
+		<div class="columns is-centered has-text-centered">
+            <div class="column">
+        <!--      <h2 class="title is-3">Visual Effects</h2>-->
+                <div class="content">
+                  <p>
+                    Playing trumpet
+                  </p>
+                  <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="20%">
+                    <source src="./webpage_files/avsync15_gallery/playing_trumpet.mp4" type="video/mp4">
+                  </video>
+                </div>
+            </div>
+            <div class="column">
+                <div class="content">
+                  <p>
+                    Playing violin
+                  </p>
+                  <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                    <source src="./webpage_files/avsync15_gallery/playing_violin.mp4" type="video/mp4">
+                  </video>
+                </div>
+            </div>
+            <div class="column" >
+                <div class="content">
+                  <p>
+                    Sharpen knife
+                  </p>
+                  <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                    <source src="./webpage_files/avsync15_gallery/sharpen_knife.mp4" type="video/mp4">
+                  </video>
+                </div>
+            </div>
+            <div class="column" >
+                <div class="content">
+                  <p>
+                    Striking bowling
+                  </p>
+                  <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                    <source src="./webpage_files/avsync15_gallery/striking_bowling.mp4" type="video/mp4">
+                  </video>
+                </div>
+            </div>
+            <div class="column" >
+                <div class="content">
+                  <p>
+                    Toilet flushing
+                  </p>
+                  <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                    <source src="./webpage_files/avsync15_gallery/toilet_flushing.mp4" type="video/mp4">
+                  </video>
+                </div>
+            </div>
+	    </div>
+	</div>
+  </div>
+</section>
+<hr class="solid">
+
+
+<section class="section" id="A2VD">
+  <div class="container content">
+	<h2 class="title">A2VD</h2>
+	<div class="content">
+		  <p class="subtitle has-text-justified">
+			  A2VD is built upon pretrained StableDiffusion-V1.5 and ImageBind. Given an input image, a 2-second audio, and the audio class,
+              A2VD first encodes audio into temporal tokens that are rich in semantic and temporal cues, then produces highly synchronized
+              visual animations.
+		  </p>
+		  <img style="width: 100%;" src="./webpage_files/images/arch_overview.png">
+	</div>
+  </div>
+</section>
+<hr class="solid">
+
+
+<section class="section" id="Generated_videos">
+  <div class="container content">
+	<h2 class="title">Generated videos</h2>
+    <p>Here we show generated videos by A2VD on Landscapes and AVSync15 test set.</p>
+	<div class="container content">
+        <div class="container content">
+		    <h4 class="subtitle has-text-justified">
+			 Landscapes
+		    </h4>
+            <div class="columns is-centered has-text-centered">
+                <div class="column">
+                    <div class="content">
+                        <p>
+                            explosion
+                        </p>
+                        <div style="display:flex;justify-content:center;">
+                            <div>
+                                <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                    <source src="./webpage_files/test_generation/landscapes/explosion1.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                            <div>
+                                <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                    <source src="./webpage_files/test_generation/landscapes/explosion2.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="content">
+                        <p>
+                            fire crackling
+                        </p>
+                        <div style="display:flex;justify-content:center;">
+                            <div>
+                                <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                    <source src="./webpage_files/test_generation/landscapes/fire_crackling1.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                            <div>
+                                <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                    <source src="./webpage_files/test_generation/landscapes/fire_crackling2.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="content">
+                        <p>
+                            raining
+                        </p>
+                        <div style="display:flex;justify-content:center;">
+                            <div>
+                                <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                    <source src="./webpage_files/test_generation/landscapes/raining1.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                            <div>
+                                <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                    <source src="./webpage_files/test_generation/landscapes/raining2.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="columns is-centered has-text-centered">
+                <div class="column">
+                    <div class="content">
+                        <p>
+                            splashing water
+                        </p>
+                        <div style="display:flex;justify-content:center;">
+                            <div>
+                                <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                    <source src="./webpage_files/test_generation/landscapes/splashing_water1.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                            <div>
+                                <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                    <source src="./webpage_files/test_generation/landscapes/splashing_water2.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="content">
+                        <p>
+                            squishing water
+                        </p>
+                        <div style="display:flex;justify-content:center;">
+                            <div>
+                                <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                    <source src="./webpage_files/test_generation/landscapes/squishing_water1.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                            <div>
+                                <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                    <source src="./webpage_files/test_generation/landscapes/squishing_water2.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="content">
+                        <p>
+                            thunder
+                        </p>
+                        <div style="display:flex;justify-content:center;">
+                            <div>
+                                <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                    <source src="./webpage_files/test_generation/landscapes/thunder1.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                            <div>
+                                <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                    <source src="./webpage_files/test_generation/landscapes/thunder2.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="columns is-centered has-text-centered">
+                <div class="column">
+                    <div class="content">
+                        <p>
+                            underwater bubbling
+                        </p>
+                        <div style="display:flex;justify-content:center;">
+                            <div>
+                                <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                    <source src="./webpage_files/test_generation/landscapes/underwater_bubbling1.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                            <div>
+                                <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                    <source src="./webpage_files/test_generation/landscapes/underwater_bubbling2.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="content">
+                        <p>
+                            waterfall burbling
+                        </p>
+                        <div style="display:flex;justify-content:center;">
+                            <div>
+                                <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                    <source src="./webpage_files/test_generation/landscapes/waterfall_burbling1.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                            <div>
+                                <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                    <source src="./webpage_files/test_generation/landscapes/waterfall_burbling2.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="content">
+                        <p>
+                            wind noise
+                        </p>
+                        <div style="display:flex;justify-content:center;">
+                            <div>
+                                <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                    <source src="./webpage_files/test_generation/landscapes/wind_noise1.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                            <div>
+                                <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                    <source src="./webpage_files/test_generation/landscapes/wind_noise2.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+            <h4 class="subtitle has-text-justified">
+                AVSync15
+            </h4>
+            <div class="columns is-centered has-text-centered">
+                <div class="column">
+                    <div class="content">
+                        <p>
+                            baby babbling crying
+                        </p>
+                        <div style="display:flex;justify-content:center;">
+                            <div>
+                                <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                    <source src="./webpage_files/test_generation/avsync15/baby_crying1.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                            <div>
+                                <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                    <source src="./webpage_files/test_generation/avsync15/baby_crying2.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="content">
+                        <p>
+                            cap gun shooting
+                        </p>
+                        <div style="display:flex;justify-content:center;">
+                            <div>
+                                <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                    <source src="./webpage_files/test_generation/avsync15/cap_gun_shooting1.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                            <div>
+                                <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                    <source src="./webpage_files/test_generation/avsync15/cap_gun_shooting2.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="content">
+                        <p>
+                            chicken crowing
+                        </p>
+                        <div style="display:flex;justify-content:center;">
+                            <div>
+                                <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                    <source src="./webpage_files/test_generation/avsync15/chicken_crowing1.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                            <div>
+                                <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                    <source src="./webpage_files/test_generation/avsync15/chicken_crowing2.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="columns is-centered has-text-centered">
+                <div class="column">
+                    <div class="content">
+                        <p>
+                            dog barking
+                        </p>
+                        <div style="display:flex;justify-content:center;">
+                            <div>
+                                <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                    <source src="./webpage_files/test_generation/avsync15/dog_barking1.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                            <div>
+                                <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                    <source src="./webpage_files/test_generation/avsync15/dog_barking2.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="content">
+                        <p>
+                            frog croaking
+                        </p>
+                        <div style="display:flex;justify-content:center;">
+                            <div>
+                                <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                    <source src="./webpage_files/test_generation/avsync15/frog_croaking1.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                            <div>
+                                <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                    <source src="./webpage_files/test_generation/avsync15/frog_croaking2.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="content">
+                        <p>
+                            hammering
+                        </p>
+                        <div style="display:flex;justify-content:center;">
+                            <div>
+                                <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                    <source src="./webpage_files/test_generation/avsync15/hammering1.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                            <div>
+                                <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                    <source src="./webpage_files/test_generation/avsync15/hammering2.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="columns is-centered has-text-centered">
+                <div class="column">
+                    <div class="content">
+                        <p>
+                            lions roaring
+                        </p>
+                        <div style="display:flex;justify-content:center;">
+                            <div>
+                                <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                    <source src="./webpage_files/test_generation/avsync15/lions_roaring1.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                            <div>
+                                <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                    <source src="./webpage_files/test_generation/avsync15/lions_roaring2.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="content">
+                        <p>
+                            machine gun shooting
+                        </p>
+                        <div style="display:flex;justify-content:center;">
+                            <div>
+                                <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                    <source src="./webpage_files/test_generation/avsync15/machine_gun_shooting1.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                            <div>
+                                <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                    <source src="./webpage_files/test_generation/avsync15/machine_gun_shooting2.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="content">
+                        <p>
+                            playing cello
+                        </p>
+                        <div style="display:flex;justify-content:center;">
+                            <div>
+                                <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                    <source src="./webpage_files/test_generation/avsync15/playing_cello1.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                            <div>
+                                <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                    <source src="./webpage_files/test_generation/avsync15/playing_cello2.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="columns is-centered has-text-centered">
+                <div class="column">
+                    <div class="content">
+                        <p>
+                            playing trombone
+                        </p>
+                        <div style="display:flex;justify-content:center;">
+                            <div>
+                                <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                    <source src="./webpage_files/test_generation/avsync15/playing_trombone1.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                            <div>
+                                <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                    <source src="./webpage_files/test_generation/avsync15/playing_trombone2.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="content">
+                        <p>
+                            playing trumpet
+                        </p>
+                        <div style="display:flex;justify-content:center;">
+                            <div>
+                                <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                    <source src="./webpage_files/test_generation/avsync15/playing_trumpet1.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                            <div>
+                                <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                    <source src="./webpage_files/test_generation/avsync15/playing_trumpet2.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="content">
+                        <p>
+                            playing violin fiddle
+                        </p>
+                        <div style="display:flex;justify-content:center;">
+                            <div>
+                                <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                    <source src="./webpage_files/test_generation/avsync15/playing_violin1.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                            <div>
+                                <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                    <source src="./webpage_files/test_generation/avsync15/playing_violin2.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="columns is-centered has-text-centered">
+                <div class="column">
+                    <div class="content">
+                        <p>
+                            sharpen knife
+                        </p>
+                        <div style="display:flex;justify-content:center;">
+                            <div>
+                                <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                    <source src="./webpage_files/test_generation/avsync15/sharpen_knife1.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                            <div>
+                                <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                    <source src="./webpage_files/test_generation/avsync15/sharpen_knife2.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="content">
+                        <p>
+                            striking bowling
+                        </p>
+                        <div style="display:flex;justify-content:center;">
+                            <div>
+                                <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                    <source src="./webpage_files/test_generation/avsync15/striking_bowling1.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                            <div>
+                                <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                    <source src="./webpage_files/test_generation/avsync15/striking_bowling2.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="content">
+                        <p>
+                            toilet flushing
+                        </p>
+                        <div style="display:flex;justify-content:center;">
+                            <div>
+                                <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                    <source src="./webpage_files/test_generation/avsync15/toilet_flushing1.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                            <div>
+                                <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                    <source src="./webpage_files/test_generation/avsync15/toilet_flushing2.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+  </div>
+</section>
+<hr class="solid">
+
+
+<section class="section" id="More_Applications">
+  <div class="container content">
+	<h2 class="title">More Applications</h2>
+    <p>Despite trained on only 1350 videos, A2VD can be generalized to many fun applications.</p>
+	<div class="container content">
+         <div class="container content">
+            <h4 class="subtitle has-text-justified">
+             Animate images with less-correlated sounds
+            </h4>
+            <p>
+                When using audios less correlated with the image as conditions, A2VD can produce different motions based on audio-image correlation.
+                Results shown on AVSync15 test set.
+            </p>
+            <div class="content">
+                <div style="display:flex;justify-content:center;">
+                    <div>
+                        <p>
+                            baby + baby crying
+                        </p>
+                        <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                            <source src="./webpage_files/app/uncorrelated/baby-baby_crying_clip-0.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div>
+                        <p>
+                            baby + dog barking
+                        </p>
+                        <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                            <source src="./webpage_files/app/uncorrelated/baby-dog_barking_clip-0.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div>
+                        <p>
+                            baby + lions roaring
+                        </p>
+                        <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                            <source src="./webpage_files/app/uncorrelated/baby-lions_roaring_clip-0.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div>
+                        <p>
+                            baby + chicken crowing
+                        </p>
+                        <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                            <source src="./webpage_files/app/uncorrelated/baby-chicken_crowing_clip-0.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div>
+                        <p>
+                            baby + playing violin
+                        </p>
+                        <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                            <source src="./webpage_files/app/uncorrelated/baby-playing_violin_clip-0.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div>
+                        <p>
+                            baby + cap gun shooting
+                        </p>
+                        <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                            <source src="./webpage_files/app/uncorrelated/baby-cap_gun_shooting_clip-0.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div>
+                        <p>
+                            baby + toilet flushing
+                        </p>
+                        <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                            <source src="./webpage_files/app/uncorrelated/baby-toilet_flushing_clip-0.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+            </div>
+
+            <h4 class="subtitle has-text-justified">
+             Animation using images and audios in the wild
+            </h4>
+            <p>
+                A2VD can accept a broad range of inputs (images and audios) downloaded from internet.
+            </p>
+            <div class="columns is-centered has-text-centered">
+                <div class="column">
+                    <p>baby crying</p>
+                    <div style="display:flex;justify-content:center;">
+                        <div>
+                            <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                <source src="./webpage_files/app/wild/baby-baby_crying1_clip-0.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                        <div>
+                            <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                <source src="./webpage_files/app/wild/baby-baby_crying2_clip-0.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <p>striking bowling</p>
+                    <div style="display:flex;justify-content:center;">
+                        <div>
+                            <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                <source src="./webpage_files/app/wild/bowling-striking_bowling1_clip-0.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                        <div>
+                            <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                <source src="./webpage_files/app/wild/bowling-striking_bowling2_clip-0.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <p>dog barking</p>
+                    <div style="display:flex;justify-content:center;">
+                        <div>
+                            <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                <source src="./webpage_files/app/wild/dog-dog_barking1_clip-0.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                        <div>
+                            <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                <source src="./webpage_files/app/wild/dog-dog_barking2_clip-0.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <p>playing cello</p>
+                    <div style="display:flex;justify-content:center;">
+                        <div>
+                            <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                <source src="./webpage_files/app/wild/cello-playing_cello1_clip-0.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                        <div>
+                            <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                <source src="./webpage_files/app/wild/cello-playing_cello2_clip-0.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h4 class="subtitle has-text-justified">
+             Animate generated images
+            </h4>
+            <p>While A2VD is designed for image animation, it can also function as a prompt+audio->video generator when combined with existing image generators, e.g., StableDiffusion.</p>
+            <div class="columns is-centered has-text-centered" style="display: flex;align-items: flex-end;">
+                <div class="column">
+                    <p>"a photo of baby face" <br> + baby crying</p>
+                    <div>
+                        <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                            <source src="./webpage_files/app/generated/baby_crying_clip-0.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+                <div class="column">
+                    <p>"a photo of a person shooting a handgun" <br> + cap gun shooting</p>
+                    <div>
+                        <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                            <source src="./webpage_files/app/generated/cap_gun_shooting_clip-0.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+                <div class="column">
+                    <p>"a photo of a rooster" <br> + chicken crowing</p>
+                    <div>
+                        <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                            <source src="./webpage_files/app/generated/chicken_crowing_clip-0.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+                <div class="column">
+                    <p>"a photo of a dog" <br> + dog barking</p>
+                    <div>
+                        <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                            <source src="./webpage_files/app/generated/dog_barking_clip-0.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+                <div class="column">
+                    <p>"a photo of a frog" <br> + frog croaking</p>
+                    <div>
+                        <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                            <source src="./webpage_files/app/generated/frog_croaking_clip-0.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+                <div class="column">
+                    <p>"a photo of a person playing violin" <br> + playing violin fiddle</p>
+                    <div>
+                        <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                            <source src="./webpage_files/app/generated/playing_violin_clip-0.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+            </div>
+            <div class="columns is-centered has-text-centered" style="display: flex;align-items: flex-end;">
+                <div class="column">
+                    <p>"a photo of a lion" <br> + lions roaring</p>
+                    <div>
+                        <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                            <source src="./webpage_files/app/generated/lions_roaring_clip-0.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+                <div class="column">
+                    <p>"a photo of a person shooting machine gun" <br> + machine gun shooting</p>
+                    <div>
+                        <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                            <source src="./webpage_files/app/generated/machine_gun_shooting_clip-0.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+                <div class="column">
+                    <p>"a photo of a person playing cello" <br> + playing cello</p>
+                    <div>
+                        <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                            <source src="./webpage_files/app/generated/playing_cello_clip-0.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+                <div class="column">
+                    <p>"a photo of a person playing trombone" <br> + playing trombone</p>
+                    <div>
+                        <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                            <source src="./webpage_files/app/generated/playing_trombone_clip-0.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+                <div class="column">
+                    <p>"a photo of a person playing trumpet" <br> + playing trumpet</p>
+                    <div>
+                        <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                            <source src="./webpage_files/app/generated/playing_trumpet_clip-0.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+                <div class="column">
+                    <p>"a photo of hand sharpening knife" <br> + sharpen knife</p>
+                    <div>
+                        <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                            <source src="./webpage_files/app/generated/sharpen_knife_clip-0.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+            </div>
+
+            <h4 class="subtitle has-text-justified">
+             Controllable image animation using audios
+            </h4>
+            <p>Different audios can animate different objects of interests and trigger corresponding motion. Images below are downloaded from internet.</p>
+            <div class="columns is-centered has-text-centered">
+                <div class="column">
+                    <p>baby and violin</p>
+                    <div style="display:flex;justify-content:center;">
+                        <div>
+                            <p>+ baby crying</p>
+                            <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                <source src="./webpage_files/app/multi-object/baby_and_violin-baby_crying_clip-0.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                        <div>
+                            <p>+ playing violin</p>
+                            <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                <source src="./webpage_files/app/multi-object/baby_and_violin-playing_violin_clip-0.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <p>dog and violin</p>
+                    <div style="display:flex;justify-content:center;">
+                        <div>
+                            <p>+ dog barking</p>
+                            <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                <source src="./webpage_files/app/multi-object/dog_and_violin-dog_barking.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                        <div>
+                            <p>+ playing violin</p>
+                            <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                <source src="./webpage_files/app/multi-object/dog_and_violin-playing_violin.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <p>lion and machine gun</p>
+                    <div style="display:flex;justify-content:center;">
+                        <div>
+                            <p>+ lions roaring</p>
+                            <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                <source src="./webpage_files/app/multi-object/lion_and_gun-lions_roaring.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                        <div>
+                            <p>+ machine gun shooting</p>
+                            <video autostart="1" autoplay="" controls="" muted="" loop="" playsinline="" height="100%">
+                                <source src="./webpage_files/app/multi-object/lion_and_gun-machine_gun_shooting.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+	</div>
+  </div>
+</section>
+<hr class="solid">
+
+
+<section class="section" id="BibTex">
+  <div class="container content">
+	<h2 class="title">BibTex</h2>
+	<pre><code>@article{zhang2024agva,
+	  title={Audio-Guided Visual Animation},
+	  author={Zhang, Lin and Mo, Shentong and Zhang, Yijing and Morgado, Pedro},
+	  publisher = {arXiv:xxx.xxxxx},
+	  year={2024}
+	}
+}</code></pre>
+  </div>
+</section>
+
+
+
+<footer class="footer">
+  <div class="container">
+	<div class="content has-text-centered">
+	  <p>Page template borrowed from <a href="https://nerfies.github.io/"><span class="dnerf">Nerfies</span></a>.</p>
+	  <p>Copyright © 2024 University of Wisconsin - Madison</p>
+	</div>
+  </div>
+</footer>
+  
+
+<div id="hl-aria-live-message-container" aria-live="polite" class="visually-hidden"></div><div id="hl-aria-live-alert-container" role="alert" aria-live="assertive" class="visually-hidden"></div></body></html>
