@@ -31,7 +31,7 @@
 <div class="topnav">
   <a class="active" href="#overview">Overview</a>
   <a href="#AVSync15">AVSync15</a>
-  <a href="#A2VD">A2VD</a>
+  <a href="#AVSyncD">AVSyncD</a>
   <a href="#Generated_videos">Generated test videos</a>
   <a href="#More_Applications">More applications</a>
 </div>
@@ -103,7 +103,7 @@
 	  <img style="width: 100%;" src="./webpage_files/images/teaser.png">
 	  <h2 class="subtitle has-text-centered">
 		Given an audio and an image (green box), we produce animations beyond image stylization with complex but natural
-		dynamics, synchronized with input audio at each frame. Results are produced by our A2VD model trained on the proposed AVSync15 dataset.
+		dynamics, synchronized with input audio at each frame. Results are produced by our AVSyncD model trained on the proposed AVSync15 dataset.
 	  </h2>
 	</div>
   </div>
@@ -116,21 +116,19 @@
 		<h2 class="title is-2">Abstract</h2>
 		<div class="content has-text-justified">
 		  <p>
-			Contemporary visual generation methods often fall short in effectively control along temporal dimension. In response, we introduce Audio-Synchronized Visual Animation (ASVA),
-			  a task aimed at generating image animations that are temporally synchronized with audio cues. To address the absence of datasets tailored for this task,
-			  we present AVSync15, the first benchmark with highly synchronized audio-visual dynamics. Curated from the extensive but noisy VGGSound dataset,
-			  AVSync15 consists of 15 diverse audio-visual categories ranging from animal sounds, human actions, musical instruments, to triggered events. In addition,
-			  we introduce A2VD, a diffusion model capable of producing semantically aligned and temporally synchronized image animations from audio. We provide thorough
-			  evaluations to validate AVSync15 as a reliable dataset for synchronous video dynamics generation task and the superior performance of A2VD. Moreover, we explore
-			  various potentials of the trained A2VD in a range of audio-guided visual generation applications, bringing in new vision for controllable visual generation.
+              Current visual generation methods can produce high quality videos guided by texts. However, effectively controlling object dynamics remains a challenge.
+              This work explores audio as a cue to generate temporally synchronized image animations. We introduce Audio Synchronized Visual Animation (ASVA), a task
+              animating a static image to demonstrate motion dynamics, temporally guided by audio clips across multiple classes. To this end, we present AVSync15, a
+              dataset curated from VGGSound with videos featuring synchronized audio visual events across 15 categories. We also present a diffusion model, AVSyncD,
+              capable of generating dynamic animations guided by audios. Extensive evaluations validate AVSync15 as a reliable benchmark for synchronized generation
+              and demonstrate our models superior performance. We further explore AVSyncDs potential in a variety of audio synchronized generation tasks, from generating
+              full videos without a base image to controlling object motions with various sounds. We hope our established benchmark can open new avenues for controllable visual generation.
 		  </p>
 		</div>
 	  </div>
 	</div>
 	<!--/ Abstract -->
 
-	
-	
   </div>
 </section>
 <hr class="solid">
@@ -327,13 +325,13 @@
 <hr class="solid">
 
 
-<section class="section" id="A2VD">
+<section class="section" id="AVSyncD">
   <div class="container content">
-	<h2 class="title">A2VD</h2>
+	<h2 class="title">AVSyncD</h2>
 	<div class="content">
 		  <p class="subtitle has-text-justified">
-			  A2VD is built upon pretrained StableDiffusion-V1.5 and ImageBind. Given an input image, a 2-second audio, and the audio class,
-              A2VD first encodes audio into temporal tokens that are rich in semantic and temporal cues, then produces highly synchronized
+			  AVSyncD is built upon pretrained StableDiffusion-V1.5 and ImageBind. Given an input image, a 2-second audio, and the audio class,
+              AVSyncD first encodes audio into temporal tokens that are rich in semantic and temporal cues, then produces highly synchronized
               visual animations.
 		  </p>
 		  <img style="width: 100%;" src="./webpage_files/images/arch_overview.png">
@@ -346,7 +344,7 @@
 <section class="section" id="Generated_videos">
   <div class="container content">
 	<h2 class="title">Generated videos</h2>
-    <p>Here we show generated videos by A2VD on Landscapes and AVSync15 test set.</p>
+    <p>Here we show generated videos by AVSyncD on Landscapes and AVSync15 test set.</p>
 	<div class="container content">
         <div class="container content">
 		    <h4 class="subtitle has-text-justified">
@@ -838,14 +836,14 @@
 <section class="section" id="More_Applications">
   <div class="container content">
 	<h2 class="title">More Applications</h2>
-    <p>Despite trained on only 1350 videos, A2VD can be generalized to many fun applications.</p>
+    <p>Despite trained on only 1350 videos, AVSyncD can be generalized to many fun applications.</p>
 	<div class="container content">
          <div class="container content">
             <h4 class="subtitle has-text-justified">
              Animate images with less-correlated sounds
             </h4>
             <p>
-                When using audios less correlated with the image as conditions, A2VD can produce different motions based on audio-image correlation.
+                When using audios less correlated with the image as conditions, AVSyncD can produce different motions based on audio-image correlation.
                 Results shown on AVSync15 test set.
             </p>
             <div class="content">
@@ -913,7 +911,7 @@
              Animation using images and audios in the wild
             </h4>
             <p>
-                A2VD can accept a broad range of inputs (images and audios) downloaded from internet.
+                AVSyncD can accept a broad range of inputs (images and audios) downloaded from internet.
             </p>
             <div class="columns is-centered has-text-centered">
                 <div class="column">
@@ -981,7 +979,7 @@
             <h4 class="subtitle has-text-justified">
              Animate generated images
             </h4>
-            <p>While A2VD is designed for image animation, it can also function as a prompt+audio->video generator when combined with existing image generators, e.g., StableDiffusion.</p>
+            <p>While AVSyncD is designed for image animation, it can also function as a prompt+audio->video generator when combined with existing image generators, e.g., StableDiffusion.</p>
             <div class="columns is-centered has-text-centered" style="display: flex;align-items: flex-end;">
                 <div class="column">
                     <p>"a photo of baby face" <br> + baby crying</p>
@@ -1157,7 +1155,7 @@
 	  publisher = {arXiv:2403.05659},
 	  year={2024}
 	}
-}</code></pre>
+    </code></pre>
   </div>
 </section>
 
