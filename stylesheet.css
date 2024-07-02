@@ -112,10 +112,17 @@ paperauthor {
 }
 
 name {
-  font-family: 'Lato', Verdana, Helvetica, sans-serif;
-  font-size: 32px;
-  font-weight: bold;
+  font-family: 'Georgia', Verdana, Helvetica, Cursive;
+  font-size: 48px;
+  /*font-weight: bold;*/
 }
+
+chinese-name {
+  font-family: cursive;
+  font-size: 48px;
+  /*font-weight: bold;*/
+}
+
 
 .one {
   width: 160px;
@@ -149,4 +156,21 @@ name {
 
 span.highlight {
   background-color: #ffffd0;
+}
+
+.ellipse-container {
+    width: 250px; /* Adjust the width as needed */
+    height: 300px; /* Adjust the height as needed */
+    border-radius: 50%; /* Creates an elliptical shape */
+    overflow: hidden; /* Ensures the image does not spill outside the container */
+    position: relative;
+}
+
+.ellipse-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures the image covers the container without distortion */
+    position: absolute;
+    top: 0;
+    left: 0;
 }
