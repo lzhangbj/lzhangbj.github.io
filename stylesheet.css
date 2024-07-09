@@ -174,3 +174,17 @@ span.highlight {
     top: 0;
     left: 0;
 }
+
+
+.video-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 100%;
+    margin: 0 auto; /* Centers the div horizontally */
+}
+
+.video-container iframe {
+    width: 100%;
+    height: auto; /* Keeps the original aspect ratio */
+}
