@@ -1,3 +1,4 @@
-# Videos are hosted on the Hugging Face dataset Linz99/webpage and streamed
-# from there (see ASSET_BASE in index.html) — keep them out of the git repo.
+# Large resources are hosted on the Hugging Face dataset Linz99/webpage and
+# referenced from there (see ASSET_BASE in index.html) — keep them out of git.
 videos/
+unitemp.pdf
