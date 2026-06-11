@@ -12,6 +12,78 @@
 	<link rel="stylesheet" type="text/css" href="./stylesheet.css">
 	<link rel="icon" type="image/png" href="./images/avatar-3.jpg">
 
+	<style>
+		/* UniTemp story carousel (publication thumbnail) */
+		.unitemp-carousel {
+			position: relative;
+			overflow: hidden;
+			border-radius: 6px;
+			background: #000;
+		}
+		.unitemp-carousel video {
+			width: 100%;
+			display: block;
+		}
+		.uc-arrow {
+			position: absolute;
+			top: 50%;
+			width: 26px;
+			height: 26px;
+			padding: 0;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			border: none;
+			border-radius: 50%;
+			background: rgba(20, 20, 25, 0.5);
+			-webkit-backdrop-filter: blur(3px);
+			backdrop-filter: blur(3px);
+			color: #fff;
+			font-size: 11px;
+			line-height: 1;
+			cursor: pointer;
+			opacity: 0;
+			transform: translateY(-50%);
+			transition: opacity 0.22s ease, background 0.22s ease, transform 0.22s ease;
+		}
+		.uc-prev { left: 7px; }
+		.uc-next { right: 7px; }
+		.unitemp-carousel:hover .uc-arrow { opacity: 1; }
+		.uc-arrow:hover {
+			background: rgba(20, 20, 25, 0.85);
+			transform: translateY(-50%) scale(1.15);
+		}
+		.uc-dots {
+			position: absolute;
+			left: 0;
+			right: 0;
+			bottom: 7px;
+			display: flex;
+			justify-content: center;
+			gap: 5px;
+			opacity: 0;
+			transition: opacity 0.22s ease;
+			pointer-events: none;
+		}
+		.unitemp-carousel:hover .uc-dots { opacity: 1; pointer-events: auto; }
+		.uc-dot {
+			width: 6px;
+			height: 6px;
+			border-radius: 50%;
+			background: rgba(255, 255, 255, 0.45);
+			cursor: pointer;
+			transition: background 0.2s ease, transform 0.2s ease;
+		}
+		.uc-dot.active {
+			background: #fff;
+			transform: scale(1.25);
+		}
+		/* touch devices have no hover — keep controls subtly visible */
+		@media (hover: none) {
+			.uc-arrow, .uc-dots { opacity: 0.8; pointer-events: auto; }
+		}
+	</style>
+
 	<!-- Google tag (gtag.js) -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=G-VHMKZG3G6Y"></script>
 	<script>
@@ -128,11 +200,15 @@
 
 				<tr>
 					<td style="padding:0px;width:25%;vertical-align:middle">
-						<video id="unitemp-story-video" src="https://huggingface.co/datasets/Linz99/webpage/resolve/main/projects/unitemp/videos/stories/01.mp4" muted loop playsinline autoplay preload="metadata" style="width:100%;display:block;border-radius:4px;background:#000"></video>
-						<div style="display:flex;justify-content:center;align-items:center;gap:8px;margin-top:4px">
-							<button onclick="unitempStoryStep(-1)" title="Previous story" style="width:22px;height:22px;border:1px solid #bbb;border-radius:50%;background:#fff;cursor:pointer;font-size:13px;line-height:1;padding:0">‹</button>
-							<span id="unitemp-story-label" style="font-size:12px;color:#777">Story 1 / 3</span>
-							<button onclick="unitempStoryStep(1)" title="Next story" style="width:22px;height:22px;border:1px solid #bbb;border-radius:50%;background:#fff;cursor:pointer;font-size:13px;line-height:1;padding:0">›</button>
+						<div class="unitemp-carousel" id="unitemp-carousel">
+							<video id="unitemp-story-video" src="https://huggingface.co/datasets/Linz99/webpage/resolve/main/projects/unitemp/videos/stories/01.mp4" muted loop playsinline autoplay preload="metadata"></video>
+							<button class="uc-arrow uc-prev" onclick="unitempStoryStep(-1)" aria-label="Previous story">&#10094;</button>
+							<button class="uc-arrow uc-next" onclick="unitempStoryStep(1)" aria-label="Next story">&#10095;</button>
+							<div class="uc-dots">
+								<span class="uc-dot active" onclick="unitempStoryGo(0)"></span>
+								<span class="uc-dot" onclick="unitempStoryGo(1)"></span>
+								<span class="uc-dot" onclick="unitempStoryGo(2)"></span>
+							</div>
 						</div>
 					</td>
 					<td style="padding:0px;width:75%;vertical-align:top">
@@ -157,7 +233,7 @@
 						<br>
 						<paperauthor>
 							<a href='./projects/unitemp/index.html'><img src='https://img.shields.io/badge/Project-4CAF50?'></a>
-							<a href='https://github.com/lzhangbj/UniTemp'><img src='https://img.shields.io/github/stars/lzhangbj/UniTemp?style=social'></a>
+							<a href='https://github.com/lzhangbj/UniTemp'><img src='https://img.shields.io/badge/GitHub-181717?logo=github&logoColor=white'></a>
 						</paperauthor>
 					</td>
 				</tr>
@@ -654,13 +730,17 @@
 <script>
 	var unitempStoryBase = "https://huggingface.co/datasets/Linz99/webpage/resolve/main/projects/unitemp/videos/stories/";
 	var unitempStoryIdx = 0;
-	function unitempStoryStep(d) {
-		unitempStoryIdx = (unitempStoryIdx + d + 3) % 3;
+	function unitempStoryGo(i) {
+		unitempStoryIdx = (i + 3) % 3;
 		var v = document.getElementById("unitemp-story-video");
 		v.src = unitempStoryBase + "0" + (unitempStoryIdx + 1) + ".mp4";
 		v.play();
-		document.getElementById("unitemp-story-label").textContent = "Story " + (unitempStoryIdx + 1) + " / 3";
+		var dots = document.querySelectorAll("#unitemp-carousel .uc-dot");
+		for (var k = 0; k < dots.length; k++) {
+			dots[k].className = "uc-dot" + (k === unitempStoryIdx ? " active" : "");
+		}
 	}
+	function unitempStoryStep(d) { unitempStoryGo(unitempStoryIdx + d); }
 </script>
 </body>
 
