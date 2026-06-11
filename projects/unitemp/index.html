@@ -163,6 +163,39 @@
     line-height: 1.2;
     text-shadow: 0 3px 18px rgba(0, 0, 0, 0.5);
   }
+  .hero-authors {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2px 0.45em;
+    margin-top: 20px;
+    color: #cfc7f9;
+    font-size: clamp(0.98rem, 2.2vw, 1.22rem);
+    font-weight: 650;
+    line-height: 1.5;
+    text-shadow: 0 2px 14px rgba(0, 0, 0, 0.55);
+  }
+  .author-block { display: inline-block; }
+  .author-block sup { font-size: 0.68em; line-height: 0; }
+  .hero-affiliations {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2px 1.1em;
+    margin-top: 8px;
+    color: rgba(235, 232, 255, 0.84);
+    font-size: clamp(0.88rem, 1.8vw, 1.02rem);
+    font-weight: 550;
+    line-height: 1.5;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+  }
+  .hero-author-notes {
+    margin: 8px 0 0;
+    color: rgba(255, 255, 255, 0.66);
+    font-size: 0.85rem;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  }
+
   .dir-pills {
     display: flex;
     flex-wrap: wrap;
@@ -953,6 +986,24 @@
     <p class="hero-kicker">One model · Any temporal order</p>
     <h1><span class="uni">Uni</span><span class="temp">Temp</span></h1>
     <p class="subtitle">Unlocking Video Generation in Any Temporal Order via Autoregressive Distillation</p>
+    <div class="hero-authors">
+      <span class="author-block">Lin Zhang<sup>1*</sup>,</span>
+      <span class="author-block">Sicheng Mo<sup>3</sup>,</span>
+      <span class="author-block">Zefan Cai<sup>1</sup>,</span>
+      <span class="author-block">Jinhong Lin<sup>1</sup>,</span>
+      <span class="author-block">Zihao Lin<sup>4</sup>,</span>
+      <span class="author-block">Jiuxiang Gu<sup>2</sup>,</span>
+      <span class="author-block">Krishna Kumar Singh<sup>2</sup>,</span>
+      <span class="author-block">Yuheng Li<sup>2†</sup>,</span>
+      <span class="author-block">Yin Li<sup>1†</sup></span>
+    </div>
+    <div class="hero-affiliations">
+      <span class="author-block"><sup>1</sup>University of Wisconsin–Madison</span>
+      <span class="author-block"><sup>2</sup>Adobe Research</span>
+      <span class="author-block"><sup>3</sup>University of California, Los Angeles</span>
+      <span class="author-block"><sup>4</sup>University of California, Davis</span>
+    </div>
+    <p class="hero-author-notes"><sup>*</sup>Work partially done during an internship at Adobe&ensp;·&ensp;<sup>†</sup>Equal advising</p>
     <div class="dir-pills">
       <span class="dir-pill fwd"><span class="sym">→</span> Forward</span>
       <span class="dir-pill bwd"><span class="sym">←</span> Backward</span>
