@@ -1,0 +1,20 @@
+.claude/
+.idea/
+.DS_Store
+
+# Large resource files hosted on the Hugging Face dataset Linz99/webpage —
+# all pages reference them at
+# https://huggingface.co/datasets/Linz99/webpage/resolve/main/<path>
+# NOTE: most of these are still git-tracked from earlier commits; ignoring
+# only takes effect after `git rm --cached <file>`.
+images/agva.gif
+images/mt-ada.png
+images/nerf_sup.mp4
+images/tempgrad.png
+images/video_gen.png
+projects/asva/webpage_files/05712-supp.pdf
+projects/asva/webpage_files/images/teaser.png
+projects/d3gu/paper.pdf
+projects/d3gu/webpage_files/Teaser.png
+projects/dualvar/imgs/retrieval.png
+projects/unitemp/videos/

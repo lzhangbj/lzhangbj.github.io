@@ -1,0 +1,1995 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="UniTemp: a unified autoregressive video model that generates in any temporal order — forward, backward, and inbetween — unlocking loops, transitions, 120s videos and looping multi-scene stories.">
+<title>UniTemp | Video Generation in Any Temporal Order</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%236553e8'/><text x='50' y='73' font-size='62' text-anchor='middle' fill='white' font-family='Arial'>⇄</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f8f8f6;
+    --surface: #ffffff;
+    --ink: #15171c;
+    --text: #272b31;
+    --muted: #6b7178;
+    --line: #e2e2dd;
+    --accent: #6553e8;
+    --accent-soft: rgba(101, 83, 232, 0.1);
+    --fwd: #0aa396;
+    --bwd: #e0562e;
+    --gold: #c98b1e;
+    --dark: #0d0f16;
+    --dark-surface: #151827;
+    --dark-line: rgba(255, 255, 255, 0.1);
+    --shadow: 0 16px 40px rgba(21, 23, 28, 0.1);
+    --font-display: "Space Grotesk", Inter, ui-sans-serif, system-ui, sans-serif;
+    --font-body: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    color: var(--text);
+    background: var(--bg);
+    font-family: var(--font-body);
+    line-height: 1.6;
+  }
+  img, video { display: block; max-width: 100%; }
+  a { color: inherit; }
+  h1, h2, h3, h4 { font-family: var(--font-display); text-wrap: balance; }
+  p { text-wrap: pretty; }
+
+  /* ---------- topbar ---------- */
+  .topbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 60;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 12px clamp(16px, 4vw, 44px);
+    color: #fff;
+    background: rgba(13, 15, 22, 0.8);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+  .brand {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.05rem;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+  }
+  .brand em { font-style: normal; color: #9d8df5; }
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    overflow-x: auto;
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 0.88rem;
+    white-space: nowrap;
+    scrollbar-width: none;
+  }
+  .nav-links::-webkit-scrollbar { display: none; }
+  .nav-links a {
+    text-decoration: none;
+    padding: 4px 11px;
+    border-radius: 999px;
+    transition: color 0.15s, background 0.15s;
+  }
+  .nav-links a:hover { color: #fff; }
+  .nav-links a.active {
+    color: #fff;
+    background: rgba(157, 141, 245, 0.22);
+    box-shadow: inset 0 0 0 1px rgba(157, 141, 245, 0.45);
+  }
+
+  /* ---------- hero ---------- */
+  .hero {
+    position: relative;
+    min-height: 86vh;
+    overflow: hidden;
+    display: grid;
+    align-items: center;
+    padding: 120px 40px 60px;
+    color: #fff;
+    background: var(--dark);
+    text-align: center;
+  }
+  .hero-media {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    opacity: 0.7;
+  }
+  .hero-media video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: saturate(1.08) contrast(1.03);
+  }
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(90deg, rgba(8, 10, 17, 0.74) 0%, rgba(8, 10, 17, 0.5) 50%, rgba(8, 10, 17, 0.74) 100%),
+      linear-gradient(0deg, rgba(8, 10, 17, 0.86) 0%, rgba(8, 10, 17, 0.3) 45%, rgba(8, 10, 17, 0.72) 100%);
+  }
+  .hero-content {
+    position: relative;
+    width: min(1020px, 100%);
+    margin: 0 auto;
+  }
+  .hero-kicker {
+    margin: 0 0 14px;
+    color: #9d8df5;
+    font-size: 0.82rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+  .hero h1 {
+    margin: 0;
+    font-size: clamp(3.4rem, 11vw, 7rem);
+    font-weight: 700;
+    line-height: 0.98;
+    letter-spacing: -0.015em;
+    text-shadow: 0 4px 26px rgba(0, 0, 0, 0.55);
+  }
+  .hero h1 .uni { color: #fff; }
+  .hero h1 .temp {
+    background: linear-gradient(100deg, #67e8d9 0%, #9d8df5 55%, #fb9d7c 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .hero .subtitle {
+    max-width: 860px;
+    margin: 16px auto 0;
+    color: rgba(255, 255, 255, 0.93);
+    font-family: var(--font-display);
+    font-size: clamp(1.2rem, 3vw, 1.9rem);
+    font-weight: 600;
+    line-height: 1.2;
+    text-shadow: 0 3px 18px rgba(0, 0, 0, 0.5);
+  }
+  .dir-pills {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 26px;
+  }
+  .dir-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 16px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    background: rgba(13, 15, 22, 0.45);
+    backdrop-filter: blur(6px);
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  }
+  .dir-pill .sym { font-size: 1.05rem; font-weight: 900; }
+  .dir-pill.fwd .sym { color: #67e8d9; }
+  .dir-pill.bwd .sym { color: #fb9d7c; }
+  .dir-pill.mid .sym { color: #9d8df5; }
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 30px;
+  }
+  .hero-actions a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 42px;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: 800;
+    font-size: 0.93rem;
+    text-decoration: none;
+  }
+  .hero-actions a.primary { color: #0b0d13; background: #fff; }
+  .hero-actions a.ghost {
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    background: rgba(13, 15, 22, 0.35);
+  }
+  .hero-meta {
+    margin-top: 26px;
+    color: rgba(255, 255, 255, 0.62);
+    font-size: 0.88rem;
+    letter-spacing: 0.04em;
+  }
+
+  /* ---------- sections ---------- */
+  .section {
+    width: min(1180px, calc(100% - 36px));
+    margin: 0 auto;
+    padding: 72px 0;
+    scroll-margin-top: 64px;
+  }
+  .section-heading {
+    max-width: 880px;
+    margin: 0 auto 30px;
+    text-align: center;
+  }
+  .eyebrow {
+    margin: 0 0 10px;
+    color: var(--accent);
+    font-size: 0.78rem;
+    font-weight: 850;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .section-heading h2 {
+    margin: 0 0 12px;
+    color: var(--ink);
+    font-size: clamp(1.8rem, 4vw, 2.9rem);
+    line-height: 1.06;
+  }
+  .section-heading p { margin: 0; color: var(--muted); }
+  .section-heading p + p { margin-top: 8px; }
+
+  /* ---------- tldr ---------- */
+  .tldr-section { padding-top: 52px; padding-bottom: 56px; }
+  .tldr-card {
+    max-width: 940px;
+    margin: 0 auto;
+    padding: 26px 30px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--accent);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+  }
+  .tldr-card p {
+    margin: 0;
+    font-size: 1.16rem;
+    line-height: 1.65;
+    color: #333a40;
+  }
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    max-width: 1040px;
+    margin: 28px auto 0;
+  }
+  .stat-card {
+    padding: 18px 20px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    text-align: left;
+  }
+  .stat-card span {
+    display: block;
+    color: var(--muted);
+    font-size: 0.74rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .stat-card strong {
+    display: block;
+    margin: 4px 0 6px;
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    font-weight: 700;
+    line-height: 1.05;
+  }
+  .stat-card p { margin: 0; color: var(--muted); font-size: 0.86rem; line-height: 1.45; }
+  .supp-note {
+    max-width: 940px;
+    margin: 22px auto 0;
+    color: var(--muted);
+    font-size: 0.85rem;
+    text-align: center;
+  }
+
+  /* ---------- strip cards (tiled comparison videos) ---------- */
+  .strip-stack { display: grid; gap: 26px; }
+  .strip-card {
+    overflow: hidden;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+  }
+  .strip-head {
+    display: grid;
+    gap: 2px;
+    padding: 10px 8px 9px;
+    border-bottom: 1px solid var(--line);
+    background: #fbfbfa;
+    text-align: center;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #41464d;
+    line-height: 1.3;
+    align-items: end;
+  }
+  .strip-head small { display: block; font-weight: 600; color: var(--muted); font-size: 0.72rem; }
+  .strip-head .col.ours { color: var(--accent); }
+  .strip-card video { width: 100%; background: #000; }
+  .strip-long video { aspect-ratio: 3328 / 240; }
+
+  .card-foot {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 8px 12px;
+    border-top: 1px solid var(--line);
+  }
+  .prompt-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 14px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: none;
+    color: var(--muted);
+    font-family: var(--font-body);
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .prompt-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .prompt-btn.active { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+  .prompt-text {
+    display: none;
+    padding: 12px 18px 14px;
+    border-top: 1px solid var(--line);
+    background: #fbfbfa;
+    color: #555b62;
+    font-size: 0.85rem;
+    line-height: 1.55;
+  }
+  .prompt-text.show { display: block; }
+
+  /* ---------- inbetween pager ---------- */
+  .ib-shell {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    padding: 18px;
+  }
+  .ib-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .ib-title { margin: 0; font-size: 1.02rem; color: var(--ink); }
+  .pager-btn {
+    padding: 8px 16px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: #fff;
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 0.86rem;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .pager-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .ib-page { display: none; }
+  .ib-page.active { display: block; }
+  .ib-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .ib-card {
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    min-width: 0;
+  }
+  .ib-card.featured {
+    border-color: rgba(101, 83, 232, 0.55);
+    box-shadow: 0 10px 26px rgba(101, 83, 232, 0.16);
+  }
+  .ib-label {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 52px;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--line);
+    font-size: 0.88rem;
+    font-weight: 800;
+    color: var(--ink);
+    line-height: 1.25;
+  }
+  .ib-label small { font-weight: 600; color: var(--muted); font-size: 0.74rem; }
+  .ib-card.featured .ib-label {
+    background: linear-gradient(95deg, var(--accent), #8d7bf0);
+    color: #fff;
+  }
+  .ib-card.featured .ib-label small { color: rgba(255, 255, 255, 0.85); }
+  .ib-card video { width: 100%; aspect-ratio: 832 / 480; background: #000; }
+  .ib-foot {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 14px;
+  }
+  .pager-dots { display: flex; justify-content: center; gap: 8px; margin-top: 16px; }
+  .pager-dot {
+    width: 9px; height: 9px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: #d4d4cf;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .pager-dot.active { background: var(--accent); transform: scale(1.25); }
+
+  /* ---------- generic video grid (loops / transitions) ---------- */
+  .loop-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+  .loop-card {
+    overflow: hidden;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+  }
+  .loop-card video { width: 100%; aspect-ratio: 832 / 480; background: #000; }
+  .loop-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--line);
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: var(--ink);
+  }
+  .loop-head .badge {
+    padding: 2px 10px;
+    border-radius: 999px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  /* ---------- stories dark band ---------- */
+  .stories-band {
+    background:
+      radial-gradient(1200px 500px at 18% -5%, rgba(101, 83, 232, 0.22), transparent 60%),
+      radial-gradient(1000px 480px at 85% 105%, rgba(10, 163, 150, 0.13), transparent 60%),
+      var(--dark);
+    color: #e8e9f2;
+  }
+  .stories-band .section-heading h2 { color: #fff; }
+  .stories-band .section-heading p { color: rgba(232, 233, 242, 0.66); }
+  .stories-band .eyebrow { color: #9d8df5; }
+  .story-block { margin-top: 54px; }
+  .story-block:first-of-type { margin-top: 38px; }
+  .story-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 8px 14px;
+    margin-bottom: 6px;
+  }
+  .story-head h3 {
+    margin: 0;
+    font-size: clamp(1.25rem, 2.6vw, 1.7rem);
+    color: #fff;
+  }
+  .story-head .story-num {
+    color: #9d8df5;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .story-desc {
+    margin: 0 0 18px;
+    max-width: 860px;
+    color: rgba(232, 233, 242, 0.62);
+    font-size: 0.95rem;
+  }
+
+  .pair-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+  .pair-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border: 1px solid var(--dark-line);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.04);
+    color: rgba(232, 233, 242, 0.78);
+    font-family: var(--font-body);
+    font-size: 0.84rem;
+    font-weight: 650;
+    cursor: pointer;
+    transition: all 0.18s;
+  }
+  .pair-pill:hover { border-color: rgba(157, 141, 245, 0.6); color: #fff; }
+  .pair-pill.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+    box-shadow: 0 6px 18px rgba(101, 83, 232, 0.4);
+  }
+  .pair-pill .loop-sym { font-weight: 900; }
+
+  .connect-grid {
+    display: grid;
+    grid-template-columns: 1fr 30px 1.16fr 30px 1fr;
+    align-items: center;
+    gap: 0;
+  }
+  .connector {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(157, 141, 245, 0.85);
+    font-size: 1.25rem;
+    font-weight: 900;
+    user-select: none;
+  }
+  .connect-card {
+    position: relative;
+    margin: 0;
+    overflow: hidden;
+    border: 1px solid var(--dark-line);
+    border-radius: 12px;
+    background: var(--dark-surface);
+  }
+  .connect-card video {
+    width: 100%;
+    aspect-ratio: 416 / 240;
+    object-fit: cover;
+    background: #000;
+  }
+  .connect-card.featured {
+    border-color: rgba(157, 141, 245, 0.75);
+    box-shadow: 0 0 0 1px rgba(157, 141, 245, 0.35), 0 14px 42px rgba(101, 83, 232, 0.32);
+  }
+  .clabel {
+    position: absolute;
+    top: 8px; left: 8px;
+    z-index: 2;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: rgba(8, 10, 17, 0.72);
+    backdrop-filter: blur(4px);
+    color: rgba(255, 255, 255, 0.92);
+    font-size: 0.72rem;
+    font-weight: 750;
+    letter-spacing: 0.03em;
+  }
+  .connect-card.featured .clabel {
+    background: linear-gradient(95deg, var(--accent), #8d7bf0);
+    color: #fff;
+  }
+  .cprog {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.14);
+  }
+  .cprog i {
+    display: block;
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, #67e8d9, #9d8df5, #fb9d7c);
+    transition: width 80ms linear;
+  }
+  .connect-note {
+    margin: 12px 0 0;
+    color: rgba(232, 233, 242, 0.55);
+    font-size: 0.82rem;
+    text-align: center;
+  }
+
+  /* ---------- full story player ---------- */
+  .story-full {
+    width: min(840px, 100%);
+    margin: 26px auto 0;
+  }
+  .story-full-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .story-full-head h4 {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.88);
+    font-size: 0.95rem;
+    font-weight: 700;
+  }
+  .loop-tag {
+    padding: 3px 11px;
+    border-radius: 999px;
+    border: 1px solid rgba(157, 141, 245, 0.5);
+    color: #b6aaf7;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+  }
+  .player-wrap {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--dark-line);
+    border-radius: 12px;
+    background: #000;
+    cursor: pointer;
+  }
+  .player-wrap video { width: 100%; aspect-ratio: 416 / 240; }
+  .play-toggle {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(8, 10, 17, 0.32);
+    opacity: 0;
+    transition: opacity 0.18s;
+    pointer-events: none;
+  }
+  .player-wrap:hover .play-toggle, .player-wrap.paused .play-toggle { opacity: 1; }
+  .play-toggle span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 58px; height: 58px;
+    border-radius: 50%;
+    background: rgba(13, 15, 22, 0.78);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #fff;
+    font-size: 1.3rem;
+  }
+  .timeline { margin-top: 12px; }
+  .tl-bar {
+    position: relative;
+    height: 10px;
+    border-radius: 999px;
+    cursor: pointer;
+  }
+  .tl-marker {
+    position: absolute;
+    top: 50%;
+    width: 9px; height: 9px;
+    border: 2px solid var(--dark);
+    background: #fff;
+    transform: translate(-50%, -50%) rotate(45deg);
+    border-radius: 2px;
+    pointer-events: none;
+  }
+  .tl-head {
+    position: absolute;
+    top: 50%;
+    width: 4px; height: 18px;
+    border-radius: 3px;
+    background: #fff;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+  .tl-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  .tl-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 4px 12px;
+    border: 1px solid var(--dark-line);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.04);
+    color: rgba(232, 233, 242, 0.8);
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    font-weight: 650;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .tl-chip:hover { color: #fff; border-color: rgba(255, 255, 255, 0.35); }
+  .tl-chip i {
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background: var(--dot, #fff);
+  }
+  .story-prompts {
+    margin: 18px auto 0;
+    width: min(840px, 100%);
+    border: 1px solid var(--dark-line);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.03);
+  }
+  .story-prompts > summary {
+    padding: 11px 16px;
+    color: rgba(232, 233, 242, 0.75);
+    font-size: 0.86rem;
+    font-weight: 700;
+    cursor: pointer;
+    list-style: none;
+  }
+  .story-prompts > summary::before { content: "▸ "; color: #9d8df5; }
+  .story-prompts[open] > summary::before { content: "▾ "; }
+  .story-prompts-body {
+    padding: 4px 18px 16px;
+    color: rgba(232, 233, 242, 0.6);
+    font-size: 0.82rem;
+    line-height: 1.55;
+  }
+  .story-prompts-body h5 {
+    margin: 14px 0 6px;
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+  }
+  .story-prompts-body p { margin: 0 0 8px; }
+  .story-prompts-body b { color: rgba(255, 255, 255, 0.85); }
+  .stories-method {
+    max-width: 880px;
+    margin: 44px auto 0;
+    padding: 18px 22px;
+    border: 1px solid var(--dark-line);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.03);
+    color: rgba(232, 233, 242, 0.66);
+    font-size: 0.9rem;
+  }
+  .stories-method b { color: #fff; }
+
+  /* ---------- section dividers ---------- */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    width: min(1180px, calc(100% - 36px));
+    margin: 8px auto;
+    color: var(--accent);
+    font-size: 1.15rem;
+    font-weight: 800;
+    user-select: none;
+  }
+  .divider::before,
+  .divider::after {
+    content: "";
+    flex: 1;
+    height: 3px;
+    border-radius: 3px;
+    background: #cfcfc7;
+  }
+  .divider::before { background: linear-gradient(90deg, #cfcfc7, rgba(101, 83, 232, 0.45)); }
+  .divider::after { background: linear-gradient(90deg, rgba(101, 83, 232, 0.45), #cfcfc7); }
+
+  /* ---------- sub-blocks & generic pager extras ---------- */
+  .sub-block { margin-top: 56px; }
+  .sub-heading {
+    max-width: 840px;
+    margin: 0 auto 18px;
+    text-align: center;
+  }
+  .sub-heading h3 {
+    margin: 0 0 8px;
+    color: var(--ink);
+    font-size: clamp(1.3rem, 2.6vw, 1.75rem);
+  }
+  .sub-heading p { margin: 0; color: var(--muted); font-size: 0.93rem; }
+  .ib-grid.cols3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .solo-wrap { max-width: 880px; margin: 0 auto; }
+  .solo-wrap .loop-card { box-shadow: none; }
+
+  .ib-shell.dark {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: var(--dark-line);
+    box-shadow: none;
+  }
+  .ib-shell.dark .ib-title { color: #fff; }
+  .ib-shell.dark .pager-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--dark-line);
+    color: #e8e9f2;
+  }
+  .ib-shell.dark .pager-btn:hover { border-color: #9d8df5; color: #b6aaf7; }
+  .ib-shell.dark .pager-dot { background: rgba(255, 255, 255, 0.25); }
+  .ib-shell.dark .pager-dot.active { background: #9d8df5; }
+  .ib-shell.dark .story-block { margin-top: 10px; }
+
+  /* ---------- bibtex ---------- */
+  .bibtex-section { width: min(940px, calc(100% - 36px)); }
+  .bibtex-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+  }
+  .bibtex-card pre {
+    overflow-x: auto;
+    margin: 0;
+    padding: 22px 24px;
+    color: #e6ebf2;
+    background: #11141d;
+    font-size: 0.88rem;
+    line-height: 1.6;
+  }
+  .bibtex-card code { font-family: "SF Mono", SFMono-Regular, ui-monospace, Menlo, Consolas, monospace; }
+  .copy-btn {
+    position: absolute;
+    top: 12px; right: 12px;
+    z-index: 2;
+    padding: 6px 14px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.08);
+    color: #e6ebf2;
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .copy-btn:hover { background: rgba(157, 141, 245, 0.25); border-color: #9d8df5; }
+
+  /* ---------- footer ---------- */
+  .footer {
+    padding: 36px 24px 48px;
+    border-top: 1px solid var(--line);
+    background: var(--surface);
+    color: var(--muted);
+    font-size: 0.88rem;
+    text-align: center;
+  }
+  .footer p { margin: 4px 0; }
+
+  /* ---------- misc ---------- */
+  .to-top {
+    position: fixed;
+    right: 22px; bottom: 22px;
+    z-index: 70;
+    width: 42px; height: 42px;
+    border: none;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-size: 1.05rem;
+    cursor: pointer;
+    box-shadow: 0 10px 24px rgba(101, 83, 232, 0.4);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s;
+  }
+  .to-top.show { opacity: 1; pointer-events: auto; }
+
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .reveal { opacity: 1; transform: none; transition: none; }
+  }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 1000px) {
+    .hero-media { grid-template-columns: repeat(2, 1fr); }
+    .stat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .ib-grid, .ib-grid.cols3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 720px) {
+    .topbar { padding: 10px 14px; }
+    .loop-grid { grid-template-columns: 1fr; }
+    .connect-grid {
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+    .connector { transform: rotate(90deg); font-size: 1.1rem; }
+    .stat-grid { grid-template-columns: 1fr; }
+    .ib-grid, .ib-grid.cols3 { grid-template-columns: 1fr; }
+    .strip-head { font-size: 0.62rem; }
+    .strip-head small { font-size: 0.58rem; }
+    .section { padding: 52px 0; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="topbar" aria-label="Primary navigation">
+  <a class="brand" href="#top">Uni<em>Temp</em></a>
+  <div class="nav-links">
+    <a href="#overview">Overview</a>
+    <a href="#directions">Forward &amp; Backward</a>
+    <a href="#inbetween">Inbetween</a>
+    <a href="#stories">Stories</a>
+    <a href="#ablation">Ablation</a>
+    <a href="#bibtex">Citation</a>
+    <a href="https://github.com/lzhangbj/UniTemp" target="_blank" rel="noopener">GitHub ↗</a>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="hero-media" aria-hidden="true">
+    <video data-src="videos/looping_video/04.mp4" muted loop playsinline autoplay preload="auto"></video>
+    <video data-src="videos/looping_video/01.mp4" muted loop playsinline autoplay preload="auto"></video>
+    <video data-src="videos/scene_transition/02.mp4" muted loop playsinline autoplay preload="auto"></video>
+    <video data-src="videos/looping_video/03.mp4" muted loop playsinline autoplay preload="auto"></video>
+  </div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="hero-kicker">One model · Any temporal order</p>
+    <h1><span class="uni">Uni</span><span class="temp">Temp</span></h1>
+    <p class="subtitle">Unlocking Video Generation in Any Temporal Order via Autoregressive Distillation</p>
+    <div class="dir-pills">
+      <span class="dir-pill fwd"><span class="sym">→</span> Forward</span>
+      <span class="dir-pill bwd"><span class="sym">←</span> Backward</span>
+      <span class="dir-pill mid"><span class="sym">⇄</span> Inbetween</span>
+    </div>
+    <div class="hero-actions">
+      <a class="primary" href="https://github.com/lzhangbj/UniTemp" target="_blank" rel="noopener">
+        <svg viewBox="0 0 16 16" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+        Code on GitHub
+      </a>
+      <a class="ghost" href="#overview">Explore the results ↓</a>
+      <a class="ghost" href="#stories">⟳ Looping story showcase</a>
+    </div>
+    <p class="hero-meta">One 1.3B model · 4 denoising steps · forward, backward &amp; inbetween</p>
+  </div>
+</header>
+
+<main>
+
+  <section class="section tldr-section" id="overview">
+    <div class="section-heading reveal">
+      <p class="eyebrow">TL;DR</p>
+      <h2>One autoregressive video model, every temporal order</h2>
+    </div>
+    <div class="tldr-card reveal">
+      <p><strong>UniTemp</strong> is a single autoregressive video generator distilled to run in <strong>any temporal order</strong>: it generates videos <strong>forward</strong>, <strong>backward</strong>, and <strong>inbetween</strong> two given moments — all with the same network. One 1.3B model with 4 denoising steps matches dedicated single-direction models in each direction, and the unified temporal control unlocks results that forward-only models cannot produce: seamless looping videos, in-shot scene transitions, stable 120-second generation in either direction, and looping multi-scene stories composed non-chronologically.</p>
+    </div>
+    <div class="stat-grid reveal">
+      <div class="stat-card">
+        <span>One model</span>
+        <strong>3 orders</strong>
+        <p>forward, backward, and inbetween generation from a single network.</p>
+      </div>
+      <div class="stat-card">
+        <span>Efficient</span>
+        <strong>1.3B · 4 steps</strong>
+        <p>a compact model with only a few denoising steps — fast in every temporal order.</p>
+      </div>
+      <div class="stat-card">
+        <span>Long horizon</span>
+        <strong>120 s</strong>
+        <p>stable minute-scale generation, forward or backward.</p>
+      </div>
+      <div class="stat-card">
+        <span>Unlocked</span>
+        <strong>∞ loops</strong>
+        <p>seamless loops, scene transitions, and looping multi-scene stories.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider" role="separator" aria-hidden="true">⇄</div>
+
+  <section class="section" id="directions">
+    <div class="section-heading reveal">
+      <p class="eyebrow">Bidirectional generation</p>
+      <h2>One model, forward and backward</h2>
+      <p>A single UniTemp network generates in both temporal directions. Its forward samples match the dedicated forward-only Self-Forcing baseline, and its backward samples reach the same quality — no per-direction specialization needed.</p>
+    </div>
+
+    <div class="sub-block reveal">
+      <div class="sub-heading">
+        <h3>5-second videos</h3>
+        <p>Each page shows the same prompt generated by the Self-Forcing forward baseline, UniTemp running forward, and UniTemp running backward. Backward videos are played forward — the first frames you see were generated last.</p>
+      </div>
+      <div id="short-pager"></div>
+    </div>
+
+    <div class="sub-block reveal">
+      <div class="sub-heading">
+        <h3>120-second videos</h3>
+        <p>Both-end guided sink latents allow 2-minute generation with less content drift than strong forward-only baselines. We apply 3 sink frames for the Self-Forcing baseline.
+        Each panel is downsized to 416×240 for web delivery — use full screen for the best view.</p>
+      </div>
+      <div id="long-pager"></div>
+    </div>
+  </section>
+
+  <div class="divider" role="separator" aria-hidden="true">⇄</div>
+
+  <section class="section" id="inbetween">
+    <div class="section-heading reveal">
+      <p class="eyebrow">Inbetween generation</p>
+      <h2>Anchored at both ends</h2>
+      <p>UniTemp also generates <em>between</em> two given moments — the capability that powers the loops, transitions, and stories below.</p>
+    </div>
+
+    <div class="sub-block reveal">
+      <div class="sub-heading">
+        <h3>Inbetween comparison</h3>
+        <p>Given only the first and the last frame, UniTemp generates complex motion inbetween. GI (Generative Inbetweening) struggles with complex motion, while UniTemp handles it efficiently with a compact model and only a few denoising steps.</p>
+      </div>
+      <div class="ib-shell">
+        <div class="ib-topbar">
+          <button class="pager-btn" type="button" id="ib-prev">← Prev</button>
+          <h3 class="ib-title" id="ib-title">Example 1 of 4</h3>
+          <button class="pager-btn" type="button" id="ib-next">Next →</button>
+        </div>
+        <div id="ib-pages"></div>
+        <div class="pager-dots" id="ib-dots"></div>
+      </div>
+    </div>
+
+    <div class="sub-block reveal">
+      <div class="sub-heading">
+        <h3>Seamless looping videos</h3>
+        <p>The first frame is also the last: UniTemp closes a video on itself, producing loops that play forever without a visible seam.</p>
+      </div>
+      <div id="looping-pager"></div>
+    </div>
+
+    <div class="sub-block reveal">
+      <div class="sub-heading">
+        <h3>In-shot scene transitions</h3>
+        <p>Given two different worlds as the two ends, UniTemp morphs one into the other within a single continuous shot.</p>
+      </div>
+      <div id="transition-pager"></div>
+    </div>
+  </section>
+
+  <div class="divider" role="separator" aria-hidden="true">⇄</div>
+
+  <section class="section stories-band-outer" id="stories" style="width:100%; max-width:none; padding:0;">
+    <div class="stories-band">
+      <div class="section" style="padding-top:76px;">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Showcase · Sora-style scene connections</p>
+          <h2>Looping long-shot stories</h2>
+          <p>Because UniTemp can extend any clip forward, backward, or bridge any two moments, it can compose a multi-scene story <em>non-chronologically</em>: the key block of each scene is generated first, extended in both directions, and the scenes are then connected by generated transitions — including a final transition from the last scene back to the first, closing the story into a perfect 90-second loop.</p>
+          <p>For each story below, pick a pair of adjacent scenes: the <strong>center video is the connection generated by UniTemp</strong>, morphing the scene on its left into the scene on its right. The last pair closes the loop.</p>
+        </div>
+        <div id="stories-root"></div>
+        <div class="stories-method reveal">
+          <b>How these are generated.</b> We first generate the key block of each of the 4 scenes (captions x-2), extend each block forward and backward to grow the scenes, and finally generate the inbetween transitions that connect scene 1 → 2 → 3 → 4 → 1. This is a far more flexible pipeline than chronological generation, while keeping the speed and quality of a compact few-step model.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider" role="separator" aria-hidden="true">⇄</div>
+
+  <section class="section" id="ablation">
+    <div class="section-heading reveal">
+      <p class="eyebrow">Analysis</p>
+      <h2>Anchor latents ablation</h2>
+      <p>Why does backward generation need anchor latents? Baseline backward generation (without anchors) shows periodic inter-block flickering; UniTemp's anchor latents (P=3) largely eliminate it, matching the flicker-free forward reference.</p>
+    </div>
+    <div class="reveal" id="ablation-pager"></div>
+  </section>
+
+  <div class="divider" role="separator" aria-hidden="true">⇄</div>
+
+  <section class="section bibtex-section" id="bibtex">
+    <div class="section-heading reveal">
+      <p class="eyebrow">Citation</p>
+      <h2>BibTeX</h2>
+      <p>If you find UniTemp useful, please consider citing:</p>
+    </div>
+    <div class="bibtex-card reveal">
+      <button class="copy-btn" type="button" id="copy-bibtex">Copy</button>
+      <pre id="bibtex-code"><code>@article{zhang2026unitemp,
+  title   = {UniTemp: Unlocking Video Generation in Any Temporal Order via Bidirectional Distillation},
+  author  = {Zhang, Lin and Mo, Sicheng and Cai, Zefan and Lin, Jinhong and Lin, Zihao and Gu, Jiuxiang and Singh, Krishna Kumar and Li, Yuheng and Li, Yin},
+  journal = {arXiv preprint},
+  year    = {2026}
+}</code></pre>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <p><strong>UniTemp</strong>: Unlocking Video Generation in Any Temporal Order via Autoregressive Distillation</p>
+  <p>A demo of what one unified model unlocks — seamless loops, scene transitions, minute-long videos, and looping multi-scene stories.</p>
+</footer>
+
+<button class="to-top" id="to-top" title="Back to top" aria-label="Back to top">↑</button>
+
+<script>
+/* ================================================================
+   Asset host — videos are streamed from the Hugging Face dataset.
+   Set to "" to serve from the local videos/ folder instead.
+   ================================================================ */
+
+const ASSET_BASE = "https://huggingface.co/datasets/Linz99/webpage/resolve/main/projects/unitemp/";
+
+document.querySelectorAll("video[data-src]").forEach((v) => {
+  v.src = ASSET_BASE + v.dataset.src;
+});
+
+/* ================================================================
+   Data — text prompts for every demo video
+   ================================================================ */
+
+const shortVideos = [
+  {
+    src: "videos/short_video/01.mp4",
+    caption: "A serene and peaceful scene inside a cozy restaurant. Soft ambient lighting illuminates the warm wooden tables and chairs, adorned with delicate flower centerpieces. Patrons sit quietly, sipping coffee and chatting softly. The walls are lined with rustic wooden panels and vintage posters. A gentle hum of conversation fills the air, accompanied by soft jazz music playing in the background. The camera remains stationary, capturing the tranquil atmosphere from a medium-wide shot perspective."
+  },
+  {
+    src: "videos/short_video/02.mp4",
+    caption: "A serene and tranquil scene featuring a simple, rustic wooden bowl filled with fresh, ripe fruits such as apples and oranges. The bowl sits on a smooth, polished wooden table, surrounded by soft, diffused sunlight casting gentle shadows. The background is a blurred, cozy interior with hints of warm, earthy tones. The camera focuses closely on the bowl, capturing the textures of the fruits and the wood, creating a calm and inviting atmosphere. Medium close-up static shot."
+  },
+  {
+    src: "videos/short_video/03.mp4",
+    caption: "A stylish woman carrying an umbrella and a handbag walking down a bustling city street under a light drizzle. She is wearing a chic black coat and a colorful scarf, with her hair styled neatly. Her umbrella is a classic black with a slight curve, and her handbag is a sleek designer bag with a gold chain strap. The background showcases tall buildings and busy pedestrians, creating a lively urban atmosphere. Medium shot focusing on the woman from a side angle as she walks confidently."
+  },
+  {
+    src: "videos/short_video/04.mp4",
+    caption: "A close-up medium shot of a wine glass placed elegantly on a polished wooden table next to a comfortable armchair. The chair has a rich brown leather seat and backrest, with intricate wooden armrests and legs. The wine glass is half-filled with red wine, reflecting the ambient light. The chair is positioned slightly angled towards the viewer, giving a sense of someone about to sit down. The background is blurred, showcasing a tastefully decorated living room with warm lighting and soft textures. Static scene, capturing a moment of anticipation and relaxation."
+  }
+];
+
+const longVideos = [
+  {
+    src: "videos/long_video/01.mp4",
+    caption: "A vibrant and dynamic street art illustration depicting a chimpanzee performing a backflip on a skateboard on a bustling city sidewalk. The chimp is agile and energetic, mid-air with its legs extended and arms outstretched, showcasing its acrobatic skills. It has a playful expression, with mischievous eyes and a slight grin. The skateboard is colorful and adorned with stickers, adding to the lively scene. The background features a busy cityscape with tall buildings, people walking, and cars passing by, creating a lively urban environment. The chimp is wearing a small, round cap and a backpack. A close-up shot from a slightly elevated angle, capturing the excitement and movement."
+  },
+  {
+    src: "videos/long_video/02.mp4",
+    caption: "A magical scene from a classic fairy tale, capturing a graceful fairy dancing around a tranquil forest pond under the moonlight. Her delicate wings shimmer and glisten, reflecting the soft glow of the full moon. She wears a flowing, silver gown adorned with twinkling stars and leaves, emphasizing her ethereal beauty. Her hair flows freely, cascading down her back in waves of silver and gold. The background features a serene forest with tall trees, their silhouettes outlined against the night sky. A gentle stream flows nearby, adding to the tranquil ambiance. The fairy’s movements are fluid and elegant, her toes barely touching the ground as she pirouettes. A close-up shot from a slightly elevated angle, focusing on her graceful dance and luminous wings."
+  },
+  {
+    src: "videos/long_video/03.mp4",
+    caption: "A vibrant coral reef teeming with colorful fish and marine life, captured in a dynamic underwater scene. The reef is adorned with a variety of coral shapes and sizes, creating a lively and intricate landscape. Schools of fish dart between the corals, their vibrant hues ranging from electric blues and greens to fiery oranges and yellows. A schools of clownfish can be seen swimming among the anemones, while a majestic turtle glides gracefully nearby. The water has a clear, turquoise hue, allowing the viewer to see the rich biodiversity beneath the surface. The camera angle is slightly from below, emphasizing the vertical depth and the bustling activity of the reef."
+  },
+  {
+    src: "videos/long_video/04.mp4",
+    caption: "A vibrant and lively scene from a colorful Indian festival in Mumbai, where a toy robot wearing blue jeans and a white T-shirt takes a pleasant stroll. The robot has a friendly expression, with its arms swinging naturally as it walks along the bustling streets. The background is filled with people in traditional attire, vibrant decorations, and colorful lights, creating a festive atmosphere. The festival is alive with music and dance, and there are stalls selling various sweets and snacks. The robot appears to be enjoying the festivities, with its legs moving in a casual, relaxed manner. The camera angle is slightly elevated, capturing both the robot and the vibrant surroundings."
+  },
+  {
+    src: "videos/long_video/05.mp4",
+    caption: "A dynamic electric guitar made entirely of lightning, played by a powerful figure with intense, electrifying movements. The guitarist, with wild hair and glowing eyes, strums the instrument with fierce passion, producing thunderous sound waves that ripple through the air. The background is a stormy night, with lightning strikes illuminating the scene and rain pouring down. The camera angle is from below, capturing the electrifying performance in a dramatic, high-energy style reminiscent of action movie posters."
+  },
+  {
+    src: "videos/long_video/06.mp4",
+    caption: "An old man, dressed in a vibrant green dress adorned with intricate patterns, wears a wide-brimmed sun hat that casts a shadow over his weathered face. He takes a leisurely stroll in Antarctica during a lively colorful festival, surrounded by people in festive attire. The background features a backdrop of snow-covered landscapes, with colorful banners and decorations hanging from tents and structures. The air is filled with the sounds of music and laughter. The old man’s steps are steady and confident, and he waves cheerfully to those around him. A dynamic medium shot from a slightly elevated angle, capturing the old man in the midst of the festivities."
+  }
+];
+
+const inbetweenVideos = [
+  {
+    id: "01",
+    caption: "A dramatic action shot in the style of a superhero film, depicting a man pushing away a massive stone with superhuman strength. The man, muscular and determined, has short dark hair and a determined expression, his eyes fixed intently on the stone. He is wearing a tattered, loose-fitting shirt and shorts, emphasizing his powerful physique. His arms are strained as he pushes the stone, sweat glistening on his brow. The background shows rugged terrain with craggy rocks and a distant mountain range, adding to the epic feel of the scene. The stone is so large it covers most of the frame, creating a sense of scale. A dynamic, low-angle shot capturing the intense moment of exertion."
+  },
+  {
+    id: "02",
+    caption: "A close-up shot in the style of a nature documentary, featuring a chameleon with its body contorted in an intriguing pose, showcasing its striking color-changing capabilities. The chameleon’s skin shifts between vibrant shades of green, blue, and yellow, with intricate patterns and textures. Its large, round eyes focus intently on the viewer, and its long, sticky tongue is partially extended, ready to catch prey. The background is blurred, emphasizing the chameleon’s vivid colors and detailed patterns, with hints of a lush, tropical forest environment. The photo has a crisp, high-resolution quality, highlighting the reptile’s natural movements and vibrant hues. A close-up shot from a slightly elevated angle."
+  },
+  {
+    id: "03",
+    caption: "An old man in vibrant purple overalls and sturdy cowboy boots takes a leisurely stroll through the streets of Johannesburg, South Africa, during a breathtaking sunset. His weathered face is etched with lines of experience, and his weathered hands rest comfortably in his pockets. A medium shot with a slightly elevated angle, capturing the elderly man strolling through the city under the warm glow of the setting sun."
+  },
+  {
+    id: "04",
+    caption: "A dynamic tracking shot following a skateboarder performing a series of fluid tricks down a bustling city street. The skateboarder, wearing a black helmet and a colorful shirt, moves with grace and confidence, executing flips, grinds, and spins. The background showcases the urban environment, with tall buildings, busy traffic, and passersby in the distance."
+  }
+];
+
+const anchorAblationVideos = [
+  {
+    src: "videos/anchor_ablation/01.mp4",
+    caption: "A dynamic tracking shot follows a sleek mountain biker as they plummet down a narrow, rocky ridge in the Swiss Alps, dust billowing behind the rear tire. The rider, clad in a neon-green jersey and aerodynamic helmet, leans aggressively into sharp switchbacks, their muscles tensed with focus. The camera captures the vibration of the bike frame and the rapid blur of pine trees rushing past. A low-angle GoPro-style perspective, emphasizing the high-speed descent."
+  },
+  {
+    src: "videos/anchor_ablation/02.mp4",
+    caption: "An underwater first-person view (FPV) zooms through a vibrant kelp forest, weaving between thick, emerald stalks that sway rhythmically in the ocean current. A school of silver sardines suddenly darts across the frame in a synchronized flash, followed by a playful sea lion that spins in a tight barrel roll. The sunlight filters from the surface in dancing “god rays,” illuminating the suspended particles in the water. A fast-paced, immersive tracking shot."
+  },
+  {
+    src: "videos/anchor_ablation/03.mp4",
+    caption: "A drone view circles a massive ice giant as it slowly marches across a desolate Arctic tundra, each heavy footfall cracking the permafrost and sending tremors through the landscape. The giant’s skin is textured like ancient glaciers, with small icicles hanging from its beard like jagged daggers. A flock of white ravens circles its head, cawing as they buffet the freezing wind. A sweeping 360-degree aerial shot emphasizing the scale of the behemoth."
+  },
+  {
+    src: "videos/anchor_ablation/04.mp4",
+    caption: "A 3D animated scene of a clumsy baby elephant trying to navigate a field of giant, bouncy mushrooms. As the elephant steps on a purple cap, it is propelled upward, its trunk flailing in surprise. The background is a psychedelic forest where the trees pulse with soft, bioluminescent light. A dynamic medium shot with a bouncy camera motion."
+  },
+  {
+    src: "videos/anchor_ablation/05.mp4",
+    caption: "A professional parkour athlete sprints across the rooftops of Santorini, leaping across narrow gaps between white-domed buildings. The camera, mounted on a gimbal, follows directly behind, capturing the jarring impact of each landing and the rush of the azure Aegean Sea in the periphery. A fast-paced, third-person tracking shot full of kinetic energy."
+  },
+  {
+    src: "videos/anchor_ablation/06.mp4",
+    caption: "A nature photography scene of a Great White Shark breaching the water in slow motion, its massive jaws agape as it strikes a decoy seal. The water explodes upward in a colossal white fountain, with individual droplets glistening like diamonds in the early morning light. A low-angle side view captured at 1000 frames per second."
+  },
+  {
+    src: "videos/anchor_ablation/07.mp4",
+    caption: "A dramatic 35mm film scene of a steam train emerging from a dark tunnel into a blizzard. The bright headlight cuts through the swirling snow, and the massive red snowplow on the front of the engine throws walls of white powder to either side. A low-angle head-on shot that feels powerful and imposing."
+  },
+  {
+    src: "videos/anchor_ablation/08.mp4",
+    caption: "A whimsical illustration of a group of hamsters operating a miniature carnival. One hamster runs in a wheel to power a tiny Ferris wheel made of popsicle sticks, while others sell popcorn from a thimble. A small toy train carries hamsters around the perimeter, its bell ringing softly. The carnival is set up in a garden under a full moon. A medium shot with a gentle camera movement that follows the Ferris wheel’s rotation."
+  }
+];
+
+const loopingVideos = [
+  {
+    src: "videos/looping_video/01.mp4",
+    title: "Samurai rises",
+    caption: "A samurai in full dark armor kneeling motionless on a wooden platform in the center of a misty bamboo forest, facing the camera, perfectly still. His katana rests horizontally across his open palms. Dense green bamboo stalks rise on both sides symmetrically, disappearing into thick white fog above. Soft diffused morning light filters through the mist, casting no harsh shadows. Water droplets cling to his armor and the bamboo around him. His eyes are closed, expression serene and focused. The atmosphere is silent and meditative. Static camera, perfectly centered symmetrical medium shot, no camera movement.<br><br>The samurai rises to his feet in one fluid motion, gripping the katana with both hands, and draws it upward into a high guard stance. The blade catches the pale light, gleaming bright against the misty forest. His dark armor shifts with the movement. Bamboo leaves drift downward around him, disturbed by the sudden energy. His eyes are now open, sharp and intense, locked forward. The mist swirls gently around his feet. His stance is wide and powerful, perfectly balanced, the blade held steady above his head. Static camera, perfectly centered symmetrical medium shot, no camera movement."
+  },
+  {
+    src: "videos/looping_video/02.mp4",
+    title: "Scream to laughter",
+    caption: "Extreme close-up of a young man’s face filling the center of the frame, mouth wide open in a furious scream. Veins bulge on his forehead and neck, his eyes are squeezed shut with rage, teeth bared. He screams with full force, then gasps for breath, his expression cracking — the anger dissolving into sudden uncontrollable laughter."
+  },
+  {
+    src: "videos/looping_video/03.mp4",
+    title: "Potter at the wheel",
+    caption: "A potter centered in the frame, shaping wet clay on a spinning wheel with both hands. She wears a simple brown linen apron over a cream shirt. Her fingers press into the soft grey clay, drawing a tall vase upward as the wheel turns steadily. Water and slip coat her hands and drip from the rim."
+  },
+  {
+    src: "videos/looping_video/04.mp4",
+    title: "Mountain dawn ride",
+    caption: "A lone motorcyclist centered in the frame, leaning hard into a turn on a mountain road at dawn. The bike is a matte black cafe racer, engine roaring. The rider wears a brown leather jacket and dark helmet, knee nearly grazing the asphalt. Morning mist hangs in the valley far below."
+  }
+];
+
+const sceneTransitionVideos = [
+  {
+    src: "videos/scene_transition/01.mp4",
+    title: "Rainforest → Kelp forest",
+    caption: "A first-person view pushing slowly forward through a dense tropical rainforest. Enormous green leaves and hanging vines brush past on both sides, dappled golden sunlight filtering through the thick canopy above. Dewdrops glisten on broad fern fronds. The path narrows as foliage grows denser, shadows deepening. Tiny bright insects drift through shafts of light. The ground is soft dark earth scattered with fallen petals. The air feels heavy and warm. Smooth steady forward movement at walking pace, no camera shake, centered perspective.<br><br>A first-person view gliding forward through a vast underwater kelp forest. Towering green-gold kelp stalks sway gently on both sides, sunlight filtering down in pale blue shafts from the surface far above. Schools of small silver fish scatter ahead. The water is crystal clear with particles of sediment drifting slowly. A sea turtle cruises past below. The kelp grows thicker and taller, the light dimming to deep blue-green as the view pushes deeper. Smooth steady forward movement at swimming pace, no camera shake, centered perspective."
+  },
+  {
+    src: "videos/scene_transition/02.mp4",
+    title: "Above the clouds → City canyon",
+    caption: "A first-person view soaring forward through thick white clouds, wispy vapor streaking past on all sides. Sunlight glows warm and golden above, casting bright halos through the mist. The cloud layer begins to thin, revealing glimpses of a sprawling city far below — glass towers catching sunlight, a wide river curving through the grid of streets. The view tilts gently downward as it breaks through the cloud floor into open blue sky above the city skyline. Wind rushes past. Smooth steady forward gliding movement, no camera shake, centered perspective.<br><br>A first-person view descending smoothly between towering glass skyscrapers in a dense city at golden hour. The buildings rise on both sides like canyon walls, their mirrored surfaces reflecting warm orange sky and each other. Far below, tiny cars stream along the streets in ribbons of white and red light. Bridges connect buildings at various heights. The view drops lower, weaving between the towers, until it reaches street level where neon signs glow and pedestrians move along wide sidewalks. Smooth steady descending movement, no camera shake, centered perspective."
+  },
+  {
+    src: "videos/scene_transition/03.mp4",
+    title: "1920s photograph → Present day",
+    caption: "A faded black-and-white photograph of a busy 1920s city street centered in the frame, lying flat on an old oak desk. Model T cars line the road, men in bowler hats and women in long coats walk the sidewalks. Tall brick buildings with fire escapes crowd both sides. A marquee sign glows above a theater entrance. The photo has slightly curled edges and a thin white border. Fine grain texture covers the image. Warm amber desk light falls across the surface. Static camera, perfectly centered top-down close-up, no camera movement.<br><br>The same city street alive in full vivid color at golden hour in the present day. Modern glass towers have replaced some brick buildings while others remain, restored and cleaned. Cars and yellow taxis fill the road. Pedestrians in contemporary clothes walk the same sidewalks. The old theater marquee still stands, now showing a digital display. Warm sunset light reflects off glass facades. Trees line the sidewalk in neat rows. A street musician plays guitar on the corner. Static camera, perfectly centered wide street-level shot, no camera movement."
+  },
+  {
+    src: "videos/scene_transition/04.mp4",
+    title: "Boy with blocks → Old craftsman",
+    caption: "A young boy centered in the frame sitting cross-legged on a bedroom floor surrounded by scattered toy building blocks, assembling a small colorful tower with focused concentration. Warm lamplight fills the cozy room. Posters and drawings cover the walls behind him. He carefully places a red block on top, his tongue poking out in effort. The tower wobbles but holds. He smiles proudly and reaches for another piece. His pajamas have small rocket ship patterns. Static camera, perfectly centered medium shot, no camera movement.<br><br>An elderly man centered in the frame sitting cross-legged on the floor of a sunlit woodworking studio, carefully sanding a small handcrafted wooden birdhouse held in his weathered hands. Golden morning light streams through a dusty window behind him. Shelves of finished carvings and tools line the walls. Fine sawdust floats in the light. He blows dust off the surface, holds it up to inspect his work, and nods with quiet satisfaction. He wears a faded flannel shirt with rolled sleeves. Static camera, perfectly centered medium shot, no camera movement."
+  }
+];
+
+const storyVideos = [
+  {
+    src: "videos/stories/01.mp4",
+    num: "Story 1",
+    title: "A Journey Through Worlds",
+    desc: "A young woman walks out of a rain-soaked neon city, through a desert canyon, into the deep ocean, and out into space — then the story loops seamlessly back to where it began.",
+    scenes: ["Neon City", "Desert Canyon", "Ocean Depths", "Outer Space"],
+    bounds: [20, 43, 64, 87.5],
+    caption: "Scene 1-1: Cinematic night scene, a young woman in a dark leather jacket walking forward down a rain-soaked neon-lit city street, centered in the frame. Vibrant pink and blue neon signs reflect off the glistening wet asphalt beneath her boots. Tall glass skyscrapers tower on both sides, their windows flickering with warm interior light. Raindrops streak through the colored glow. Blurred taxi cabs rush past on either side. Steam rises from a manhole cover ahead. She walks with a calm, steady stride through the downpour. Tracking shot from behind, centered medium full-body rear view.<br><br>Scene 1-2: Cinematic night scene, the young woman walking forward through an open-air night market in the rain, centered in the frame. Strings of bare lightbulbs hang overhead in tangled rows, swaying in the wind. Food stalls with glowing red lanterns and hand-painted signs crowd both sides. Smoke from sizzling grills drifts across her path. The ground is slick with rain and scattered fallen leaves. Vendors shout and customers huddle under tarps. She moves through the dense crowd untouched, her dark jacket slick with rain. Warm orange and red tones contrast with the cool blue rain. Tracking shot from behind, centered medium full-body rear view.<br><br>Scene 1-3: Cinematic night scene, the young woman walking forward across a vast empty rain-soaked plaza, centered in the frame. A grand baroque cathedral with illuminated stone facades rises directly ahead, its spires piercing the dark sky. The polished marble floor creates a perfect mirror reflection of the cathedral in the standing water. Lightning flashes silently in the distant clouds, flooding the scene with white light. Pigeons scatter as she approaches. Her silhouette is sharp against the glowing cathedral entrance. The mood is solitary and monumental. Tracking shot from behind, centered wide full-body rear view.<br><br>Scene 2-1: Cinematic desert scene, the young woman in flowing linen robes walking forward along a narrow path between red sandstone canyon walls, centered and prominent in the frame. The canyon glows with deep orange and crimson tones as the low sun catches the layered rock. Her robes billow in warm gusting wind funneling through the passage. Fine sand particles swirl in golden spirals around her ankles. Ancient petroglyphs are etched into the canyon walls. The sky above is a narrow strip of intense violet. Shadows carve dramatic shapes across the stone. She strides forward with purpose, her figure large in the frame. Tracking shot from behind, centered medium close-up rear view, character fills the frame.<br><br>Scene 2-2: Cinematic desert scene, the young woman emerging from the canyon onto a plateau dotted with temple ruins, centered and prominent in the frame. Crumbling stone arches and toppled obelisks stretch across the landscape under a deep orange sky. The setting sun sits directly ahead on the horizon, casting her long shadow behind her. Dust devils spin lazily in the distance. She walks forward steadily with long strides, her robes trailing behind, her figure large and dominant in the composition. Tracking shot from behind, centered medium close-up rear view, character fills the frame.<br><br>Scene 2-3: Cinematic desert scene, the young woman walking forward toward an obsidian stone archway standing alone in the desert, centered and prominent in the frame. Glowing turquoise runes pulse across its surface. The surrounding desert is dark under a star-filled sky, the sun fully set. The archway frames a swirling deep blue void within it. Wind pulls sand toward the portal in spiraling streams. Her robes press forward against her body from the suction. She approaches the threshold with steady steps, her figure large and dominant in the composition. Tracking shot from behind, centered medium close-up rear view, character fills the frame.<br><br>Scene 3-1: Cinematic underwater scene, the young woman in a flowing white dress actively swimming forward through a sunlit shallow reef, centered in the frame. She kicks her legs steadily, propelling herself forward through the water. Brilliant turquoise water surrounds her with shafts of golden sunlight streaming down from the surface. The reef below is alive with brain corals, sea fans, and anemones in vivid yellows, pinks, and purples. Clownfish and angelfish dart around her in quick bursts. Her white dress and dark hair trail behind her as she swims. The camera moves with her at a constant distance. Tracking shot from behind, centered medium full-body rear view.<br><br>Scene 3-2: Cinematic underwater scene, the young woman actively swimming forward into a deep ocean trench, centered in the frame. She swims with steady arm strokes, moving forward through the darkening water. The water shifts from turquoise to midnight blue as she descends. Bioluminescent jellyfish pulse with violet and cyan light on either side. Trails of luminous plankton drift like underwater fireflies. The trench walls are encrusted with pale barnacles and waving tube worms. Her white dress trails behind her as she swims deeper. The camera follows her at a constant distance. The atmosphere is cold and mysterious. Tracking shot from behind, centered medium full-body rear view.<br><br>Scene 3-3: Cinematic underwater scene, the young woman swimming forward toward a colossal glowing ring embedded in the ocean floor, centered in the frame. She propels herself forward with determined strokes toward the ring. The ring pulses with intense white and violet energy, casting sharp beams upward through the dark water. The surrounding seabed is barren black volcanic rock. Columns of superheated bubbles rise from vents near the ring. Her white dress trails behind her in the energy current. The ring’s light is blinding at its core, pure white fading to deep purple at the edges. The camera follows at a constant distance as she swims directly toward its center. Tracking shot from behind, centered medium full-body rear view.<br><br>Scene 4-1: Cinematic space scene, the young woman in a white spacesuit floating forward through a dense colorful nebula, perfectly centered in the exact middle of the frame, symmetrical composition. Swirling clouds of cosmic gas surround her symmetrically in deep magentas, electric blues, and molten golds. Newborn stars ignite in bright pinpoints within the clouds. Trails of stardust stream past like luminous ribbons on both sides. Her visor reflects the kaleidoscope of colors. She floats with slow, weightless grace, arms relaxed symmetrically at her sides, her body perfectly upright. Tracking shot from directly behind, perfectly centered symmetrical medium full-body rear view.<br><br>Scene 4-2: Cinematic space scene, the young woman floating forward above a massive gas giant planet, perfectly centered in the exact middle of the frame, symmetrical composition. The planet’s banded atmosphere of cream, amber, and rust swirls below in enormous storm systems. A great red vortex spins slowly on its surface. The sun is a small brilliant point of light directly behind her. Her white spacesuit is stark against the warm planetary tones. She drifts forward in serene isolation, her body perfectly upright and centered above the vast curvature. Tracking shot from directly behind, perfectly centered symmetrical medium full-body rear view.<br><br>Scene 4-3: Cinematic space scene, the young woman floating forward above an alien crystalline world, perfectly centered in the exact middle of the frame, symmetrical composition. The surface below is translucent ice-blue crystal that refracts starlight into scattered prismatic rainbows. Crystal spires rise symmetrically like frozen towers on both sides. A faint aurora of green and pink ripples along the thin atmosphere. Her boots hover just above the crystal surface, casting soft prismatic reflections. She is perfectly upright and centered, the landscape stretching symmetrically to a knife-sharp horizon on both sides. Tracking shot from directly behind, perfectly centered symmetrical medium full-body rear view."
+  },
+  {
+    src: "videos/stories/02.mp4",
+    num: "Story 2",
+    title: "Walking Through the Ages",
+    desc: "One continuous walk across four eras — a Roman villa, a medieval castle, a Victorian mansion, and a future laboratory — connected by generated transitions and closed into a loop.",
+    scenes: ["Ancient Rome", "Medieval Castle", "Victorian Mansion", "Future Lab"],
+    bounds: [22, 43.5, 62.5, 87],
+    caption: "Scene 1-1: Cinematic ancient Roman scene, a man in a white toga walking forward through a grand Roman villa corridor, seen from behind, centered in the frame. Tall marble columns line both sides of the passage. Warm golden sunlight streams through open archways on the left, casting sharp columns of light across the mosaic tile floor. Frescoes of gods and laurel wreaths cover the plaster walls. An oil lamp flickers on a stone pedestal ahead. Dust motes drift lazily in the sunbeams. His sandals pad softly on the mosaic tiles. The atmosphere is warm and ancient. Tracking shot from behind, medium full-body rear view following him forward.<br><br>Scene 1-2: Cinematic ancient Roman night scene, the same man in a white toga walking forward through the villa’s grand atrium, seen from behind, centered in the frame. Dozens of clay oil lamps cast warm flickering amber light across the space. A shallow rectangular pool in the center of the atrium reflects the open night sky above through the compluvium. Stars are visible overhead. Marble statues of ancestors stand in alcoves along the walls. Smoke curls upward from a bronze incense burner. His toga drapes over one shoulder as he strides steadily forward. The mood is intimate and solemn. Tracking shot from behind, medium full-body rear view.<br><br>Scene 1-3: Cinematic ancient Roman dawn scene, the man in a white toga walking forward through the villa’s peristyle garden, seen from behind, centered in the frame. Soft grey-blue early morning light fills the colonnaded courtyard. Trimmed hedges, small fruit trees, and a stone fountain surround a gravel path ahead of him. Morning dew glistens on the leaves and marble surfaces. Birds begin singing from the garden. The columns cast long cool shadows across the path. His pace is unhurried, arms relaxed at his sides. The frescoed walls are muted in the pre-dawn tones. The mood is quiet and expectant. Tracking shot from behind, medium full-body rear view.<br><br>Scene 2-1: Cinematic medieval scene, a knight in chainmail and a dark surcoat walking forward through a long castle corridor, seen from behind, centered in the frame. Heavy stone walls rise on both sides, hung with faded tapestries depicting battle scenes. Iron torches mounted in brackets cast flickering orange light and deep shadows along the passage. The flagstone floor is worn smooth by centuries of footsteps. A narrow slit window ahead lets in a thin blade of grey daylight. His chainmail clinks softly with each step. Cold drafts move through the corridor. The atmosphere is heavy, martial, and ancient. Tracking shot from behind, medium full-body rear view.<br><br>Scene 2-2: Cinematic medieval night scene, the knight walking forward through the castle’s great hall, seen from behind, centered in the frame. A massive iron chandelier blazes with candles high overhead. Long oak tables line both sides, crowded with feasting knights and servants raising goblets. Platters of roasted meat, bread, and fruit cover the tables. Firelight from a huge stone hearth ahead dances across the Gothic arches and stone walls. A minstrel plays a lute near the hearth. The knight walks through the center of the revelry, his dark surcoat catching the warm light. The energy is loud and festive. Tracking shot from behind, medium full-body rear view.<br><br>Scene 2-3: Cinematic medieval morning scene, the knight walking forward through an empty cloister, seen from behind, centered in the frame. Pale grey morning light filters through a row of Gothic arched openings on the left, overlooking a frost-covered courtyard garden. The stone floor is cold and bare. His breath forms faint clouds in the frigid air. A single shaft of white light falls across his path from a high window ahead. Frost clings to the stone columns. The courtyard outside is silent, covered in thin snow. A leather-bound Bible rests on a stone ledge he passes. The mood is austere and still. Tracking shot from behind, medium full-body rear view.<br><br>Scene 3-1: Cinematic Victorian scene, a gentleman in a three-piece suit walking forward through an elegant mansion hallway, seen from behind, centered in the frame. Rich mahogany wainscoting lines the lower walls, with burgundy damask wallpaper above. Brass gas lamps glow warmly at regular intervals. Oil paintings in ornate gold frames hang on both sides. The polished hardwood floor reflects his steady footsteps. A grandfather clock ticks at the far end of the hall. Through a doorway ahead, a crackling fireplace is visible in a study. The atmosphere is refined, warm, and ordered. Tracking shot from behind, medium full-body rear view.<br><br>Scene 3-2: Cinematic Victorian night scene, the gentleman walking forward through a candlelit drawing room, seen from behind, centered in the frame. Crystal chandeliers hang from the ceiling, their facets scattering warm golden light. Upholstered armchairs and a grand piano occupy the room on either side. Heavy velvet curtains are drawn over tall sash windows. A fire crackles in a marble fireplace ahead, casting dancing shadows across the patterned rug. Crystal decanters and china cups rest on side tables. Cigar smoke curls faintly in the air above. His polished shoes click on the hardwood as he crosses the room. Tracking shot from behind, medium full-body rear view.<br><br>Scene 3-3: Cinematic Victorian morning scene, the gentleman walking forward through a conservatory filled with pale winter light, seen from behind, centered in the frame. Tall glass panels form the walls and ceiling, revealing a snow-covered garden outside. Potted ferns, palms, and orchids crowd both sides of a tiled pathway. Condensation beads on the cold glass. His breath is faintly visible in the cool air. A wrought-iron garden table with a teacup sits to one side. Snow falls gently against the glass overhead. The conservatory opens ahead to a bright doorway. The mood is tranquil and luminous. Tracking shot from behind, medium full-body rear view.<br><br>Scene 4-1: Cinematic futuristic scene, a man in a silver-grey jumpsuit walking forward through a sleek laboratory corridor, seen from behind, centered in the frame. Smooth white walls are lined with transparent holographic screens displaying scrolling data and rotating molecular models in cyan and white. The polished concrete floor reflects the cool blue light. Robotic arms retract into ceiling alcoves as he passes. Automatic glass doors slide open ahead of him with a soft hiss. Through floor-to-ceiling windows on the right, a neon-lit megacity glows far below. The atmosphere is clean, silent, and advanced. Tracking shot from behind, medium full-body rear view.<br><br>Scene 4-2: Cinematic futuristic scene, the man walking forward through a vast open research chamber, seen from behind, centered in the frame. A swirling sphere of bright orange plasma hovers between two towering electromagnetic coils at the center of the room ahead. The plasma casts intense flickering light across every surface, alternating between deep amber and electric blue. Sparks arc between the coils as he approaches. Holographic warning displays flash red on the glass walls around him. The air hums with energy and static. His silver jumpsuit reflects the plasma glow. The mood is tense and electrifying. Tracking shot from behind, medium full-body rear view.<br><br>Scene 4-3: Cinematic futuristic dawn scene, the man walking forward through a glass-walled observation deck, seen from behind, centered in the frame. The sun rises over the megacity skyline outside, flooding the space with pale blue and golden light. All holographic displays along the corridor are dimmed to standby. The polished floor glows with reflected sunrise. A single floating light orb drifts slowly alongside him. The city outside transitions from dark to warm gold as sunlight creeps across the glass towers. His silhouette is sharp against the brightening panorama ahead. The mood is calm and contemplative. Tracking shot from behind, medium full-body rear view."
+  },
+  {
+    src: "videos/stories/03.mp4",
+    num: "Story 3",
+    title: "One Melody, Four Cities",
+    desc: "A violinist performs through rainy London, sunny Havana, snowy Moscow, and neon Shanghai — four scenes, four moods, one seamless looping shot.",
+    scenes: ["Rainy London", "Sunny Havana", "Snowy Moscow", "Neon Shanghai"],
+    bounds: [18.5, 42.5, 63, 86.5],
+    caption: "Scene 1-1: A young violinist in a long dark wool coat stands centered in a narrow London alley, playing a slow mournful melody as heavy rain falls around her. Wet cobblestones reflect the warm glow of a single gas lamp behind her left shoulder. Red brick walls rise on both sides, streaked with rain. Her bow moves deliberately across the strings, her eyes half closed in concentration. Puddles ripple at her feet. The air is thick with mist and the mood is deeply melancholic. Medium shot, camera at eye level, shallow depth of field.<br><br>Scene 1-2: The same violinist in her dark wool coat plays passionately in a wider London side street, rain now lighter, a soft drizzle catching the light of a distant pub sign glowing amber. Behind her a black taxi waits at the curb and a red phone booth stands slightly out of focus. She sways gently as she draws her bow upward, her wet hair clinging to her face. The pavement glistens and a few pedestrians hurry past with umbrellas. The palette is cool grays and muted warm highlights. Wide medium shot, slight low angle, steadicam drift.<br><br>Scene 1-3: The violinist stands at the entrance of a covered London arcade, her dark coat dripping, playing a delicate tremolo. Beyond the archway behind her the rain pours in silver sheets across a gaslit square. Ornate iron columns frame her on each side. Warm amber light spills from a bookshop window to her right, casting half her face in gold. She lifts her chin as the melody rises, her fingers precise on the fingerboard. Water drips from the arcade ceiling in the foreground. Close-up to medium shot, rack focus from raindrops to her face, cinematic grain.<br><br>Scene 2-1: The violinist in her linen blouse and cotton skirt plays a lively folk-inspired melody in the center of a sun-drenched Havana plaza. Crumbling pastel buildings in pink, yellow, and seafoam green rise behind her. A vintage turquoise car sits parked to her left. Bougainvillea spills from a wrought-iron balcony overhead. She taps her sandaled foot on the warm stone, smiling as she plays. Laundry hangs between buildings in the background. The light is harsh midday tropical sun with deep crisp shadows. Wide shot, camera slightly above eye level, golden hour warmth.<br><br>Scene 2-2: The same violinist plays with joyful energy near a Havana street corner, her skirt swaying as she moves with the music. Behind her an old man sits on a wooden chair smoking a cigar beside a fruit stand piled with mangoes and papayas. A faded revolutionary mural covers the wall to her right in reds and deep blues. Children run past in the background, blurred by motion. Warm orange light bounces off the ochre walls. She draws a long sustained note, arching her back slightly. Medium shot, handheld camera feel with gentle sway, saturated color palette.<br><br>Scene 2-3: The violinist stands beneath a grand colonial archway in Havana, playing a slow romantic phrase. Through the arch behind her a courtyard fountain catches the late afternoon sun, water sparkling amber and white. Potted ferns and hibiscus flowers flank the archway in deep green and red. Long shadows stretch across the tiled floor. She closes her eyes as her bow glides across the strings, her expression serene and absorbed. A ceiling fan turns lazily in the shadowed arcade above. Close medium shot, soft backlight creating a warm halo, anamorphic lens flare.<br><br>Scene 3-1: The violinist in her fur-lined overcoat plays a powerful dramatic melody in the center of a vast snow-covered Moscow square. Behind her the onion domes of Saint Basil’s Cathedral rise in deep reds, greens, and golds against a heavy gray sky. Snow falls steadily in large soft flakes. Her boots press into fresh white snow as she leans into each bow stroke with intensity. A few bundled figures cross the square far behind her, small against the grand architecture. The light is flat and diffused, the atmosphere solemn and majestic. Wide shot, low angle emphasizing the cathedral, muted cool tones.<br><br>Scene 3-2: The same violinist plays a fierce rapid passage on a Moscow bridge, her overcoat billowing in a sharp winter wind. Behind her the frozen Moskva River stretches out under a pale lavender twilight sky. Ornate iron lampposts line the bridge, their yellow lights creating warm pools against the blue-gray dusk. Snow clings to the bridge railings and her shoulders. She stamps her foot for emphasis as she plays, her expression fierce and determined. Ice crystals glitter in the air around her. Medium shot, wind-swept atmosphere, strong contrast between warm lamplight and cold sky.<br><br>Scene 3-3: The violinist stands before the grand columned entrance of a Moscow theater, snow piled on the ledges above her. She plays a haunting melody that seems to echo off the stone facades. The columns are massive and pale, rising into darkness above. A single spotlight from a theater marquee catches her from the upper right, casting dramatic shadows across her face and coat. Her breath forms clouds of vapor with each exhale. The street is empty and quiet, the snow muffling all sound except her violin. Tight medium shot, strong chiaroscuro lighting, overhead angle looking slightly down.<br><br>Scene 4-1: The violinist in her black leather jacket plays a fast syncopated melody on a Shanghai overpass at night, cars streaming below her in ribbons of red and white light. Massive LED billboards tower behind her displaying Chinese characters in hot pink and cyan. The Pudong skyline rises in the distance, the Oriental Pearl Tower glowing in magenta. Rain mists down, catching the neon glow in millions of tiny droplets. She moves with sharp confident energy, her bow cutting through the air. The scene pulses with urban electricity. Wide shot, long exposure light trails below, cyberpunk color palette.<br><br>Scene 4-2: The same violinist plays beneath a canopy of red paper lanterns strung across a narrow Shanghai lane, their warm glow competing with the cool blue neon of shop signs on either side. Steam rises from a noodle stall to her left, backlit in amber. The wet lane reflects everything in doubled color. She plays a melodic phrase that mixes classical technique with modern flair, tilting her head as she listens to the echoes. Motorcycles are parked along one wall, their chrome catching the light. Medium close shot, shallow depth of field blurring the lanterns into bokeh circles, warm and cool tones split.<br><br>Scene 4-3: The violinist stands on a glass-walled Shanghai skywalk, playing a contemplative melody while the city sprawls below and behind her in layers of light. Skyscrapers pierce low clouds that glow orange from the city lights beneath them. Her reflection plays in the glass beside her, a ghostly double. Raindrops streak down the glass walls, distorting the neon cityscape into abstract color. She holds a long note, her bow barely moving, her gaze distant and thoughtful. The Huangpu River curves in the far background, bridges lit in gold. Medium shot, reflection composition, deep cool blues with accent lighting."
+  }
+];
+
+/* ================================================================
+   Lazy loading + autoplay-on-view
+   ================================================================ */
+
+const nearIO = new IntersectionObserver((entries) => {
+  for (const en of entries) {
+    if (en.isIntersecting) {
+      en.target.preload = "auto";
+      nearIO.unobserve(en.target);
+    }
+  }
+}, { rootMargin: "900px" });
+
+const playIO = new IntersectionObserver((entries) => {
+  for (const en of entries) {
+    const v = en.target;
+    if (en.isIntersecting) { v.play().catch(() => {}); }
+    else { v.pause(); }
+  }
+}, { rootMargin: "80px" });
+
+function makeVideo(src, { autoplay = false, controls = false, eager = false } = {}) {
+  const v = document.createElement("video");
+  v.muted = true;
+  v.loop = true;
+  v.playsInline = true;
+  v.setAttribute("playsinline", "");
+  v.preload = eager ? "auto" : "metadata";
+  if (controls) v.controls = true;
+  const s = document.createElement("source");
+  s.src = ASSET_BASE + src;
+  s.type = "video/mp4";
+  v.appendChild(s);
+  // Only autoplaying videos are upgraded to full preload near the viewport;
+  // click-to-play videos stay at metadata until the user hits play.
+  if (!eager && autoplay) nearIO.observe(v);
+  if (autoplay) playIO.observe(v);
+  return v;
+}
+
+/* ================================================================
+   Prompt toggles
+   ================================================================ */
+
+function promptFoot(captionHtml, label = "Text prompt") {
+  const foot = document.createElement("div");
+  foot.className = "card-foot";
+  const btn = document.createElement("button");
+  btn.className = "prompt-btn";
+  btn.type = "button";
+  btn.textContent = label;
+  const txt = document.createElement("div");
+  txt.className = "prompt-text";
+  txt.innerHTML = captionHtml;
+  btn.addEventListener("click", () => {
+    txt.classList.toggle("show");
+    btn.classList.toggle("active");
+  });
+  foot.appendChild(btn);
+  return [foot, txt];
+}
+
+/* ================================================================
+   Generic pager + comparison-page builders
+   ================================================================ */
+
+function el(tag, cls, html) {
+  const e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (html != null) e.innerHTML = html;
+  return e;
+}
+
+function buildPager(mountId, count, titleFn, renderPage, { dark = false } = {}) {
+  const root = document.getElementById(mountId);
+  const shell = el("div", "ib-shell" + (dark ? " dark" : ""));
+  const top = el("div", "ib-topbar");
+  const prev = el("button", "pager-btn", "← Prev");
+  prev.type = "button";
+  const ttl = el("h3", "ib-title");
+  const next = el("button", "pager-btn", "Next →");
+  next.type = "button";
+  top.appendChild(prev);
+  top.appendChild(ttl);
+  top.appendChild(next);
+  shell.appendChild(top);
+  const wrap = el("div");
+  const dots = el("div", "pager-dots");
+  const pages = [];
+  for (let i = 0; i < count; i++) {
+    const page = el("div", "ib-page" + (i === 0 ? " active" : ""));
+    page.appendChild(renderPage(i));
+    wrap.appendChild(page);
+    pages.push(page);
+    const dot = el("button", "pager-dot" + (i === 0 ? " active" : ""));
+    dot.type = "button";
+    dot.setAttribute("aria-label", `Page ${i + 1}`);
+    dot.addEventListener("click", () => show(i));
+    dots.appendChild(dot);
+  }
+  shell.appendChild(wrap);
+  shell.appendChild(dots);
+  root.appendChild(shell);
+  let cur = 0;
+  ttl.textContent = titleFn(0);
+  function show(i) {
+    pages[cur].classList.remove("active");
+    pages[cur].querySelectorAll("video").forEach((v) => v.pause());
+    dots.children[cur].classList.remove("active");
+    cur = (i + count) % count;
+    pages[cur].classList.add("active");
+    dots.children[cur].classList.add("active");
+    ttl.textContent = titleFn(cur);
+  }
+  prev.addEventListener("click", () => show(cur - 1));
+  next.addEventListener("click", () => show(cur + 1));
+  return { show };
+}
+
+// A page with N method cards over the same prompt + restart-in-sync + prompt toggle.
+function comparisonPage(cards, caption, { autoplay = false } = {}) {
+  const container = el("div");
+  const grid = el("div", "ib-grid cols3");
+  const vids = [];
+  cards.forEach((c) => {
+    const card = el("article", "ib-card" + (c.ours ? " featured" : ""));
+    card.appendChild(el("div", "ib-label", `${c.name} <small>${c.sub}</small>`));
+    const v = makeVideo(c.src, { controls: true, autoplay });
+    vids.push(v);
+    card.appendChild(v);
+    grid.appendChild(card);
+  });
+  container.appendChild(grid);
+  const foot = el("div", "ib-foot");
+  const restart = el("button", "prompt-btn", "⟲ Restart all in sync");
+  restart.type = "button";
+  restart.addEventListener("click", () => {
+    vids.forEach((v) => {
+      v.preload = "auto";
+      try { v.currentTime = 0; } catch (e) {}
+      v.play().catch(() => {});
+    });
+  });
+  foot.appendChild(restart);
+  const [pfoot, ptxt] = promptFoot(caption);
+  foot.appendChild(pfoot.firstChild);
+  container.appendChild(foot);
+  container.appendChild(ptxt);
+  return container;
+}
+
+function stripCard(item, headers, stripClass) {
+  const card = el("div", "strip-card " + stripClass);
+  const head = el("div", "strip-head");
+  head.style.gridTemplateColumns = `repeat(${headers.length}, 1fr)`;
+  head.innerHTML = headers.map((h) =>
+    `<div class="col${h.ours ? " ours" : ""}">${h.t}</div>`
+  ).join("");
+  card.appendChild(head);
+  card.appendChild(makeVideo(item.src, { controls: true }));
+  const [foot, txt] = promptFoot(item.caption);
+  card.appendChild(foot);
+  card.appendChild(txt);
+  return card;
+}
+
+/* ================================================================
+   Forward & Backward — 5s comparison pager + 120s strip pager
+   ================================================================ */
+
+const SHORT_METHODS = [
+  { file: "sf", name: "Self-Forcing", sub: "forward-only baseline" },
+  { file: "fwd", name: "UniTemp · Forward", sub: "one model, run forward", ours: true },
+  { file: "bwd", name: "UniTemp · Backward", sub: "one model, run backward", ours: true }
+];
+
+buildPager("short-pager", shortVideos.length,
+  (i) => `Prompt ${i + 1} of ${shortVideos.length}`,
+  (i) => comparisonPage(
+    SHORT_METHODS.map((m) => ({ ...m, src: `videos/short_video/${String(i + 1).padStart(2, "0")}/${m.file}.mp4` })),
+    shortVideos[i].caption,
+    { autoplay: true }
+  ));
+
+const LONG_HEADERS = [
+  { t: "LongLive" },
+  { t: "RollingForcing" },
+  { t: "InfinityRope" },
+  { t: "Self-Forcing" },
+  { t: "UniTemp Forward<br><small>past sink</small>", ours: true },
+  { t: "UniTemp Forward<br><small>past + future sink</small>", ours: true },
+  { t: "UniTemp Backward<br><small>future sink</small>", ours: true },
+  { t: "UniTemp Backward<br><small>future + past sink</small>", ours: true }
+];
+
+buildPager("long-pager", longVideos.length,
+  (i) => `Prompt ${i + 1} of ${longVideos.length}`,
+  (i) => stripCard(longVideos[i], LONG_HEADERS, "strip-long"));
+
+/* ================================================================
+   Ablation — Self-Forcing vs baseline backward vs UniTemp P=3
+   ================================================================ */
+
+const ABL_METHODS = [
+  { file: "sf", name: "Self-Forcing (forward)", sub: "flicker-free reference" },
+  { file: "baseline", name: "Baseline backward", sub: "B=3, without anchor latents" },
+  { file: "unitemp", name: "UniTemp Backward", sub: "P=3 · with anchor latents", ours: true }
+];
+
+buildPager("ablation-pager", anchorAblationVideos.length,
+  (i) => `Example ${i + 1} of ${anchorAblationVideos.length}`,
+  (i) => comparisonPage(
+    ABL_METHODS.map((m) => ({ ...m, src: `videos/anchor_ablation/${String(i + 1).padStart(2, "0")}/${m.file}.mp4` })),
+    anchorAblationVideos[i].caption,
+    { autoplay: true }
+  ));
+
+/* ================================================================
+   Inbetween comparison pager
+   ================================================================ */
+
+const IB_METHODS = [
+  { file: "gi", name: "GI", sub: "Generative Inbetweening" },
+  { file: "wan", name: "Wan FLF2V", sub: "14B · 50 steps" },
+  { file: "unitemp", name: "UniTemp", sub: "1.3B · 4 steps", ours: true },
+  { file: "gt", name: "Ground Truth", sub: "reference" }
+];
+
+(function buildInbetween() {
+  const pagesRoot = document.getElementById("ib-pages");
+  const dotsRoot = document.getElementById("ib-dots");
+  const title = document.getElementById("ib-title");
+  const pages = [];
+
+  inbetweenVideos.forEach((ex, idx) => {
+    const page = document.createElement("div");
+    page.className = "ib-page" + (idx === 0 ? " active" : "");
+    const grid = document.createElement("div");
+    grid.className = "ib-grid";
+    const vids = [];
+    IB_METHODS.forEach((m) => {
+      const card = document.createElement("article");
+      card.className = "ib-card" + (m.ours ? " featured" : "");
+      const label = document.createElement("div");
+      label.className = "ib-label";
+      label.innerHTML = `${m.name} <small>${m.sub}</small>`;
+      const v = makeVideo(`videos/inbetween/${ex.id}/${m.file}.mp4`, { controls: true });
+      vids.push(v);
+      card.appendChild(label);
+      card.appendChild(v);
+      grid.appendChild(card);
+    });
+    page.appendChild(grid);
+
+    const foot = document.createElement("div");
+    foot.className = "ib-foot";
+    const playBtn = document.createElement("button");
+    playBtn.className = "prompt-btn";
+    playBtn.type = "button";
+    playBtn.textContent = "▶ Play all four";
+    playBtn.addEventListener("click", () => {
+      const anyPaused = vids.some((v) => v.paused);
+      vids.forEach((v) => {
+        if (anyPaused) { v.preload = "auto"; v.play().catch(() => {}); }
+        else v.pause();
+      });
+      playBtn.textContent = anyPaused ? "⏸ Pause all" : "▶ Play all four";
+    });
+    foot.appendChild(playBtn);
+    const [pfoot, ptxt] = promptFoot(ex.caption);
+    foot.appendChild(pfoot.firstChild); // move the prompt button next to play-all
+    page.appendChild(foot);
+    page.appendChild(ptxt);
+    pagesRoot.appendChild(page);
+    pages.push({ page, vids });
+
+    const dot = document.createElement("button");
+    dot.className = "pager-dot" + (idx === 0 ? " active" : "");
+    dot.type = "button";
+    dot.setAttribute("aria-label", `Show example ${idx + 1}`);
+    dot.addEventListener("click", () => show(idx));
+    dotsRoot.appendChild(dot);
+  });
+
+  let current = 0;
+  function show(idx) {
+    pages[current].page.classList.remove("active");
+    pages[current].vids.forEach((v) => v.pause());
+    dotsRoot.children[current].classList.remove("active");
+    current = (idx + pages.length) % pages.length;
+    pages[current].page.classList.add("active");
+    dotsRoot.children[current].classList.add("active");
+    title.textContent = `Example ${current + 1} of ${pages.length}`;
+  }
+  document.getElementById("ib-prev").addEventListener("click", () => show(current - 1));
+  document.getElementById("ib-next").addEventListener("click", () => show(current + 1));
+})();
+
+/* ================================================================
+   Looping videos & scene transitions — solo pagers
+   ================================================================ */
+
+function soloPage(item, badge) {
+  const wrapEl = el("div", "solo-wrap");
+  const card = el("article", "loop-card");
+  card.appendChild(el("div", "loop-head", `<span>${item.title}</span><span class="badge">${badge}</span>`));
+  card.appendChild(makeVideo(item.src, { autoplay: true, controls: true }));
+  const [foot, txt] = promptFoot(item.caption);
+  card.appendChild(foot);
+  card.appendChild(txt);
+  wrapEl.appendChild(card);
+  return wrapEl;
+}
+
+buildPager("looping-pager", loopingVideos.length,
+  (i) => `${loopingVideos[i].title} — ${i + 1} of ${loopingVideos.length}`,
+  (i) => soloPage(loopingVideos[i], "⟳ seamless loop"));
+
+buildPager("transition-pager", sceneTransitionVideos.length,
+  (i) => `${sceneTransitionVideos[i].title} — ${i + 1} of ${sceneTransitionVideos.length}`,
+  (i) => soloPage(sceneTransitionVideos[i], "A → B transition"));
+
+/* ================================================================
+   Stories — Sora-style scene connections + full looping player
+   ================================================================ */
+
+const SCENE_COLORS = ["#38bdf8", "#f59e0b", "#34d399", "#c084fc"];
+const SCENE_MARGIN = 5;   // seconds kept away from a transition when looping a scene
+const CONN_HALF = 6;      // half-window of the connection clip around a transition
+const STORY_DUR = 90;
+
+const segRegistry = [];   // { v, start, end, wrap, bar? }
+const playheads = [];     // { v, head }
+
+function canSeekTo(v, t) {
+  const s = v.seekable;
+  for (let i = 0; i < s.length; i++) {
+    if (t >= s.start(i) - 0.1 && t <= s.end(i) + 0.1) return true;
+  }
+  return false;
+}
+
+function setSegment(seg, start, end) {
+  seg.start = start;
+  seg.end = end;
+  seg.wrap = start > end;
+  // If the data isn't buffered this far yet, the ticker snaps the video
+  // into its window as soon as the range becomes seekable.
+  if (seg.v.readyState >= 1 && canSeekTo(seg.v, start)) {
+    try { seg.v.currentTime = start; } catch (e) {}
+  }
+}
+
+function sceneWindow(story, k) {
+  const b = story.bounds;
+  const start = k === 0 ? 1 : b[k - 1] + SCENE_MARGIN;
+  return [start, b[k] - SCENE_MARGIN];
+}
+
+function connWindow(story, k) {
+  const b = story.bounds[k];
+  let start = b - CONN_HALF;
+  let end = b + CONN_HALF;
+  if (end >= STORY_DUR) end -= STORY_DUR; // wraps through the loop point
+  if (start < 0) start += STORY_DUR;
+  return [start, end];
+}
+
+function buildStory(story) {
+  const block = document.createElement("article");
+  block.className = "story-block";
+
+  const head = document.createElement("div");
+  head.className = "story-head";
+  head.innerHTML = `<span class="story-num">${story.num}</span><h3>${story.title}</h3>`;
+  block.appendChild(head);
+  const desc = document.createElement("p");
+  desc.className = "story-desc";
+  desc.textContent = story.desc;
+  block.appendChild(desc);
+
+  // ---- pair selector pills ----
+  const pills = document.createElement("div");
+  pills.className = "pair-pills";
+  const pillEls = [];
+  for (let k = 0; k < 4; k++) {
+    const j = (k + 1) % 4;
+    const pill = document.createElement("button");
+    pill.className = "pair-pill" + (k === 0 ? " active" : "");
+    pill.type = "button";
+    pill.innerHTML = `${story.scenes[k]} → ${story.scenes[j]}` + (k === 3 ? ' <span class="loop-sym">⟳</span>' : "");
+    pill.addEventListener("click", () => selectPair(k));
+    pills.appendChild(pill);
+    pillEls.push(pill);
+  }
+  block.appendChild(pills);
+
+  // ---- Sora-style 3-up connection grid ----
+  const grid = document.createElement("div");
+  grid.className = "connect-grid";
+
+  function panel(featured) {
+    const fig = document.createElement("figure");
+    fig.className = "connect-card" + (featured ? " featured" : "");
+    const label = document.createElement("span");
+    label.className = "clabel";
+    fig.appendChild(label);
+    const v = makeVideo(story.src, { autoplay: true, eager: true });
+    fig.appendChild(v);
+    let bar = null;
+    if (featured) {
+      const prog = document.createElement("div");
+      prog.className = "cprog";
+      bar = document.createElement("i");
+      prog.appendChild(bar);
+      fig.appendChild(prog);
+    }
+    const seg = { v, start: 0, end: STORY_DUR, wrap: false, bar };
+    segRegistry.push(seg);
+    v.addEventListener("loadedmetadata", () => {
+      if (canSeekTo(v, seg.start)) v.currentTime = seg.start;
+    });
+    return { fig, v, label, seg };
+  }
+
+  const left = panel(false);
+  const center = panel(true);
+  const right = panel(false);
+
+  function connector() {
+    const c = document.createElement("div");
+    c.className = "connector";
+    c.textContent = "⟶";
+    return c;
+  }
+
+  grid.appendChild(left.fig);
+  grid.appendChild(connector());
+  grid.appendChild(center.fig);
+  grid.appendChild(connector());
+  grid.appendChild(right.fig);
+  block.appendChild(grid);
+
+  const note = document.createElement("p");
+  note.className = "connect-note";
+  note.innerHTML = "The two side videos loop inside their scenes — the center video is the <b>UniTemp-generated connection</b> between them.";
+  block.appendChild(note);
+
+  function selectPair(k) {
+    pillEls.forEach((p, i) => p.classList.toggle("active", i === k));
+    const j = (k + 1) % 4;
+    const [ls, le] = sceneWindow(story, k);
+    const [rs, re] = sceneWindow(story, j);
+    const [cs, ce] = connWindow(story, k);
+    setSegment(left.seg, ls, le);
+    setSegment(right.seg, rs, re);
+    setSegment(center.seg, cs, ce);
+    left.label.textContent = `Scene ${k + 1} · ${story.scenes[k]}`;
+    right.label.textContent = `Scene ${j + 1} · ${story.scenes[j]}`;
+    center.label.textContent = k === 3 ? "UniTemp connection · closes the loop" : "UniTemp connection";
+  }
+  selectPair(0);
+
+  // ---- full looping story player ----
+  const full = document.createElement("div");
+  full.className = "story-full";
+  full.innerHTML = `
+    <div class="story-full-head">
+      <h4>Watch the full 90-second story</h4>
+      <span class="loop-tag">⟳ loops forever</span>
+    </div>`;
+  const wrap = document.createElement("div");
+  wrap.className = "player-wrap paused";
+  const fv = makeVideo(story.src, { autoplay: true, eager: true });
+  wrap.appendChild(fv);
+  const toggle = document.createElement("div");
+  toggle.className = "play-toggle";
+  toggle.innerHTML = "<span>▶</span>";
+  wrap.appendChild(toggle);
+  wrap.addEventListener("click", () => {
+    if (fv.paused) { fv.preload = "auto"; fv.play().catch(() => {}); }
+    else fv.pause();
+  });
+  fv.addEventListener("play", () => { wrap.classList.remove("paused"); toggle.querySelector("span").textContent = "❚❚"; });
+  fv.addEventListener("pause", () => { wrap.classList.add("paused"); toggle.querySelector("span").textContent = "▶"; });
+  full.appendChild(wrap);
+
+  // timeline
+  const tl = document.createElement("div");
+  tl.className = "timeline";
+  const bar = document.createElement("div");
+  bar.className = "tl-bar";
+  const b = story.bounds.map((x) => (x / STORY_DUR) * 100);
+  bar.style.background = `linear-gradient(90deg,
+    ${SCENE_COLORS[0]} 0%, ${SCENE_COLORS[0]} ${b[0]}%,
+    ${SCENE_COLORS[1]} ${b[0]}%, ${SCENE_COLORS[1]} ${b[1]}%,
+    ${SCENE_COLORS[2]} ${b[1]}%, ${SCENE_COLORS[2]} ${b[2]}%,
+    ${SCENE_COLORS[3]} ${b[2]}%, ${SCENE_COLORS[3]} ${b[3]}%,
+    ${SCENE_COLORS[0]} ${b[3]}%, ${SCENE_COLORS[0]} 100%)`;
+  story.bounds.forEach((x, i) => {
+    const m = document.createElement("span");
+    m.className = "tl-marker";
+    m.style.left = `${(x / STORY_DUR) * 100}%`;
+    m.title = i === 3 ? "UniTemp transition — closes the loop" : "UniTemp transition";
+    bar.appendChild(m);
+  });
+  const headEl = document.createElement("span");
+  headEl.className = "tl-head";
+  headEl.style.left = "0%";
+  bar.appendChild(headEl);
+  bar.addEventListener("click", (ev) => {
+    const r = bar.getBoundingClientRect();
+    const frac = Math.min(Math.max((ev.clientX - r.left) / r.width, 0), 0.999);
+    fv.preload = "auto";
+    fv.currentTime = frac * STORY_DUR;
+    fv.play().catch(() => {});
+  });
+  tl.appendChild(bar);
+
+  const chips = document.createElement("div");
+  chips.className = "tl-chips";
+  story.scenes.forEach((name, k) => {
+    const chip = document.createElement("button");
+    chip.className = "tl-chip";
+    chip.type = "button";
+    chip.style.setProperty("--dot", SCENE_COLORS[k]);
+    chip.innerHTML = `<i></i>Scene ${k + 1} · ${name}`;
+    chip.addEventListener("click", () => {
+      fv.preload = "auto";
+      fv.currentTime = k === 0 ? 1 : story.bounds[k - 1] + 2;
+      fv.play().catch(() => {});
+    });
+    chips.appendChild(chip);
+  });
+  tl.appendChild(chips);
+  full.appendChild(tl);
+  block.appendChild(full);
+  playheads.push({ v: fv, head: headEl });
+
+  // ---- full prompts accordion, grouped by scene ----
+  const acc = document.createElement("details");
+  acc.className = "story-prompts";
+  const sum = document.createElement("summary");
+  sum.textContent = "Full text prompts (12 shots)";
+  acc.appendChild(sum);
+  const body = document.createElement("div");
+  body.className = "story-prompts-body";
+  const groups = {};
+  story.caption.split("<br><br>").forEach((blockTxt) => {
+    const m = blockTxt.match(/^Scene\s+(\d+)-(\d+):\s*([\s\S]*)$/);
+    if (m) (groups[m[1]] = groups[m[1]] || []).push({ sub: m[2], text: m[3] });
+  });
+  Object.keys(groups).sort().forEach((k) => {
+    const idx = parseInt(k, 10) - 1;
+    const h = document.createElement("h5");
+    h.style.color = SCENE_COLORS[idx] || "#fff";
+    h.textContent = `Scene ${k} · ${story.scenes[idx] || ""}`;
+    body.appendChild(h);
+    groups[k].forEach((shot) => {
+      const p = document.createElement("p");
+      p.innerHTML = `<b>Shot ${k}-${shot.sub}.</b> ${shot.text}`;
+      body.appendChild(p);
+    });
+  });
+  acc.appendChild(body);
+  block.appendChild(acc);
+
+  return block;
+}
+
+buildPager("stories-root", storyVideos.length,
+  (i) => `${storyVideos[i].num} · ${storyVideos[i].title}`,
+  (i) => buildStory(storyVideos[i]),
+  { dark: true });
+
+/* ---- segment + playhead ticker ---- */
+function tick() {
+  for (const seg of segRegistry) {
+    const v = seg.v;
+    if (v.readyState >= 1 && !v.paused) {
+      const t = v.currentTime;
+      const out = seg.wrap
+        ? (t > seg.end + 0.05 && t < seg.start - 0.05)
+        : (t < seg.start - 0.4 || t > seg.end + 0.05);
+      if (out && canSeekTo(v, seg.start)) {
+        try { v.currentTime = seg.start; } catch (e) {}
+      }
+      if (seg.bar) {
+        const dur = seg.wrap ? (STORY_DUR - seg.start + seg.end) : (seg.end - seg.start);
+        let pos = seg.wrap ? (t >= seg.start ? t - seg.start : STORY_DUR - seg.start + t) : t - seg.start;
+        pos = Math.min(Math.max(pos, 0), dur);
+        seg.bar.style.width = `${(pos / dur) * 100}%`;
+      }
+    }
+  }
+  for (const ph of playheads) {
+    if (ph.v.readyState >= 1) {
+      ph.head.style.left = `${(ph.v.currentTime / STORY_DUR) * 100}%`;
+    }
+  }
+  requestAnimationFrame(tick);
+}
+requestAnimationFrame(tick);
+
+/* ================================================================
+   Reveal animations + back-to-top
+   ================================================================ */
+
+// Pause the hero background loops once they scroll out of view.
+document.querySelectorAll(".hero-media video").forEach((v) => playIO.observe(v));
+
+const revealIO = new IntersectionObserver((entries) => {
+  for (const en of entries) {
+    if (en.isIntersecting) {
+      en.target.classList.add("in");
+      revealIO.unobserve(en.target);
+    }
+  }
+}, { rootMargin: "-40px" });
+document.querySelectorAll(".reveal").forEach((el) => revealIO.observe(el));
+
+const toTop = document.getElementById("to-top");
+toTop.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+
+/* ---- scroll-spy: highlight the nav link of the section in view ---- */
+const navLinks = [...document.querySelectorAll('.nav-links a[href^="#"]')];
+const navSections = navLinks.map((a) => document.querySelector(a.getAttribute("href")));
+
+function onScroll() {
+  toTop.classList.toggle("show", window.scrollY > 700);
+  const y = window.scrollY + 110;
+  let active = -1;
+  navSections.forEach((s, i) => {
+    if (s && s.offsetTop <= y) active = i;
+  });
+  // at the very bottom, the last section may be too short to pass the
+  // threshold — force it active
+  if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) {
+    active = navSections.length - 1;
+  }
+  navLinks.forEach((a, i) => a.classList.toggle("active", i === active));
+}
+window.addEventListener("scroll", onScroll, { passive: true });
+window.addEventListener("resize", onScroll, { passive: true });
+onScroll();
+
+/* ---- copy BibTeX ---- */
+const copyBtn = document.getElementById("copy-bibtex");
+copyBtn.addEventListener("click", () => {
+  const text = document.getElementById("bibtex-code").innerText;
+  const done = () => {
+    copyBtn.textContent = "Copied!";
+    setTimeout(() => { copyBtn.textContent = "Copy"; }, 1600);
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(done).catch(() => {});
+  } else {
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand("copy");
+    ta.remove();
+    done();
+  }
+});
+</script>
+
+</body>
+</html>

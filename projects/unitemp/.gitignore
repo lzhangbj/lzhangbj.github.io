@@ -1,0 +1,3 @@
+# Videos are hosted on the Hugging Face dataset Linz99/webpage and streamed
+# from there (see ASSET_BASE in index.html) — keep them out of the git repo.
+videos/
