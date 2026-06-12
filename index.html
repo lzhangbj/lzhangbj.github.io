@@ -1,88 +1,25 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta charset="UTF-8">
 
 	<title>Lin Zhang</title>
 
 	<meta name="author" content="Lin Zhang">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Lin Zhang (张林) — CS PhD student at University of Wisconsin–Madison working on computer vision and multimodal visual content generation.">
 
-	<link rel="stylesheet" type="text/css" href="./stylesheet.css">
 	<link rel="icon" type="image/png" href="./images/avatar-3.jpg">
 
-	<style>
-		/* UniTemp story carousel (publication thumbnail) */
-		.unitemp-carousel {
-			position: relative;
-			overflow: hidden;
-			border-radius: 6px;
-			background: #000;
-		}
-		.unitemp-carousel video {
-			width: 100%;
-			display: block;
-		}
-		.uc-arrow {
-			position: absolute;
-			top: 50%;
-			width: 26px;
-			height: 26px;
-			padding: 0;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			border: none;
-			border-radius: 50%;
-			background: rgba(20, 20, 25, 0.5);
-			-webkit-backdrop-filter: blur(3px);
-			backdrop-filter: blur(3px);
-			color: #fff;
-			font-size: 11px;
-			line-height: 1;
-			cursor: pointer;
-			opacity: 0;
-			transform: translateY(-50%);
-			transition: opacity 0.22s ease, background 0.22s ease, transform 0.22s ease;
-		}
-		.uc-prev { left: 7px; }
-		.uc-next { right: 7px; }
-		.unitemp-carousel:hover .uc-arrow { opacity: 1; }
-		.uc-arrow:hover {
-			background: rgba(20, 20, 25, 0.85);
-			transform: translateY(-50%) scale(1.15);
-		}
-		.uc-dots {
-			position: absolute;
-			left: 0;
-			right: 0;
-			bottom: 7px;
-			display: flex;
-			justify-content: center;
-			gap: 5px;
-			opacity: 0;
-			transition: opacity 0.22s ease;
-			pointer-events: none;
-		}
-		.unitemp-carousel:hover .uc-dots { opacity: 1; pointer-events: auto; }
-		.uc-dot {
-			width: 6px;
-			height: 6px;
-			border-radius: 50%;
-			background: rgba(255, 255, 255, 0.45);
-			cursor: pointer;
-			transition: background 0.2s ease, transform 0.2s ease;
-		}
-		.uc-dot.active {
-			background: #fff;
-			transform: scale(1.25);
-		}
-		/* touch devices have no hover — keep controls subtly visible */
-		@media (hover: none) {
-			.uc-arrow, .uc-dots { opacity: 0.8; pointer-events: auto; }
-		}
-	</style>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Serif+SC:wght@500&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap" rel="stylesheet">
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+
+	<link rel="stylesheet" type="text/css" href="./stylesheet.css">
 
 	<!-- Google tag (gtag.js) -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=G-VHMKZG3G6Y"></script>
@@ -101,631 +38,365 @@
 </head>
 
 <body>
-<table style="width:100%;max-width:900px;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;">
-	<tbody>
-	<tr style="padding:0px">
-		<td style="padding:0px">
+
+<!-- introduction -->
+<header class="hero-band">
+	<div class="hero">
+		<div class="hero-text">
+			<h1>Lin Zhang <span class="cn-name">张林</span></h1>
+			<p>
+				I am a third-year CS PhD student at University of Wisconsin&ndash;Madison, supervised by
+				<a href="https://yinli-vision.github.io/">Yin Li</a>. 
+				I am grateful to have been mentored by
+				<a href="https://pedro-morgado.github.io/">Pedro Morgado</a> at Skild AI,
+				<a href="https://yuheng-li.github.io/">Yuheng Li</a> and
+				<a href="https://gujiuxiang.com">Jiuxiang Gu</a> at Adobe Research.
+			</p>
+			<p>
+				Previously, I graduated from the MSCV program at Carnegie Mellon University, supervised by
+				<a href="https://www.cs.cmu.edu/~ftorre/index.html">Fernando de la Torre</a> and
+				<a href="https://shayokch.com/">Shayok Chakraborty</a>.
+				I received my B.S. in CS and Math from Hong Kong University of Science and Technology with
+				First Class Honors, supervised by
+				<a href="http://www.cs.ust.hk/~cktang/bio-sketch-review.htm">Chi-Keung Tang</a> and
+				<a href="https://scholar.google.com/citations?user=nFhLmFkAAAAJ">Yu-Wing Tai</a>.
+			</p>
+			<h3 class="hero-subhead">Research Interests</h3>
+			<p>
+				I am interested in building multi-modal generative models, including:
+			</p>
+			<ul class="hero-list">
+				<li><strong>Controllability:</strong> generating visual content that precisely follows
+					multi-modal conditions such as text and audio &mdash; e.g., animating images
+					in sync with sound (<a href="./projects/asva/asva.html">ASVA</a>)</li>
+				<li><strong>Training &amp; scalability:</strong> designing efficient training recipes that
+					scale generative models to larger sizes, more data, and new capabilities
+					(<a href="https://arxiv.org/abs/2508.03955v1">OpenASVA</a>, <a href="./projects/unitemp/index.html">UniTemp</a>)</li>
+				<li><strong>Efficiency:</strong> reducing the memory and compute cost of generative models
+					at both training and inference time, towards fast few-step generation (<a href="./projects/unitemp/index.html">UniTemp</a>)</li>
+			</ul>
+		</div>
+		<div class="hero-side">
+			<a class="hero-photo" href="./images/avatar-3.jpg">
+				<img class="avatar" src="./images/avatar-3.jpg" alt="Lin Zhang">
+			</a>
+			<nav class="contact">
+				<a href="mailto:lzhangbj@connect.ust.hk"><i class="fa-solid fa-envelope"></i><span>Email</span></a>
+				<a href="https://scholar.google.com/citations?hl=en&user=5-PDQ94AAAAJ"><i class="ai ai-google-scholar"></i><span>Google Scholar</span></a>
+				<a href="https://github.com/lzhangbj/"><i class="fa-brands fa-github"></i><span>GitHub</span></a>
+				<a href="https://www.linkedin.com/in/lin-zhang-90984a159/"><i class="fa-brands fa-linkedin"></i><span>LinkedIn</span></a>
+				<a href="https://x.com/LinZ23754317"><i class="fa-brands fa-x-twitter"></i><span>X</span></a>
+			</nav>
+		</div>
+	</div>
+</header>
+
+<main>
+
+	<!-- news (hidden for now)
+	<section id="news">
+		<h2>News</h2>
+		<ul class="news-list">
+			<li>
+				<span class="news-date">Jul 2024</span>
+				<span>One paper accepted to ECCV 2024 as an <span class="hl">Oral Presentation</span>!</span>
+			</li>
+			<li>
+				<span class="news-date">Aug 2023</span>
+				<span>Joining University of Wisconsin&ndash;Madison as a CS PhD student.</span>
+			</li>
+		</ul>
+	</section>
+	-->
 
 
-			<!-- introduction -->
-			<table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;">
-				<tbody>
-				<div>
-					<p style="text-align:center;margin:3%">
-						<name>Lin Zhang</name>&nbsp;&nbsp;&nbsp;<chinese-name>张林</chinese-name>
-					</p>
+	<!-- publications -->
+	<section id="publications">
+		<h2>Publications</h2>
+
+		<article class="pub">
+			<div class="pub-media">
+				<span class="media-tag">arXiv 2026</span>
+				<div class="unitemp-carousel" id="unitemp-carousel">
+					<video id="unitemp-story-video" src="https://huggingface.co/datasets/Linz99/webpage/resolve/main/projects/unitemp/videos/stories/01.mp4" muted loop playsinline autoplay preload="metadata"></video>
+					<button class="uc-arrow uc-prev" onclick="unitempStoryStep(-1)" aria-label="Previous story">&#10094;</button>
+					<button class="uc-arrow uc-next" onclick="unitempStoryStep(1)" aria-label="Next story">&#10095;</button>
+					<div class="uc-dots">
+						<span class="uc-dot active" onclick="unitempStoryGo(0)"></span>
+						<span class="uc-dot" onclick="unitempStoryGo(1)"></span>
+						<span class="uc-dot" onclick="unitempStoryGo(2)"></span>
+					</div>
 				</div>
-				<tr style="padding:0px">
-					<td style="padding:2.5%;width:65%;vertical-align:top">
-						<p>
-							I am a third-year CS PhD in University of Wisconsin - Madison, supervised by
-							Prof. <a href="https://www.biostat.wisc.edu/~yli/"> Yin Li </a>. 
-							I had a wonderful time working with Dr.<a href="https://pedro-morgado.github.io/">Pedro Morgado</a> in Skild AI.
-						</p>
-						<p>
-							Previously, I graduated from MSCV program in Carnegie Mellon University, supervised by
-							Prof. <a href="https://www.cs.cmu.edu/~ftorre/index.html">Fernando de la Torre</a> and
-							Prof. <a href="https://shayokch.com/">Shayok Chakraborty</a>.
-							I received B.S. in CS and Math from Hong Kong University of Science and Technology with
-							First Class Honors, supervised by Prof. <a
-								href="http://www.cs.ust.hk/~cktang/bio-sketch-review.htm">Chi-Keung Tang </a> and
-							Prof. <a href="https://scholar.google.com/citations?user=nFhLmFkAAAAJ">Yu-Wing Tai</a>.
-						</p>
-						<p>My research interests are computer vision and deep learning.
-							Currently, I am interested in visual content generation conditioned on multiple modalities
-							such as text and audio.
-							<!--                        I also had experience in low-supervision learning problems, including active learning, self/semi-supervised learning, and few-shot learning.-->
-						</p>
+			</div>
+			<div class="pub-body">
+				<h3 class="pub-title">UniTemp: Unlocking Video Generation in Any Temporal Order via Bidirectional Distillation</h3>
+				<p class="pub-authors">
+					<span class="me">Lin Zhang</span>,
+					Sicheng Mo,
+					Zefan Cai,
+					Jinhong Lin,
+					Zihao Lin,
+					Jiuxiang Gu,
+					Krishna Kumar Singh,
+					Yuheng Li<sup>&dagger;</sup>,
+					Yin Li<sup>&dagger;</sup>
+				</p>
+				<p class="pub-note"><sup>&dagger;</sup>Equal advising</p>
+				<p class="pub-links">
+					<a class="pill" href="./projects/unitemp/index.html">Project</a>
+					<a class="pill" href="https://github.com/lzhangbj/UniTemp">Code</a>
+				</p>
+			</div>
+		</article>
 
-						<!--              <p><b>I am looking for part-time research internship in Spring 2025.</b></p>-->
+		<article class="pub">
+			<div class="pub-media">
+				<span class="media-tag">arXiv 2025</span>
+				<img src="./images/OpenASVA.png" alt="Scaling Up Audio-Synchronized Visual Animation teaser">
+			</div>
+			<div class="pub-body">
+				<h3 class="pub-title">Scaling Up Audio-Synchronized Visual Animation: An Efficient Training Paradigm</h3>
+				<p class="pub-authors">
+					<span class="me">Lin Zhang</span>,
+					Zefan Cai,
+					Yufan Zhou,
+					Shentong Mo,
+					Jinhong Lin,
+					Cheng-En Wu,
+					Yibing Wei,
+					Yijing Zhang,
+					Ruiyi Zhang,
+					Wen Xiao,
+					Tong Sun,
+					Junjie Hu,
+					Pedro Morgado
+				</p>
+				<p class="pub-links">
+					<a class="pill" href="https://arxiv.org/abs/2508.03955v1">arXiv</a>
+					<a class="pill" href="https://drive.google.com/file/d/1QcTfk1oYMP34AAw7Y12pmlMBYIcJ9Goe/view?usp=sharing">Dataset (AVSync48)</a>
+				</p>
+			</div>
+		</article>
 
-						<p style="text-align:center">
-							<a href="mailto:lzhangbj@connect.ust.hk">Email</a> &nbsp;/&nbsp;
-							<a href="https://scholar.google.com/citations?hl=en&user=5-PDQ94AAAAJ">Google Scholar</a>
-							&nbsp;/&nbsp;
-							<a href="https://github.com/lzhangbj/">Github</a> &nbsp;/&nbsp;
-							<a href="https://www.linkedin.com/in/lin-zhang-90984a159/">LinkedIn</a> &nbsp;/&nbsp;
-							<a href="https://x.com/LinZ23754317">Twitter</a>
-						</p>
-					</td>
-					<td style="padding:2.5%;width:35%;max-width:35%;vertical-align:top">
-						<div class="ellipse-container">
-							<a href="./images/avatar-3.jpg"><img style="width:100%;max-width:100%" alt="profile photo"
-							                                     src="./images/avatar-3.jpg" class="hoverZoomLink"></a>
-						</div>
-					</td>
-				</tr>
-				</tbody>
-			</table>
+		<article class="pub">
+			<div class="pub-media">
+				<span class="media-tag">ECCV 2024</span>
+				<img src="https://huggingface.co/datasets/Linz99/webpage/resolve/main/images/agva.gif" alt="Audio-Synchronized Visual Animation samples">
+			</div>
+			<div class="pub-body">
+				<h3 class="pub-title">Audio-Synchronized Visual Animation</h3>
+				<p class="pub-authors">
+					<span class="me">Lin Zhang</span>,
+					Shentong Mo,
+					Yijing Zhang,
+					Pedro Morgado
+				</p>
+				<p class="pub-award"><span class="award">Oral Presentation &middot; Top 2.3%</span></p>
+				<p class="pub-links">
+					<a class="pill" href="./projects/asva/asva.html">Project</a>
+					<a class="pill" href="https://arxiv.org/abs/2403.05659">arXiv</a>
+					<a class="pill" href="https://github.com/lzhangbj/ASVA">Code</a>
+					<a class="pill" href="https://huggingface.co/spaces/Linz99/ASVA">HF Demo</a>
+					<a class="pill" href="https://www.youtube.com/watch?v=0quckDGL7hk">Video</a>
+					<a class="pill" href="https://drive.google.com/drive/folders/1onvx5y6QOceDrHZy8-ajFJ4RUuGWwT5V?usp=sharing">Dataset (AVSync15)</a>
+				</p>
+			</div>
+		</article>
 
-			<!-- News -->
-			<table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;">
-				<tbody>
-				<tr>
-					<td style="padding:2.5%;padding-bottom:0%;width:100%;vertical-align:middle">
-						<heading>News</heading>
-						<hr>
-					</td>
-				</tr>
-				</tbody>
-			</table>
-			<table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;">
-				<tbody>
-				<tr>
-					<td style="padding:0%;width:100%;vertical-align:middle">
-						<ul>
-							<li style="padding-bottom:1%;"><b>July 2024</b> One paper accepted to ECCV 2024 for <strong><span style="color:red">Oral Presentation</span></strong>!</li>
-							<li style="padding-bottom:1%;"><b>Aug. 2023</b> Joining University of Wisconsin - Madison as a CS PhD.
-							</li>
-						</ul>
-					</td>
-				</tr>
-				</tbody>
-			</table>
+		<article class="pub">
+			<div class="pub-media">
+				<span class="media-tag">WACV 2024</span>
+				<img src="https://huggingface.co/datasets/Linz99/webpage/resolve/main/images/mt-ada.png" alt="D3GU overview figure">
+			</div>
+			<div class="pub-body">
+				<h3 class="pub-title">D<sup>3</sup>GU: Multi-target Active Domain Adaptation via Enhancing Domain Alignment</h3>
+				<p class="pub-authors">
+					<span class="me">Lin Zhang</span>,
+					Linghan Xu,
+					Saman Motamed,
+					Shayok Chakraborty,
+					Fernando de la Torre
+				</p>
+				<p class="pub-links">
+					<a class="pill" href="./projects/d3gu/d3gu.html">Project</a>
+					<a class="pill" href="https://arxiv.org/abs/2401.05465">arXiv</a>
+					<a class="pill" href="https://github.com/lzhangbj/D3GU">Code</a>
+				</p>
+			</div>
+		</article>
 
+		<article class="pub">
+			<div class="pub-media">
+				<span class="media-tag">CVPR 2022</span>
+				<img src="https://huggingface.co/datasets/Linz99/webpage/resolve/main/images/tempgrad.png" alt="Temporal gradient learning overview">
+			</div>
+			<div class="pub-body">
+				<h3 class="pub-title">Learning from Temporal Gradient for Semi-supervised Action Recognition</h3>
+				<p class="pub-authors">
+					Junfei Xiao,
+					Longlong Jing,
+					<span class="me">Lin Zhang</span>,
+					Jie Hu,
+					Qi She,
+					Zongwei Zhou,
+					Alan Yuille,
+					Yingwei Li
+				</p>
+				<p class="pub-links">
+					<a class="pill" href="https://arxiv.org/abs/2111.13241">arXiv</a>
+					<a class="pill" href="https://github.com/lambert-x/video-semisup">Code</a>
+				</p>
+			</div>
+		</article>
 
-			<!-- publications -->
-			<table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;">
-				<tbody>
-				<tr>
-					<td style="padding:2.5%;padding-bottom:0%;width:100%;vertical-align:middle">
-						<heading>Publication</heading>
-						<hr>
-					</td>
-				</tr>
-				</tbody>
-			</table>
-			<table style="width:100%;border:0px;border-spacing:20px;border-collapse:separate;margin-right:auto;margin-left:auto;">
-				<tbody>
+		<article class="pub">
+			<div class="pub-media">
+				<span class="media-tag">BMVC 2021</span>
+				<img src="./images/dual_var.png" alt="DualVar results">
+			</div>
+			<div class="pub-body">
+				<h3 class="pub-title">Inter-intra Variant Dual Representations for Self-supervised Video Recognition</h3>
+				<p class="pub-authors">
+					<span class="me">Lin Zhang</span>,
+					Qi She,
+					Zhengyang Shen,
+					Changhu Wang
+				</p>
+				<p class="pub-links">
+					<a class="pill" href="./projects/dualvar/dualvar.html">Project</a>
+					<a class="pill" href="https://arxiv.org/abs/2107.01194">arXiv</a>
+					<a class="pill" href="https://github.com/lzhangbj/DualVar">Code</a>
+				</p>
+			</div>
+		</article>
 
-				<tr>
-					<td style="padding:0px;width:25%;vertical-align:middle">
-						<div class="unitemp-carousel" id="unitemp-carousel">
-							<video id="unitemp-story-video" src="https://huggingface.co/datasets/Linz99/webpage/resolve/main/projects/unitemp/videos/stories/01.mp4" muted loop playsinline autoplay preload="metadata"></video>
-							<button class="uc-arrow uc-prev" onclick="unitempStoryStep(-1)" aria-label="Previous story">&#10094;</button>
-							<button class="uc-arrow uc-next" onclick="unitempStoryStep(1)" aria-label="Next story">&#10095;</button>
-							<div class="uc-dots">
-								<span class="uc-dot active" onclick="unitempStoryGo(0)"></span>
-								<span class="uc-dot" onclick="unitempStoryGo(1)"></span>
-								<span class="uc-dot" onclick="unitempStoryGo(2)"></span>
-							</div>
-						</div>
-					</td>
-					<td style="padding:0px;width:75%;vertical-align:top">
-						<papertitle>UniTemp: Unlocking Video Generation in Any Temporal Order via Autoregressive Distillation
-						</papertitle>
-						<br>
-						<paperauthor>
-							<u>Lin Zhang</u>,
-							Sicheng Mo,
-							Zefan Cai,
-							Jinhong Lin,
-							Zihao Lin,
-							Jiuxiang Gu,
-							Krishna Kumar Singh,
-							Yuheng Li,
-							Yin Li
-						</paperauthor>
-						<br>
-						<paperauthor>
-							In <em>arXiv</em>, 2026
-						</paperauthor>
-						<br>
-						<paperauthor>
-							<a href='./projects/unitemp/index.html'><img src='https://img.shields.io/badge/Project-4CAF50?'></a>
-							<a href='https://github.com/lzhangbj/UniTemp'><img src='https://img.shields.io/badge/GitHub-181717?logo=github&logoColor=white'></a>
-						</paperauthor>
-					</td>
-				</tr>
+		<article class="pub">
+			<div class="pub-media">
+				<span class="media-tag">ICCV 2021</span>
+				<img src="./images/MT-ORL.png" alt="MT-ORL architecture figure">
+			</div>
+			<div class="pub-body">
+				<h3 class="pub-title">MT-ORL: Multi-Task Occlusion Relationship Learning</h3>
+				<p class="pub-authors">
+					Panhe Feng,
+					Qi She,
+					Lei Zhu,
+					JiaXin Li,
+					<span class="me">Lin Zhang</span>,
+					Zijian Feng,
+					Changhu Wang,
+					Chunpeng Li,
+					Xuejing Kang,
+					Anlong Ming
+				</p>
+				<p class="pub-links">
+					<a class="pill" href="https://arxiv.org/abs/2108.05722">arXiv</a>
+					<a class="pill" href="https://github.com/fengpanhe/MT-ORL">Code</a>
+				</p>
+			</div>
+		</article>
 
-				<tr onmouseout="openasva_stop()" onmouseover="openasva_start()">
-					<td style="padding:0px;width:25%;vertical-align:middle">
-						<img src="./images/OpenASVA.png" style="width:100%">
-					</td>
-					<td style="padding:0px;width:75%;vertical-align:top">
-						<!-- <papertitle><img src="images/new.png" alt="[NEW]" width="5%"
-											style="border-style:none;padding-right:1%">Audio-Synchronized Visual Animation -->
-						<papertitle>Scaling Up Audio-Synchronized Visual Animation: An Efficient Training Paradigm
-						</papertitle>
-						<br>
-						<paperauthor>
-							<u>Lin Zhang</u>,
-							Zefan Cai, 
-							Yufan Zhou, 
-							Shentong Mo, 
-							Jinhong Lin, 
-							Cheng-En Wu, 
-							Yibing Wei, 
-							Yijing Zhang, 
-							Ruiyi Zhang, 
-							Wen Xiao, 
-							Tong Sun, 
-							Junjie Hu, 
-							Pedro Morgado
-						</paperauthor>
-						<br>
-						<paperauthor>
-							In <em>arXiv</em>, 2025
-						</paperauthor>
-						<br>
-						<paperauthor>
-							<a href='https://arxiv.org/abs/2508.03955v1'><img src="https://img.shields.io/badge/arXiv-b31b1b.svg"></a>
-							<a href='https://drive.google.com/file/d/1QcTfk1oYMP34AAw7Y12pmlMBYIcJ9Goe/view?usp=sharing'><img src="https://img.shields.io/badge/AVSync48-Dataset-blue"></a>
-						</paperauthor>
-					</td>
-				</tr>
+		<article class="pub">
+			<div class="pub-media">
+				<span class="media-tag">arXiv 2020</span>
+				<img src="./images/one_shot.png" alt="One-shot object detection results">
+			</div>
+			<div class="pub-body">
+				<h3 class="pub-title">One-Shot Object Detection without Fine-Tuning</h3>
+				<p class="pub-authors">
+					Xiang Li*,
+					<span class="me">Lin Zhang*</span>,
+					Yau Pun Chen,
+					Yu-Wing Tai,
+					Chi-Keung Tang
+				</p>
+				<p class="pub-note">*Equal contribution</p>
+				<p class="pub-links">
+					<a class="pill" href="https://arxiv.org/abs/2005.03819">arXiv</a>
+					<a class="pill" href="https://github.com/RyanXLi/OneshotDet">Code</a>
+				</p>
+			</div>
+		</article>
 
-				<tr onmouseout="asva_stop()" onmouseover="asva_start()">
-					<td style="padding:0px;width:25%;vertical-align:middle">
-						<img src="https://huggingface.co/datasets/Linz99/webpage/resolve/main/images/agva.gif" style="width:100%">
-					</td>
-					<td style="padding:0px;width:75%;vertical-align:top">
-						<!-- <papertitle><img src="images/new.png" alt="[NEW]" width="5%"
-						                 style="border-style:none;padding-right:1%">Audio-Synchronized Visual Animation -->
-						<papertitle>Audio-Synchronized Visual Animation
-						</papertitle>
-						<br>
-						<paperauthor>
-							<u>Lin Zhang</u>,
-							Shentong Mo,
-							Yijing Zhang,
-							Pedro Morgado
-						</paperauthor>
-						<br>
-						<paperauthor>
-							In <em>ECCV</em>, 2024
-						</paperauthor>
-						<br>
-						<paperauthor>
-							<em><strong><span style="color:#e74c3c">Oral Presentation (Top 2.3%)</span></strong></em>
-						</paperauthor>
-						<br>
-						<paperauthor>
-							<a href='./projects/asva/asva.html'><img src='https://img.shields.io/badge/Project-4CAF50?'></a>
-							<a href='https://arxiv.org/abs/2403.05659'><img src="https://img.shields.io/badge/arXiv-b31b1b.svg"></a>
-							<a href='https://github.com/lzhangbj/ASVA'><img src='https://img.shields.io/github/stars/lzhangbj/ASVA?style=social'></a>
-							<a href='https://huggingface.co/spaces/Linz99/ASVA'><img src='https://img.shields.io/badge/%F0%9F%A4%97%20HF%20Demo-4a4a4a'></a>
-							<a href='https://www.youtube.com/watch?v=0quckDGL7hk'><img src='https://img.shields.io/badge/YouTube-cd201f?logo=youtube&logoColor=white"'></a>
-							<a href='https://drive.google.com/drive/folders/1onvx5y6QOceDrHZy8-ajFJ4RUuGWwT5V?usp=sharing'><img src="https://img.shields.io/badge/AVSync15-Dataset-blue"></a>
-						</paperauthor>
-					</td>
-				</tr>
+	</section>
 
-				<tr onmouseout="d3gu_stop()" onmouseover="d3gu_start()">
-					<td style="padding:0px;width:25%;vertical-align:middle">
-						<img src="https://huggingface.co/datasets/Linz99/webpage/resolve/main/images/mt-ada.png" style="width:100%">
-					</td>
-					<td style="padding:0px;width:75%;vertical-align:top">
-						<papertitle>D<sup>3</sup>GU: Multi-target Active Domain Adaptation via Enhancing Domain
-							Alignment
-						</papertitle>
-						<br>
-						<paperauthor>
-							<u>Lin Zhang</u>,
-							Linghan Xu,
-							Saman Motamed,
-							Shayok Chakraborty,
-							Fernando de la Torre
-						</paperauthor>
-						<br>
-						<paperauthor>
-							In <em>WACV</em>, 2024
-						</paperauthor>
-						<br>
-						<paperauthor>
-							<a href='./projects/d3gu/d3gu.html'><img src='https://img.shields.io/badge/Project-4CAF50?'></a>
-							<a href='https://arxiv.org/abs/2401.05465'><img src="https://img.shields.io/badge/arXiv-b31b1b.svg"></a>
-							<a href='https://github.com/lzhangbj/D3GU'><img src='https://img.shields.io/github/stars/lzhangbj/D3GU?style=social'></a>
-						</paperauthor>
-					</td>
-				</tr>
+	<!-- education -->
+	<section id="education">
+		<h2>Education</h2>
+		<div class="card-grid">
+			<div class="card">
+				<div class="card-logo"><img src="./images/uwm_logo.png" alt="University of Wisconsin–Madison"></div>
+				<div class="card-text">
+					<h3>University of Wisconsin&ndash;Madison</h3>
+					<p>PhD in Computer Science</p>
+					<p class="dates">Aug 2023 &ndash; May 2028 (expected)</p>
+				</div>
+			</div>
+			<div class="card">
+				<div class="card-logo"><img src="./images/cmu_logo.png" alt="Carnegie Mellon University"></div>
+				<div class="card-text">
+					<h3>Carnegie Mellon University</h3>
+					<p>MSc in Computer Vision</p>
+					<p class="dates">Aug 2021 &ndash; Dec 2022</p>
+				</div>
+			</div>
+			<div class="card">
+				<div class="card-logo"><img src="./images/eth_logo.jpg" alt="ETH Zurich"></div>
+				<div class="card-text">
+					<h3>ETH Zurich</h3>
+					<p>Undergraduate Exchange</p>
+					<p class="dates">Sep 2018 &ndash; Jun 2019</p>
+				</div>
+			</div>
+			<div class="card">
+				<div class="card-logo"><img src="./images/hkust_logo.png" alt="Hong Kong University of Science and Technology"></div>
+				<div class="card-text">
+					<h3>Hong Kong University of Science and Technology</h3>
+					<p>BSc in CS &amp; Math, First Class Honors</p>
+					<p class="dates">Sep 2016 &ndash; Jun 2020</p>
+				</div>
+			</div>
+		</div>
+	</section>
 
-				<tr onmouseout="tempgrad_stop()" onmouseover="tempgrad_start()">
-					<td style="padding:0px;width:25%;vertical-align:middle">
-						<img src="https://huggingface.co/datasets/Linz99/webpage/resolve/main/images/tempgrad.png" style="max-width:100%">
-					</td>
-					<td style="padding:0px;width:75%;vertical-align:top">
-						<papertitle>Learning from Temporal Gradient for Semi-supervised Action Recognition</papertitle>
-						<br>
-						<paperauthor>
-							Junfei Xiao,
-							Longlong Jing,
-							<u>Lin Zhang</u>,
-							Jie Hu,
-							Qi She,
-							Zongwei Zhou,
-							Alan Yuille,
-							Yingwei Li
-						</paperauthor>
-						<br>
-						<paperauthor>
-							In <em>CVPR</em>, 2022
-						</paperauthor>
-						<br>
-						<paperauthor>
-							<a href='https://arxiv.org/abs/2111.13241'><img src="https://img.shields.io/badge/arXiv-b31b1b.svg"></a>
-							<a href='https://github.com/lambert-x/video-semisup'><img src='https://img.shields.io/github/stars/lambert-x/video-semisup?style=social'></a>
-						</paperauthor>
-					</td>
-				</tr>
+	<!-- work experience -->
+	<section id="experience">
+		<h2>Experience</h2>
+		<div class="card-grid">
+			<div class="card">
+				<div class="card-logo"><img src="./images/adobe_logo.png" alt="Adobe Research"></div>
+				<div class="card-text">
+					<h3>Adobe Research</h3>
+					<p class="dates">Jun 2025 &ndash; Jan 2026</p>
+				</div>
+			</div>
+			<div class="card">
+				<div class="card-logo"><img src="./images/aws_logo.png" alt="AWS"></div>
+				<div class="card-text">
+					<h3>AWS Rekognition</h3>
+					<p class="dates">May 2022 &ndash; Aug 2022</p>
+				</div>
+			</div>
+			<div class="card">
+				<div class="card-logo"><img src="./images/bytedance_logo.svg" alt="ByteDance"></div>
+				<div class="card-text">
+					<h3>ByteDance AI Lab</h3>
+					<p class="dates">Feb 2021 &ndash; Jun 2021</p>
+				</div>
+			</div>
+			<div class="card">
+				<div class="card-logo"><img src="./images/megvii_logo.png" alt="MEGVII"></div>
+				<div class="card-text">
+					<h3>MEGVII</h3>
+					<p class="dates">Jan 2020 &ndash; Apr 2020</p>
+				</div>
+			</div>
+		</div>
+	</section>
 
-				<tr onmouseout="dualvar_stop()" onmouseover="dualvar_start()">
-					<td style="padding:0px;width:25%;vertical-align:middle">
-						<img src="./images/dual_var.png" style="max-width:100%">
-					</td>
-					<td style="padding:0px;width:75%;vertical-align:top">
-						<papertitle>Inter-intra Variant Dual Representations for Self-supervised Video Recognition
-						</papertitle>
-						<br>
-						<paperauthor>
-							<u>Lin Zhang</u>,
-							Qi She,
-							Zhengyang Shen,
-							Changhu Wang
-						</paperauthor>
-						<br>
-						<paperauthor>
-							In <em>BMVC</em>, 2021
-						</paperauthor>
-						<br>
-						<paperauthor>
-							<a href='./projects/dualvar/dualvar.html'><img src='https://img.shields.io/badge/Project-4CAF50?'></a>
-							<a href='https://arxiv.org/abs/2107.01194'><img src="https://img.shields.io/badge/arXiv-b31b1b.svg"></a>
-							<a href='https://github.com/lzhangbj/DualVar'><img src='https://img.shields.io/github/stars/lzhangbj/DualVar?style=social'></a>
-						</paperauthor>
-					</td>
-				</tr>
+	<footer>&copy; 2026 Lin Zhang</footer>
 
-				<tr onmouseout="mtorl_stop()" onmouseover="mtorl_start()">
-					<td style="padding:0px;width:25%;vertical-align:middle">
-						<img src="./images/MT-ORL.png" style="max-width:100%">
-					</td>
-					<td style="padding:0px;width:75%;vertical-align:top">
-						<papertitle>MT-ORL: Multi-Task Occlusion Relationship Learning</papertitle>
-						<br>
-						<paperauthor>
-							Panhe Feng,
-							Qi She,
-							Lei Zhu, JiaXin Li,
-							<u>Lin Zhang</u>,
-							Zijian Feng,
-							Changhu Wang,
-							Chunpeng Li, Xuejing Kang, Anlong Ming
-						</paperauthor>
-						<br>
-						<paperauthor>
-							In <em>ICCV</em>, 2021
-						</paperauthor>
-						<br>
-						<paperauthor>
-							<a href='https://arxiv.org/abs/2108.05722'><img src="https://img.shields.io/badge/arXiv-b31b1b.svg"></a>
-							<a href='https://github.com/fengpanhe/MT-ORL'><img src='https://img.shields.io/github/stars/fengpanhe/MT-ORL?style=social'></a>
-						</paperauthor>
-					</td>
-				</tr>
-
-				<tr onmouseout="oneshot_stop()" onmouseover="ontshot_start()">
-					<td style="padding:0px;width:25%;vertical-align:middle">
-						<img src="./images/one_shot.png" style="max-width:100%">
-					</td>
-					<td style="padding:0px;width:75%;vertical-align:top">
-						<papertitle>One-Shot Object Detection without Fine-Tuning</papertitle>
-						<br>
-						<paperauthor>
-							Xiang Li*,
-							<u>Lin Zhang*</u>,
-							Yau Pun Chen,
-							Yu-Wing Tai,
-							Chi-Keung Tang
-						</paperauthor>
-						<br>
-						<paperauthor>
-							In <em>arxiv</em>, 2020
-						</paperauthor>
-						<br>
-						<paperauthor>
-							<a href='https://arxiv.org/abs/2005.03819'><img src="https://img.shields.io/badge/arXiv-b31b1b.svg"></a>
-							<a href='https://github.com/RyanXLi/OneshotDet'><img src='https://img.shields.io/github/stars/RyanXLi/OneshotDet?style=social'></a>
-						</paperauthor>
-					</td>
-				</tr>
-
-				</tbody>
-			</table>
-
-			<!-- education -->
-			<table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;">
-				<tbody>
-				<tr>
-					<td style="padding:2.5%;padding-bottom:0%;width:100%;vertical-align:middle">
-						<heading>Education</heading>
-						<hr>
-					</td>
-				</tr>
-				</tbody>
-			</table>
-			<table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;">
-				<tbody>
-
-				<tr>
-					<td style="padding:0px;width:15%;vertical-align:middle;text-align:center">
-						<img src="./images/uwm_logo.png" style="width:100%;">
-					</td>
-					<td style="padding:0px;width:35%;vertical-align:middle">
-						<papertitle>University of Wisconsin - Madison</papertitle>
-						<br> PhD in CS
-						<br> Aug. 2023 - May. 2028 (expected)
-					</td>
-
-					<td style="padding:0px;width:15%;vertical-align:middle;text-align:center">
-						<img src="./images/cmu_logo.png" style="width:60%;">
-					</td>
-					<td style="padding:0px;width:35%;vertical-align:middle">
-						<papertitle>Carnegie Mellon University</papertitle>
-						<br> MSc in Computer Vision
-						<br> Aug. 2021 - Dec. 2022
-						<!--              <br>GPA: 3.95/4.00-->
-					</td>
-				</tr>
-
-				<tr>
-
-					<td style="padding:0px;width:15%;vertical-align:middle;text-align:center">
-						<img src="./images/eth_logo.jpg" style="width:80%;">
-					</td>
-					<td style="padding:0px;width:35%;vertical-align:middle">
-						<papertitle> ETH Zurich</papertitle>
-						<br>Undergraduate Exchange
-						<br>Sep. 2018 - Jun. 2019
-						<br>
-					</td>
-
-					<td style="padding:0px;width:15%;vertical-align:middle;text-align:center">
-						<img src="./images/hkust_logo.png" style="width:70%;">
-					</td>
-					<td style="padding:0px;width:35%;vertical-align:middle">
-						<papertitle>Hong Kong University of Science and Technology</papertitle>
-						<br>BSc. in CS&Math
-						<br>Sep. 2016 - Jun. 2020
-						<!--              <br>GPA: 3.96/4.30-->
-						<br>
-					</td>
-
-				</tr>
-
-
-				</tbody>
-			</table>
-
-
-			<!-- work experience -->
-			<table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;">
-				<tbody>
-				<tr>
-					<td style="padding:2.5%;padding-bottom:0%;width:100%;vertical-align:middle">
-						<heading>Experience</heading>
-						<hr>
-					</td>
-				</tr>
-				</tbody>
-			</table>
-			<table style="width:100%;border:0px;border-spacing:10px;border-collapse:separate;margin-right:auto;margin-left:auto;">
-				<tbody>
-
-				<tr>
-					<td style="padding:0px;width:15%;vertical-align:middle;text-align:center">
-						<img src="./images/adobe_logo.png" style="width:100%">
-					</td>
-					<td style="padding:0px;width:35%;vertical-align:middle">
-						<papertitle>Adobe Research</papertitle>
-						<br>
-						June 2025 - Jan. 2026
-						<br>
-					</td>
-
-					<td style="padding:0px;width:15%;vertical-align:middle;text-align:center">
-						<img src="./images/aws_logo.png" style="width:50%">
-					</td>
-					<td style="padding:0px;width:35%;vertical-align:middle">
-						<papertitle>AWS Rekognition</papertitle>
-						<br>
-						May. 2022 - Aug. 2022
-						<br>
-					</td>
-				</tr>
-
-				<tr>
-					<td style="padding:0px;width:15%;vertical-align:middle;text-align:center">
-						<img src="./images/bytedance_logo.svg" style="width:100%">
-					</td>
-					<td style="padding:0px;width:35%;vertical-align:middle">
-						<papertitle>ByteDance AI Lab</papertitle>
-						<br>
-						Feb. 2021 - Jun. 2021
-						<br>
-					</td>
-
-					<td style="padding:0px;width:15%;vertical-align:middle;text-align:center">
-						<img src="./images/megvii_logo.png" style="width:100%">
-					</td>
-					<td style="padding:0px;width:35%;vertical-align:middle">
-						<papertitle>MEGVII</papertitle>
-						<br>
-						Jan. 2020 - Apr. 2020
-						<br>
-					</td>
-				</tr>
-
-				</tbody>
-			</table>
-
-
-			<!-- projects  -->
-			<!--        <table width="100%" align="center" border="0" cellspacing="0" cellpadding="20"><tbody>-->
-			<!--          <tr>-->
-			<!--            <td>-->
-			<!--              <heading>Projects</heading>-->
-			<!--            </td>-->
-			<!--          </tr>-->
-			<!--        </tbody></table>-->
-
-			<!--        <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>-->
-
-			<!--          <tr>-->
-			<!--            <td style="padding:0px;width:25%;vertical-align:middle">-->
-			<!--              <div class="one">-->
-			<!--                <div class="two" id="nerfsup_image" style="opacity: 1;">-->
-			<!--                  <video style="max-height:100px;max-width:160px" muted="" autoplay="" loop="">-->
-			<!--                    <source src="https://huggingface.co/datasets/Linz99/webpage/resolve/main/images/nerf_sup.mp4" type="video/mp4">-->
-			<!--                    Your browser does not support the video tag.-->
-			<!--                  </video>-->
-			<!--                </div>-->
-			<!--              </div>-->
-			<!--              <script type="text/javascript">-->
-			<!--              </script>-->
-			<!--            </td>-->
-			<!--            <td style="padding:0px;width:75%;vertical-align:middle">-->
-			<!--              <papertitle>NeRF Speedup at Test Time via Super-resolution</papertitle>-->
-			<!--              <br>-->
-			<!--              <u>Lin Zhang</u>,-->
-			<!--              <a href="https://cqf.io/">Qifeng Chen</a>-->
-			<!--              <br>-->
-			<!--              <a href="https://drive.google.com/file/d/1-x938NguDKI7x-8KF5d6syNgy7BBOTwU/view?usp=sharing">videos</a>-->
-			<!--              <p>Train a super-resolution model on low-high resolution pairs generated by NeRF to accelerate NeRF generation-->
-			<!--                 at test time</p>-->
-			<!--            </td>-->
-			<!--          </tr>-->
-
-			<!--          <tr onmouseout="videogen_stop()" onmouseover="videogen_start()">-->
-			<!--            <td style="padding:0px;width:25%;vertical-align:middle">-->
-			<!--              <div class="one">-->
-			<!--                <div class="two" id="videogen_image" style="opacity: 0;">-->
-			<!--                  <video width="100%" height="100%" muted="" autoplay="" loop="">-->
-			<!--                    <source src="./images/video_gen.mp4" type="video/mp4">-->
-			<!--                    Your browser does not support the video tag.-->
-			<!--                  </video>-->
-			<!--                </div>-->
-			<!--                <div class="three"><img src="https://huggingface.co/datasets/Linz99/webpage/resolve/main/images/video_gen.png" style="max-height:100px;max-width:160px"></div>-->
-			<!--              </div>-->
-			<!--              <script type="text/javascript">-->
-			<!--                function videogen_start() {-->
-			<!--                  document.getElementById('videogen_image').style.opacity = "1";-->
-			<!--                }-->
-
-			<!--                function videogen_stop() {-->
-			<!--                  document.getElementById('videogen_image').style.opacity = "0";-->
-			<!--                }-->
-			<!--                videogen_stop()-->
-			<!--              </script>-->
-			<!--            </td>-->
-			<!--            <td style="padding:0px;width:75%;vertical-align:middle">-->
-			<!--              <papertitle>Video Interpolation and Extrapolation in Long Intervals</papertitle>-->
-			<!--              <br>-->
-			<!--              <u>Lin Zhang</u>,-->
-			<!--              <a href="https://scholar.google.com/citations?user=nFhLmFkAAAAJ">Yu-Wing Tai</a>,-->
-			<!--              <a href="http://www.cs.ust.hk/~cktang/bio-sketch-review.htm">Chi-Keung Tang</a>-->
-			<!--              <br>-->
-			<!--              <a href="./projects/videogen/Supplementary.pptx">slides</a>-->
-			<!--              /-->
-			<!--              <a href="https://drive.google.com/drive/folders/17usR1fGxeaHQxgzipyyx4lpd821qxGuk?usp=sharing">videos</a>-->
-			<!--              <p></p>-->
-			<!--              <p>Joint video interpolation and extrapolation on Cityscape dataset within long time intervals</p>-->
-			<!--            </td>-->
-			<!--          </tr> -->
-
-			<!--          <tr onmouseout="dupdet_stop()" onmouseover="dupdet_start()">-->
-			<!--            <td style="padding:0px;width:25%;vertical-align:middle">-->
-			<!--                <img src="./images/dup_det.jpg" style="max-height:100px;max-width:160px">-->
-			<!--            </td>-->
-			<!--            <td style="padding:0px;width:75%;vertical-align:middle">-->
-			<!--              <papertitle>Duplicate Question Detection</papertitle>-->
-			<!--              <br>-->
-			<!--              <u>Lin Zhang</u>,-->
-			<!--              <a href="https://sites.google.com/view/dyyeung">Dit-Yan Yeung</a>-->
-			<!--              <br>-->
-			<!--              <a href="./projects/dupdet/Dup Det.pdf">tech report</a>-->
-			<!--              <p></p>-->
-			<!--              <p>Detect duplicate questions on Quora dataset using RNN sequential models and autoencoder-generated augmented data</p>-->
-			<!--            </td>-->
-			<!--          </tr> -->
-
-			<!--          <tr onmouseout="indloc_stop()" onmouseover="indloc_start()">-->
-			<!--            <td style="padding:0px;width:25%;vertical-align:middle">-->
-			<!--                <img src="./images/ind_loc.jpg" style="max-height:100px;max-width:160px">-->
-			<!--            </td>-->
-			<!--            <td style="padding:0px;width:75%;vertical-align:middle">-->
-			<!--              <papertitle>Analytics and Recommendation for User Location Data</papertitle>-->
-			<!--              <br>-->
-			<!--              <u>Lin Zhang</u>,-->
-			<!--              Zijian Huang-->
-			<!--              <a href="http://www.cse.ust.hk/~gchan/">Gary Shueng Han CHAN</a>-->
-			<!--              <br>-->
-			<!--              <a href="./projects/indloc/final_report.pdf">tech report</a>-->
-			<!--              <p></p>-->
-			<!--              <p>Designed and built an indoor localization system with Android devices, beacons, database and web development.</p>-->
-			<!--            </td>-->
-			<!--          </tr> -->
-
-			<!--        </tbody></table>-->
-
-
-			<!-- <table width="100%" align="center" border="0" cellspacing="0" cellpadding="20"><tbody>
-			  <tr>
-				<td>
-				  <heading>Service</heading>
-				</td>
-			  </tr>
-			</tbody></table> -->
-			<!-- <table width="100%" align="center" border="0" cellpadding="20"><tbody>
-			  <tr>
-				<td style="padding:0px;width:25%;vertical-align:middle"><img src="images/cvf.jpg"></td>
-				<td width="75%" valign="center">
-				  <a href="http://cvpr2021.thecvf.com/area-chairs">Area Chair, Longuet-Higgins Award Committee Member, CVPR 2021</a>
-				  <br><br>
-				  <a href="http://cvpr2019.thecvf.com/area_chairs">Area Chair, CVPR 2019</a>
-				  <br><br>
-				  <a href="http://cvpr2018.thecvf.com/organizers/area_chairs">Area Chair, CVPR 2018</a>
-				</td>
-			  </tr>
-			  <tr>
-				<td style="padding:0px;width:25%;vertical-align:middle">
-				  <img src="images/cs188.jpg" alt="cs188">
-				</td>
-				<td width="75%" valign="center">
-				  <a href="http://inst.eecs.berkeley.edu/~cs188/sp11/announcements.html">Graduate Student Instructor, CS188 Spring 2011</a>
-				  <br>
-				  <br>
-				  <a href="http://inst.eecs.berkeley.edu/~cs188/fa10/announcements.html">Graduate Student Instructor, CS188 Fall 2010</a>
-				  <br>
-				  <br>
-				  <a href="http://aima.cs.berkeley.edu/">Figures, "Artificial Intelligence: A Modern Approach", 3rd Edition</a>
-				</td>
-			  </tr>
-			</tbody></table> -->
-
-		</td>
-	</tr>
-</table>
+</main>
 
 <script>
 	var unitempStoryBase = "https://huggingface.co/datasets/Linz99/webpage/resolve/main/projects/unitemp/videos/stories/";
