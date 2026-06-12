@@ -97,10 +97,47 @@ h2::after {
   background: linear-gradient(135deg, #0f172a 0%, #152744 55%, #1d3a5f 100%);
 }
 
+.top-nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(15, 23, 42, 0.92);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+.top-nav-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0.85rem clamp(1.25rem, 4vw, 2rem);
+  display: flex;
+  justify-content: flex-end;
+  gap: 1.6rem;
+}
+
+.top-nav a {
+  color: var(--hero-muted);
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding-bottom: 3px;
+  border-bottom: 2px solid transparent;
+}
+
+.top-nav a:hover,
+.top-nav a:focus {
+  color: #fff;
+  text-decoration: none;
+}
+
+.top-nav a.active {
+  color: #fff;
+  border-bottom-color: var(--hero-link);
+}
+
 .hero {
   max-width: 1000px;
   margin: 0 auto;
-  padding: clamp(3rem, 6vw, 4.25rem) clamp(1.25rem, 4vw, 2rem);
+  padding: clamp(2rem, 4vw, 3rem) clamp(1.25rem, 4vw, 2rem) clamp(3rem, 6vw, 4.25rem);
   display: grid;
   grid-template-columns: 1fr 232px;
   gap: 3.5rem;
@@ -308,7 +345,19 @@ h2::after {
   display: grid;
   grid-template-columns: 210px 1fr;
   gap: 1.5rem;
-  align-items: center;
+  align-items: start;
+}
+
+.pub-legend {
+  font-size: 0.8125rem;
+  color: var(--faint);
+  margin: -0.85rem 0 1.5rem;
+}
+
+.pub-more {
+  margin: 2rem 0 0;
+  font-size: 0.875rem;
+  font-weight: 500;
 }
 
 .pub + .pub {
@@ -368,11 +417,6 @@ h2::after {
   line-height: 0;
 }
 
-.pub-note {
-  font-size: 0.8125rem;
-  color: var(--faint);
-  margin: 0.2rem 0 0;
-}
 
 .pub-award {
   margin: 0.5rem 0 0;

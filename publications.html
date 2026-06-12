@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<meta charset="UTF-8">
+
+	<title>Publications | Lin Zhang</title>
+
+	<meta name="author" content="Lin Zhang">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Publications of Lin Zhang (张林) — CS PhD student at University of Wisconsin–Madison working on computer vision and multimodal visual content generation.">
+
+	<link rel="icon" type="image/png" href="./images/avatar-3.jpg">
+
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Serif+SC:wght@500&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" href="./stylesheet.css">
+
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-VHMKZG3G6Y"></script>
+	<script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+
+        gtag('config', 'G-G558WBZNS5');
+	</script>
+
+</head>
+
+<body>
+
+<nav class="top-nav">
+	<div class="top-nav-inner">
+		<a href="./index.html">About</a>
+		<a href="./publications.html" class="active">Publications</a>
+	</div>
+</nav>
+
+<main>
+
+	<section id="publications">
+		<h2>Publications</h2>
+		<p class="pub-legend">*Equal contribution &nbsp;&middot;&nbsp; <sup>&dagger;</sup>Equal advising</p>
+
+		<article class="pub">
+			<div class="pub-media">
+				<span class="media-tag">arXiv 2026</span>
+				<div class="unitemp-carousel" id="unitemp-carousel">
+					<video id="unitemp-story-video" src="https://huggingface.co/datasets/Linz99/webpage/resolve/main/projects/unitemp/videos/stories/01.mp4" muted loop playsinline autoplay preload="metadata"></video>
+					<button class="uc-arrow uc-prev" onclick="unitempStoryStep(-1)" aria-label="Previous story">&#10094;</button>
+					<button class="uc-arrow uc-next" onclick="unitempStoryStep(1)" aria-label="Next story">&#10095;</button>
+					<div class="uc-dots">
+						<span class="uc-dot active" onclick="unitempStoryGo(0)"></span>
+						<span class="uc-dot" onclick="unitempStoryGo(1)"></span>
+						<span class="uc-dot" onclick="unitempStoryGo(2)"></span>
+					</div>
+				</div>
+			</div>
+			<div class="pub-body">
+				<h3 class="pub-title">UniTemp: Unlocking Video Generation in Any Temporal Order via Bidirectional Distillation</h3>
+				<p class="pub-authors">
+					<span class="me">Lin Zhang</span>,
+					Sicheng Mo,
+					Zefan Cai,
+					Jinhong Lin,
+					Zihao Lin,
+					Jiuxiang Gu,
+					Krishna Kumar Singh,
+					Yuheng Li<sup>&dagger;</sup>,
+					Yin Li<sup>&dagger;</sup>
+				</p>
+				<p class="pub-links">
+					<a class="pill" href="./projects/unitemp/index.html">Project</a>
+					<a class="pill" href="https://github.com/lzhangbj/UniTemp">Code</a>
+				</p>
+			</div>
+		</article>
+
+		<article class="pub">
+			<div class="pub-media">
+				<span class="media-tag">arXiv 2025</span>
+				<img src="./images/OpenASVA.png" alt="Scaling Up Audio-Synchronized Visual Animation teaser">
+			</div>
+			<div class="pub-body">
+				<h3 class="pub-title">Scaling Up Audio-Synchronized Visual Animation: An Efficient Training Paradigm</h3>
+				<p class="pub-authors">
+					<span class="me">Lin Zhang</span>,
+					Zefan Cai,
+					Yufan Zhou,
+					Shentong Mo,
+					Jinhong Lin,
+					Cheng-En Wu,
+					Yibing Wei,
+					Yijing Zhang,
+					Ruiyi Zhang,
+					Wen Xiao,
+					Tong Sun,
+					Junjie Hu,
+					Pedro Morgado
+				</p>
+				<p class="pub-links">
+					<a class="pill" href="https://arxiv.org/abs/2508.03955v1">arXiv</a>
+					<a class="pill" href="https://drive.google.com/file/d/1QcTfk1oYMP34AAw7Y12pmlMBYIcJ9Goe/view?usp=sharing">Dataset (AVSync48)</a>
+				</p>
+			</div>
+		</article>
+
+		<article class="pub">
+			<div class="pub-media">
+				<span class="media-tag">ECCV 2024</span>
+				<img src="https://huggingface.co/datasets/Linz99/webpage/resolve/main/images/agva.gif" alt="Audio-Synchronized Visual Animation samples">
+			</div>
+			<div class="pub-body">
+				<h3 class="pub-title">Audio-Synchronized Visual Animation</h3>
+				<p class="pub-authors">
+					<span class="me">Lin Zhang</span>,
+					Shentong Mo,
+					Yijing Zhang,
+					Pedro Morgado
+				</p>
+				<p class="pub-award"><span class="award">Oral Presentation &middot; Top 2.3%</span></p>
+				<p class="pub-links">
+					<a class="pill" href="./projects/asva/asva.html">Project</a>
+					<a class="pill" href="https://arxiv.org/abs/2403.05659">arXiv</a>
+					<a class="pill" href="https://github.com/lzhangbj/ASVA">Code</a>
+					<a class="pill" href="https://huggingface.co/spaces/Linz99/ASVA">HF Demo</a>
+					<a class="pill" href="https://www.youtube.com/watch?v=0quckDGL7hk">Video</a>
+					<a class="pill" href="https://drive.google.com/drive/folders/1onvx5y6QOceDrHZy8-ajFJ4RUuGWwT5V?usp=sharing">Dataset (AVSync15)</a>
+				</p>
+			</div>
+		</article>
+
+		<article class="pub">
+			<div class="pub-media">
+				<span class="media-tag">WACV 2024</span>
+				<img src="https://huggingface.co/datasets/Linz99/webpage/resolve/main/images/mt-ada.png" alt="D3GU overview figure">
+			</div>
+			<div class="pub-body">
+				<h3 class="pub-title">D<sup>3</sup>GU: Multi-target Active Domain Adaptation via Enhancing Domain Alignment</h3>
+				<p class="pub-authors">
+					<span class="me">Lin Zhang</span>,
+					Linghan Xu,
+					Saman Motamed,
+					Shayok Chakraborty,
+					Fernando de la Torre
+				</p>
+				<p class="pub-links">
+					<a class="pill" href="./projects/d3gu/d3gu.html">Project</a>
+					<a class="pill" href="https://arxiv.org/abs/2401.05465">arXiv</a>
+					<a class="pill" href="https://github.com/lzhangbj/D3GU">Code</a>
+				</p>
+			</div>
+		</article>
+
+		<article class="pub">
+			<div class="pub-media">
+				<span class="media-tag">CVPR 2022</span>
+				<img src="https://huggingface.co/datasets/Linz99/webpage/resolve/main/images/tempgrad.png" alt="Temporal gradient learning overview">
+			</div>
+			<div class="pub-body">
+				<h3 class="pub-title">Learning from Temporal Gradient for Semi-supervised Action Recognition</h3>
+				<p class="pub-authors">
+					Junfei Xiao,
+					Longlong Jing,
+					<span class="me">Lin Zhang</span>,
+					Jie Hu,
+					Qi She,
+					Zongwei Zhou,
+					Alan Yuille,
+					Yingwei Li
+				</p>
+				<p class="pub-links">
+					<a class="pill" href="https://arxiv.org/abs/2111.13241">arXiv</a>
+					<a class="pill" href="https://github.com/lambert-x/video-semisup">Code</a>
+				</p>
+			</div>
+		</article>
+
+		<article class="pub">
+			<div class="pub-media">
+				<span class="media-tag">BMVC 2021</span>
+				<img src="./images/dual_var.png" alt="DualVar results">
+			</div>
+			<div class="pub-body">
+				<h3 class="pub-title">Inter-intra Variant Dual Representations for Self-supervised Video Recognition</h3>
+				<p class="pub-authors">
+					<span class="me">Lin Zhang</span>,
+					Qi She,
+					Zhengyang Shen,
+					Changhu Wang
+				</p>
+				<p class="pub-links">
+					<a class="pill" href="./projects/dualvar/dualvar.html">Project</a>
+					<a class="pill" href="https://arxiv.org/abs/2107.01194">arXiv</a>
+					<a class="pill" href="https://github.com/lzhangbj/DualVar">Code</a>
+				</p>
+			</div>
+		</article>
+
+		<article class="pub">
+			<div class="pub-media">
+				<span class="media-tag">ICCV 2021</span>
+				<img src="./images/MT-ORL.png" alt="MT-ORL architecture figure">
+			</div>
+			<div class="pub-body">
+				<h3 class="pub-title">MT-ORL: Multi-Task Occlusion Relationship Learning</h3>
+				<p class="pub-authors">
+					Panhe Feng,
+					Qi She,
+					Lei Zhu,
+					JiaXin Li,
+					<span class="me">Lin Zhang</span>,
+					Zijian Feng,
+					Changhu Wang,
+					Chunpeng Li,
+					Xuejing Kang,
+					Anlong Ming
+				</p>
+				<p class="pub-links">
+					<a class="pill" href="https://arxiv.org/abs/2108.05722">arXiv</a>
+					<a class="pill" href="https://github.com/fengpanhe/MT-ORL">Code</a>
+				</p>
+			</div>
+		</article>
+
+		<article class="pub">
+			<div class="pub-media">
+				<span class="media-tag">arXiv 2020</span>
+				<img src="./images/one_shot.png" alt="One-shot object detection results">
+			</div>
+			<div class="pub-body">
+				<h3 class="pub-title">One-Shot Object Detection without Fine-Tuning</h3>
+				<p class="pub-authors">
+					Xiang Li*,
+					<span class="me">Lin Zhang*</span>,
+					Yau Pun Chen,
+					Yu-Wing Tai,
+					Chi-Keung Tang
+				</p>
+				<p class="pub-links">
+					<a class="pill" href="https://arxiv.org/abs/2005.03819">arXiv</a>
+					<a class="pill" href="https://github.com/RyanXLi/OneshotDet">Code</a>
+				</p>
+			</div>
+		</article>
+
+	</section>
+
+	<footer>&copy; 2026 Lin Zhang</footer>
+
+</main>
+
+<script>
+	var unitempStoryBase = "https://huggingface.co/datasets/Linz99/webpage/resolve/main/projects/unitemp/videos/stories/";
+	var unitempStoryIdx = 0;
+	function unitempStoryGo(i) {
+		unitempStoryIdx = (i + 3) % 3;
+		var v = document.getElementById("unitemp-story-video");
+		v.src = unitempStoryBase + "0" + (unitempStoryIdx + 1) + ".mp4";
+		v.play();
+		var dots = document.querySelectorAll("#unitemp-carousel .uc-dot");
+		for (var k = 0; k < dots.length; k++) {
+			dots[k].className = "uc-dot" + (k === unitempStoryIdx ? " active" : "");
+		}
+	}
+	function unitempStoryStep(d) { unitempStoryGo(unitempStoryIdx + d); }
+</script>
+</body>
+
+</html>
